@@ -146,19 +146,28 @@ git push
 
 ## Rollfördelning
 
-Arbetet delas upp per steg i pipelinen, en person per steg.
+Arbetet delas upp per steg i pipelinen, en person per steg. Gruppen består av sex personer, därför är CI/CD och konfiguration egna ansvarsområden. Båda ingår i det som bedöms, och utan en tydlig ägare blir de lätt ingens ansvar.
 
 <table>
 <thead>
-<tr><th align="left">Steg</th><th align="left">Ansvar</th><th align="left">Förslag på branch</th></tr>
+<tr><th align="left">Nr</th><th align="left">Steg</th><th align="left">Ansvar</th><th align="left">Branch</th><th align="left">Svårighetsgrad</th></tr>
 </thead>
 <tbody>
-<tr><td><b>Hämta data</b></td><td>Anropa källan och spara rådata</td><td><code>feature/hamta-data</code></td></tr>
-<tr><td><b>Rensa och transformera</b></td><td>Städa fält, typer och format</td><td><code>feature/transformera</code></td></tr>
-<tr><td><b>Validera och testa</b></td><td>Tester i pytest och kontroll av struktur</td><td><code>feature/validera</code></td></tr>
-<tr><td><b>Sammanställa resultat</b></td><td>Slutlig utdata och sammanfattning</td><td><code>feature/resultat</code></td></tr>
+<tr><td><b>1</b></td><td><b>Hämta data</b></td><td>Anropa källan och spara rådata</td><td><code>feature/hamta-data</code></td><td>Lätt till medel</td></tr>
+<tr><td><b>2</b></td><td><b>Rensa och transformera</b></td><td>Städa fält, typer och format</td><td><code>feature/transformera</code></td><td>Medel</td></tr>
+<tr><td><b>3</b></td><td><b>Validera och testa</b></td><td>Tester i pytest och kontroll av struktur</td><td><code>feature/validera</code></td><td>Medel</td></tr>
+<tr><td><b>4</b></td><td><b>Sammanställa resultat</b></td><td>Slutlig utdata och sammanfattning</td><td><code>feature/resultat</code></td><td>Lätt till medel</td></tr>
+<tr><td><b>5</b></td><td><b>CI/CD pipeline</b></td><td>Bygga workflowen i GitHub Actions och få den grön</td><td><code>feature/ci</code></td><td>Medel till svår</td></tr>
+<tr><td><b>6</b></td><td><b>Konfiguration och secrets</b></td><td>Hålla ihop <code>.env.example</code>, <code>.gitignore</code> och secrets i GitHub</td><td><code>feature/konfig</code></td><td>Lätt</td></tr>
 </tbody>
 </table>
+
+**Ordning**
+
+Steg 5 och 6 bör mergas först, helst redan första dagen. CI måste finnas på plats innan någon annans pull request kan bli grön. Därefter steg 1, och därnäst steg 2, 3 och 4 parallellt.
+
+> [!NOTE]
+> Svårighetsgraden påverkar inte betyget. Bedömningen gäller processen: egen branch, pull request med granskning, en löst merge konflikt och en grön CI körning. Den som tar det enklaste steget får samma G som den som tar det svåraste.
 
 ***
 
@@ -325,6 +334,8 @@ Avsluta med en kort reflektion: vilka moment inom DevOps användes, och vilka ut
 <tr><td></td><td></td><td>Rensa och transformera</td></tr>
 <tr><td></td><td></td><td>Validera och testa</td></tr>
 <tr><td></td><td></td><td>Sammanställa resultat</td></tr>
+<tr><td></td><td></td><td>CI/CD pipeline</td></tr>
+<tr><td></td><td></td><td>Konfiguration och secrets</td></tr>
 </tbody>
 </table>
 

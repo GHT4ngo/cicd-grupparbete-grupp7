@@ -1,2 +1,8 @@
-Hello WOrld
-Edited by:Christofer
+# Gemensamma beroenden. Lagg till dina egna och committa.
+
+requests
+python-dotenv
+
+# Lint och test
+ruff
+pytest

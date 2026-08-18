@@ -1,0 +1,25 @@
+# Miljovariabler
+.env
+
+# Virtuell miljo
+.venv/
+venv/
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+
+# Data
+data/raw/
+
+# AI-assistenter
+CLAUDE.md
+AGENTS.md
+.claude/
+
+# Editor och OS
+.vscode/
+.idea/
+.DS_Store
