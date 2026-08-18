@@ -1,4 +1,4 @@
-# Gemensamma beroenden. Lagg till dina egna och committa.
+# Gemensamma beroenden. Lägg till dina egna och committa.
 
 requests
 python-dotenv
