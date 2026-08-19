@@ -24,7 +24,7 @@ med parallella branches, pull requests, kodgranskning och en gemensam CI/CD pipe
 2. [Mål](#mål)
 3. [Tema](#tema)
 4. [Arbetsflöde i Git](#arbetsflöde-i-git)
-5. [Rollfördelning](#rollfördelning)
+5. [Rollfördelningsförslag](#rollfördelningsförslag)
 6. [Kom igång](#kom-igång)
 7. [Projektstruktur](#projektstruktur)
 8. [Secrets och lokal konfiguration](#secrets-och-lokal-konfiguration)
