@@ -146,7 +146,7 @@ git push
 
 ***
 
-## Rollfördelning
+## Rollfördelningsförslag
 
 Arbetet delas upp per steg i pipelinen, en person per steg. Gruppen består av sex personer, därför är CI/CD och konfiguration egna ansvarsområden. Båda ingår i det som bedöms, och utan en tydlig ägare blir de lätt ingens ansvar.
 
@@ -168,7 +168,7 @@ Klicka på ett steg i tabellen för att läsa den fullständiga [rollbeskrivning
 
 **Ordning**
 
-Steg 5 och 6 bör mergas först, helst redan första dagen. CI måste finnas på plats innan någon annans pull request kan bli grön. Därefter steg 1, och därnäst steg 2, 3 och 4 parallellt.
+Steg 5 och 6 bör bestämmas först, helst redan första dagen. CI måste finnas på plats innan någon annans pull request kan bli grön. Därefter steg 1, och därnäst steg 2, 3 och 4 parallellt.
 
 > [!NOTE]
 > Svårighetsgraden påverkar inte betyget. Bedömningen gäller processen: egen branch, pull request med granskning, en löst merge konflikt och en grön CI körning. Den som tar det enklaste steget får samma G som den som tar det svåraste.
