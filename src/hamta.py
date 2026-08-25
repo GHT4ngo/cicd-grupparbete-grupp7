@@ -12,7 +12,7 @@ def hamta_avgangar():
     )
 
     params = {
-        "transport": config.transport_mode,
+        "transport": config.transport_mode or None,
         "forecast": config.forecast_minutes,
     }
 
