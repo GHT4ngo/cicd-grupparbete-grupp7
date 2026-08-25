@@ -24,16 +24,17 @@ med parallella branches, pull requests, kodgranskning och en gemensam CI/CD pipe
 2. [Mål](#mål)
 3. [Tema](#tema)
 4. [Arbetsflöde i Git](#arbetsflöde-i-git)
-5. [Rollfördelningsförslag](#rollfördelningsförslag)
+5. [Arbetsfördelning](#arbetsfördelning)
 6. [Kom igång](#kom-igång)
 7. [Projektstruktur](#projektstruktur)
-8. [Secrets och lokal konfiguration](#secrets-och-lokal-konfiguration)
-9. [CI/CD pipeline](#cicd-pipeline)
-10. [Datakällor](#datakällor)
-11. [Presentation, Lektion 8](#presentation-lektion-8)
-12. [Bedömning](#bedömning)
-13. [Gruppmedlemmar](#gruppmedlemmar)
-14. [Rollbeskrivningar](#rollbeskrivningar)
+8. [Datakontraktet](#datakontraktet)
+9. [Secrets och lokal konfiguration](#secrets-och-lokal-konfiguration)
+10. [CI/CD pipeline](#cicd-pipeline)
+11. [Datakällor](#datakällor)
+12. [Presentation, Lektion 8](#presentation-lektion-8)
+13. [Bedömning](#bedömning)
+14. [Gruppmedlemmar](#gruppmedlemmar)
+15. [Vad varje uppgift går ut på](#vad-varje-uppgift-går-ut-på)
 
 ***
 
@@ -90,18 +91,18 @@ Gruppen bygger en enkel dataingestion pipeline kring en valfri datakälla, till 
 ```mermaid
 gitGraph
    commit id: "init"
-   branch feature/hamta-data
-   commit id: "hamta data"
+   branch task/2-ci
+   commit id: "ci workflow"
    checkout main
-   merge feature/hamta-data tag: "PR granskad"
-   branch feature/transformera
-   commit id: "rensa och transformera"
+   merge task/2-ci tag: "PR granskad"
+   branch task/5-hamta
+   commit id: "hamta fran SL"
    checkout main
-   merge feature/transformera tag: "PR granskad"
-   branch feature/validera
-   commit id: "tester och validering"
+   merge task/5-hamta tag: "CI gron"
+   branch task/7-transformera
+   commit id: "platta ut avgangar"
    checkout main
-   merge feature/validera tag: "CI gron"
+   merge task/7-transformera tag: "PR granskad"
 ```
 
 **Så jobbar vi**
@@ -149,37 +150,26 @@ git push
 
 ***
 
-## Rollfördelningsförslag
+## Arbetsfördelning
 
-> [!IMPORTANT]
-> **Vi använder inte fasta roller längre.** Arbetet ligger som en kö av små uppgifter i [TASKS.md](TASKS.md), där var och en tar så många hen vill. Byt gärna ut det här avsnittet när gruppen bekräftat den ordningen. Tabellen nedan står kvar tills vidare eftersom den beskriver stegen i pipelinen, vilket fortfarande stämmer.
+Vi har **inga fasta roller**. Arbetet ligger som en kö av små uppgifter, ett issue per uppgift, med korten i [projekttavlan](../../projects).
 
-Arbetet delas upp per steg i pipelinen, en person per steg. Gruppen består av sex personer, därför är CI/CD och konfiguration egna ansvarsområden. Båda ingår i det som bedöms, och utan en tydlig ägare blir de lätt ingens ansvar.
+Var och en tar så många uppgifter hen vill, i sin egen takt. Dra ett kort till **In progress**, gör uppgiften i en egen branch, och skriv `Closes #16` i din pull request. Då stängs kortet av sig självt när den mergas.
 
 <table>
 <thead>
-<tr><th align="left">Nr</th><th align="left">Steg</th><th align="left">Ansvar</th><th align="left">Branch</th><th align="left">Svårighetsgrad</th></tr>
+<tr><th align="left">Hög</th><th align="left">Antal</th><th align="left">Vad det är</th></tr>
 </thead>
 <tbody>
-<tr><td><b>1</b></td><td><b><a href="#1-hämta-data">Hämta data</a></b></td><td>Anropa källan och spara rådata</td><td><code>feature/hamta-data</code></td><td>Lätt till medel</td></tr>
-<tr><td><b>2</b></td><td><b><a href="#2-rensa-och-transformera">Rensa och transformera</a></b></td><td>Städa fält, typer och format</td><td><code>feature/transformera</code></td><td>Medel</td></tr>
-<tr><td><b>3</b></td><td><b><a href="#3-validera-och-testa">Validera och testa</a></b></td><td>Tester i pytest och kontroll av struktur</td><td><code>feature/validera</code></td><td>Medel</td></tr>
-<tr><td><b>4</b></td><td><b><a href="#4-sammanställa-resultat">Sammanställa resultat</a></b></td><td>Slutlig utdata och sammanfattning</td><td><code>feature/resultat</code></td><td>Lätt till medel</td></tr>
-<tr><td><b>5</b></td><td><b><a href="#5-cicd-pipeline">CI/CD pipeline</a></b></td><td>Bygga workflowen i GitHub Actions och få den grön</td><td><code>feature/ci</code></td><td>Medel till svår</td></tr>
-<tr><td><b>6</b></td><td><b><a href="#6-konfiguration-och-secrets">Konfiguration och secrets</a></b></td><td>Hålla ihop <code>.env.example</code>, <code>.gitignore</code> och secrets i GitHub</td><td><code>feature/konfig</code></td><td>Lätt</td></tr>
+<tr><td><b>Kärnan</b></td><td>16</td><td>Det som måste bli gjort för att projektet ska fungera och alla bli godkända</td></tr>
+<tr><td><b>Bonus</b></td><td>13</td><td>Helt frivilligt, tas när kärnan är i hamn</td></tr>
 </tbody>
 </table>
 
-Klicka på ett steg i tabellen för att läsa den fullständiga [rollbeskrivningen](#rollbeskrivningar) längst ned.
-
-**Ordning**
-
-Steg 5 och 6 bör bestämmas först, helst redan första dagen. CI måste finnas på plats innan någon annans pull request kan bli grön. Därefter steg 1, och därnäst steg 2, 3 och 4 parallellt.
+Sexton kärnuppgifter fördelat på sex personer blir under tre var.
 
 > [!NOTE]
-> Svårighetsgraden påverkar inte betyget. Bedömningen gäller processen: egen branch, pull request med granskning, en löst merge konflikt och en grön CI körning. Den som tar det enklaste steget får samma G som den som tar det svåraste.
-
-***
+> Tidigare låg här ett förslag med sex fasta roller. Det byttes mot en uppgiftstavla eftersom en otagen roll blockerade allt nedanför sig. Nu kan de flesta uppgifter tas i vilken ordning som helst.
 
 ## Kom igång
 
@@ -258,18 +248,64 @@ Filnamn i `src/` skrivs utan å, ä och ö, eftersom modulnamn importeras i kod.
 
 ***
 
+## Datakontraktet
+
+Så här ser en avgång ut när den kommit igenom pipelinen. Åtta fält, alla platta, inga nästlade objekt.
+
+```json
+{
+  "linje": "14",
+  "linjegrupp": "Tunnelbanans röda linje",
+  "transportmedel": "METRO",
+  "riktning_kod": 2,
+  "riktning": "Fruängen",
+  "destination": "Liljeholmen",
+  "avgar_klocka": "13:22",
+  "minuter": 3
+}
+```
+
+> [!IMPORTANT]
+> Kontraktet är det som gör att flera personer kan jobba samtidigt utan att prata med varandra. Uppgift 7 fyller fälten, uppgift 10 kontrollerar dem och uppgift 12 visar dem. Så länge alla håller sig till namnen ovan spelar det ingen roll vem som blir klar först.
+
+<table>
+<thead>
+<tr><th align="left">Fält</th><th align="left">Kommer från</th><th align="left">Exempel</th></tr>
+</thead>
+<tbody>
+<tr><td><code>linje</code></td><td><code>line.designation</code></td><td>14</td></tr>
+<tr><td><code>linjegrupp</code></td><td><code>line.group_of_lines</code></td><td>Tunnelbanans röda linje</td></tr>
+<tr><td><code>transportmedel</code></td><td><code>line.transport_mode</code></td><td>METRO, BUS, TRAIN, TRAM, SHIP</td></tr>
+<tr><td><code>riktning_kod</code></td><td><code>direction_code</code></td><td>1 eller 2</td></tr>
+<tr><td><code>riktning</code></td><td><code>direction</code></td><td>Fruängen</td></tr>
+<tr><td><code>destination</code></td><td><code>destination</code></td><td>Liljeholmen</td></tr>
+<tr><td><code>avgar_klocka</code></td><td><code>expected</code>, klockslaget</td><td>13:22</td></tr>
+<tr><td><code>minuter</code></td><td>uträknat från <code>expected</code></td><td>3</td></tr>
+</tbody>
+</table>
+
+> [!WARNING]
+> Räkna alltid ut `minuter` själv från `expected`. Fältet `display` som API:et skickar blandar `"Nu"`, `"3 min"` och `"13:25"` i samma svar, eftersom det växlar till klockslag efter ungefär tio minuter.
+
+***
+
 ## Secrets och lokal konfiguration
 
 > [!IMPORTANT]
-> Filen `.env` ska aldrig committas. Endast `.env.example` ligger i repot, och den innehåller tomma platshållare.
+> Filen `.env` ska aldrig committas. Endast `.env.example` ligger i repot.
 
 **`.env.example`**
 
 ```dotenv
-API_KEY=
-API_BASE_URL=
-OUTPUT_PATH=data/output.json
+SITE_ID=9192
+SITE_NAME=Slussen
+TRANSPORT_MODE=METRO
+FORECAST_MINUTES=60
+OUTPUT_PATH=docs/data/avgangar.json
 ```
+
+> [!NOTE]
+> **SL Transport kräver ingen API nyckel.** Det finns alltså ingen riktig hemlighet i det här projektet, och `.env` innehåller inställningar snarare än känsliga uppgifter. Bedömningen handlar om att vi förstår och hanterar `.env` och `.gitignore`, vilket vi gör ändå. Kör `cp .env.example .env` och ändra `SITE_ID` om du vill ha en annan hållplats.
 
 **`.gitignore`**
 
@@ -301,7 +337,7 @@ AGENTS.md
 .DS_Store
 ```
 
-Nycklar som behövs i CI läggs in under **Settings → Secrets and variables → Actions** i GitHub och läses in i workflowen som `${{ secrets.API_KEY }}`.
+Om projektet någon gång byter till en datakälla som kräver nyckel läggs den in under **Settings → Secrets and variables → Actions** i GitHub och läses i workflowen som `${{ secrets.NYCKELNS_NAMN }}`. Med SL Transport behövs det inte, och `ci.yml` har därför inget `env:` block.
 
 ***
 
@@ -420,153 +456,29 @@ Avsluta med en kort reflektion: vilka moment inom DevOps användes, och vilka ut
 
 <table>
 <thead>
-<tr><th align="left">Namn</th><th align="left">GitHub</th><th align="left">Ansvarsområde</th></tr>
+<tr><th align="left">Namn</th><th align="left">GitHub</th><th align="left">Uppgifter</th></tr>
 </thead>
 <tbody>
-<tr><td></td><td></td><td><a href="#1-hämta-data">Hämta data</a></td></tr>
-<tr><td></td><td></td><td><a href="#2-rensa-och-transformera">Rensa och transformera</a></td></tr>
-<tr><td></td><td></td><td><a href="#3-validera-och-testa">Validera och testa</a></td></tr>
-<tr><td></td><td></td><td><a href="#4-sammanställa-resultat">Sammanställa resultat</a></td></tr>
-<tr><td></td><td></td><td><a href="#5-cicd-pipeline">CI/CD pipeline</a></td></tr>
-<tr><td></td><td></td><td><a href="#6-konfiguration-och-secrets">Konfiguration och secrets</a></td></tr>
+<tr><td>Christofer</td><td><code>GHT4ngo</code></td><td>1, 2, 3</td></tr>
+<tr><td></td><td><code>somrar99</code></td><td>5</td></tr>
+<tr><td></td><td><code>nibir03</code></td><td></td></tr>
+<tr><td></td><td><code>Yearofthedragon24</code></td><td></td></tr>
+<tr><td></td><td></td><td></td></tr>
+<tr><td></td><td></td><td></td></tr>
 </tbody>
 </table>
 
+> [!IMPORTANT]
+> **Uppgift 28 innebär att du fyller i din egen rad här, i din egen branch.** Alla sex gör det var för sig, vilket ger merge konflikter på riktigt. Att lösa en sådan är ett eget krav för G, och facit är alltid att behålla båda raderna.
+
 ***
 
-## Rollbeskrivningar
+## Vad varje uppgift går ut på
 
-Varje roll beskrivs efter samma mall: vad rollen gör, vad som ska levereras, vad nästa steg får, och när rollen är klar. Läs din egen noggrant och skumma de andra, så vet du vem du tar emot ifrån och vem du lämnar över till.
-
-Alla roller arbetar i en egen branch enligt [Arbetsflöde i Git](#arbetsflöde-i-git), och allt går in i `main` via en pull request som en gruppmedlem har granskat.
-
-<br>
-
-### 1. Hämta data
-
-> **Branch** `feature/hamta-data` &nbsp;&bull;&nbsp; **Levererar** `src/hamta.py` &nbsp;&bull;&nbsp; **Svårighetsgrad** Lätt till medel
-
-Första steget i pipelinen. Rollen kontaktar den valda källan och hämtar hem rådata precis som den ser ut, utan att tolka eller städa den. Allt som handlar om hur ett anrop går till bor här: adress, parametrar, hur svaret sparas och vad som händer när källan inte svarar.
-
-**Ska levereras**
-
-* En funktion `hamta_data()` som returnerar rådata från källan
-* Rådata sparad under `data/raw/`, så att övriga kan arbeta utan att anropa källan om och om igen
-* `API_BASE_URL` och eventuell `API_KEY` läses från `.env`, aldrig skrivna direkt i koden
-* Enkel felhantering: timeout, statuskod som inte är 200, och tomt svar
-
-**Nästa steg får** rådata i källans eget format, till exempel en lista med dictionaries från JSON.
-
-**Klar när** en körning ger en sparad fil med rådata, steg 2 kan utgå från ett känt format, och CI är grön.
-
-> [!TIP]
-> Hämta ett litet urval under utvecklingen, till exempel tio poster. Många öppna API:er har en gräns för antal anrop per minut.
-
-<br>
-
-### 2. Rensa och transformera
-
-> **Branch** `feature/transformera` &nbsp;&bull;&nbsp; **Levererar** `src/transformera.py` &nbsp;&bull;&nbsp; **Svårighetsgrad** Medel
-
-Rollen tar emot rådata och gör den användbar. Här bestäms hur den färdiga datastrukturen ser ut, vilket i praktiken är pipelinens viktigaste överenskommelse: steg 3 testar den och steg 4 bygger sitt resultat på den. Prata med båda innan strukturen spikas.
-
-**Ska levereras**
-
-* En funktion `transformera(radata)` som returnerar en lista med rensade poster
-* Fältnamn normaliserade till ett konsekvent format, till exempel gemener med understreck
-* Typer satta medvetet: tal som `int` eller `float`, datum i ett bestämt format, text utan inledande och avslutande blanksteg
-* Poster som saknar obligatoriska fält hanteras enligt en uttalad regel, antingen bortsorterade eller ifyllda med ett standardvärde
-* Dubbletter borttagna
-
-**Nästa steg får** en lista med poster som har samma fält, samma typer och inga överraskningar.
-
-**Klar när** strukturen är dokumenterad i en kort kommentar eller docstring, steg 3 har tester som passerar mot den, och CI är grön.
-
-<br>
-
-### 3. Validera och testa
-
-> **Branch** `feature/validera` &nbsp;&bull;&nbsp; **Levererar** `tests/` &nbsp;&bull;&nbsp; **Svårighetsgrad** Medel
-
-Rollen äger testsviten och är den som säger ifrån när något går sönder. Fokus ligger på strukturen i utdatan från steg 2, alltså att pipelinen producerar korrekt formad data, inte att innehållet råkar vara vackert.
-
-**Ska levereras**
-
-* Tester i pytest under `tests/`, körbara med enbart `pytest`
-* Kontroller av att varje post har alla obligatoriska fält, att typerna stämmer, och att listan inte är tom
-* Minst ett test som fångar ett verkligt felfall, till exempel en post där ett fält saknas
-* En liten fixtur med sparad exempeldata, så att testerna kan köras utan nätverk
-
-**Nästa steg får** en grön testsvit som skyddar hela gruppens arbete vid varje pull request.
-
-**Klar när** `pytest` går igenom lokalt, testerna körs automatiskt i CI, och ett medvetet infört fel faktiskt får dem att fallera.
-
-> [!IMPORTANT]
-> Testerna får inte anropa det riktiga API:et. CI körs på en maskin utan dina nycklar, och ett test som beror på nätverket blir rött av fel anledning.
-
-<br>
-
-### 4. Sammanställa resultat
-
-> **Branch** `feature/resultat` &nbsp;&bull;&nbsp; **Levererar** `src/resultat.py` och `src/main.py` &nbsp;&bull;&nbsp; **Svårighetsgrad** Lätt till medel
-
-Sista steget i pipelinen. Rollen tar den rensade datan och gör något begripligt av den, samt knyter ihop hela kedjan i `src/main.py` så att en enda körning går från hämtning till färdig fil.
-
-**Ska levereras**
-
-* En funktion som skriver slutresultatet till sökvägen i `OUTPUT_PATH`, som standard `data/output.json`
-* En kort sammanfattning: antal poster, tidpunkt för körningen, och ett par enkla nyckeltal som är relevanta för den valda källan
-* `src/main.py` som kör stegen i ordning: hämta, transformera, sammanställ
-* Utskrift i terminalen som visar att körningen lyckades
-
-**Nästa steg får** det som visas under presentationen i Lektion 8.
-
-**Klar när** `python -m src.main` producerar en färdig utdatafil från ett tomt tillstånd, och CI är grön.
-
-<br>
-
-### 5. CI/CD pipeline
-
-> **Branch** `feature/ci` &nbsp;&bull;&nbsp; **Levererar** `.github/workflows/ci.yml` &nbsp;&bull;&nbsp; **Svårighetsgrad** Medel till svår
-
-Rollen bygger den automatik som alla andras pull requests mäts mot. Den här rollen arbetar först, gärna redan första dagen, eftersom ingen annans pull request kan bli grön innan workflowen finns i `main`.
-
-**Ska levereras**
-
-* En workflow som körs vid `push` och vid `pull_request` mot `main`
-* Stegen checkout, uppsättning av Python, installation av `requirements.txt`, `ruff check .` och `pytest`
-* Körningen använder samma Python-version som gruppen kör lokalt
-* Eventuella nycklar läses in från GitHub Secrets som `${{ secrets.API_KEY }}`, aldrig från en fil i repot
-
-**Nästa steg får** ett grönt eller rött besked på varje pull request, automatiskt.
-
-**Klar när** märket för workflowen visar grönt på `main`, och en avsiktligt trasig commit i en testbranch faktiskt gör körningen röd.
-
-> [!TIP]
-> Föreslå för gruppen att `main` skyddas under **Settings → Branches**, med krav på grön CI och en godkänd granskning innan merge. Då blir kraven i [Bedömning](#bedömning) något som repot upprätthåller av sig självt.
-
-<br>
-
-### 6. Konfiguration och secrets
-
-> **Branch** `feature/konfig` &nbsp;&bull;&nbsp; **Levererar** `.gitignore`, `.env.example` och `requirements.txt` &nbsp;&bull;&nbsp; **Svårighetsgrad** Lätt
-
-Rollen ser till att ingen känslig information hamnar i repot och att alla kan sätta upp projektet på samma sätt. Liten i kodmängd, men det är den här rollen som bedöms i punkten om `.gitignore` och `.env`, och den arbetar parallellt med steg 5 i början av projektet.
-
-**Ska levereras**
-
-* Ett `.gitignore` som täcker `.env`, `.venv/`, `__pycache__/`, cache från test och lint, samt `data/raw/`
-* Ett `.env.example` med alla variabler som koden faktiskt läser, med tomma värden
-* `requirements.txt` som hålls uppdaterad när någon lägger till ett paket
-* Motsvarande nycklar upplagda under **Settings → Secrets and variables → Actions** i GitHub
-
-**Nästa steg får** ett repo där `git clone` följt av stegen i [Kom igång](#kom-igång) räcker för att komma igång.
-
-**Klar när** `git status` är ren efter en full körning, ingen nyckel finns i historiken, och en gruppmedlem har kunnat sätta upp projektet från grunden enbart med hjälp av README.
-
-> [!IMPORTANT]
-> Om en nyckel råkar committas är det inte nog att ta bort den i nästa commit. Den ligger kvar i historiken. Spärra nyckeln hos leverantören och skapa en ny.
+Alla beskrivningar ligger i [TASKS.md](TASKS.md), en per uppgift, med vad som ska göras och när den är klar.
 
 <div align="center">
-<sub>DevOps DE25 &nbsp;&bull;&nbsp; Grupp 7</sub>
+
+### [Öppna uppgiftstavlan](../../projects) &nbsp;&bull;&nbsp; [Läs uppgifterna](TASKS.md)
+
 </div>
