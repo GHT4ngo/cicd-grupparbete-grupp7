@@ -106,12 +106,15 @@ gitGraph
 
 **Så jobbar vi**
 
-1. Skapa din egen feature branch från `main`
-2. Commita ofta och med tydliga meddelanden
-3. Pusha upp branchen och öppna en pull request mot `main`
-4. Vänta in CI, alla kontroller ska vara gröna
-5. Be en gruppmedlem granska och godkänna
-6. Merga till `main` och radera branchen
+1. Ta ett kort i [projekttavlan](../../projects) och tilldela dig själv
+2. Skapa en branch från `main` som heter `task/16-linjefarger`, alltså numret plus ett kort namn
+3. Commita ofta och med tydliga meddelanden
+4. Pusha upp branchen och öppna en pull request mot `main`, med `Closes #16` i beskrivningen
+5. Vänta in CI, alla kontroller ska vara gröna
+6. Be en gruppmedlem granska och godkänna
+7. Merga till `main` och radera branchen
+
+Tack vare `Closes #16` stängs issuet av sig självt när pull requesten mergas, och kortet flyttar sig till **Done**. Ingen behöver hålla en lista uppdaterad för hand.
 
 <details>
 <summary><b>Kommandon steg för steg</b></summary>
@@ -142,11 +145,14 @@ git push
 </details>
 
 > [!TIP]
-> Gruppen bör medvetet dela en gemensam fil, till exempel `requirements.txt` eller en statusfil, så att merge konflikter uppstår naturligt och inte bara av tur.
+> Gruppen bör medvetet dela en gemensam fil så att merge konflikter uppstår naturligt och inte bara av tur. Det är därför [uppgift 28](../../issues/36) tas av alla sex: var och en lägger till sin egen rad i tabellen [Gruppmedlemmar](#gruppmedlemmar), i sin egen branch.
 
 ***
 
 ## Rollfördelningsförslag
+
+> [!IMPORTANT]
+> **Vi använder inte fasta roller längre.** Arbetet ligger som en kö av små uppgifter i [TASKS.md](TASKS.md), där var och en tar så många hen vill. Byt gärna ut det här avsnittet när gruppen bekräftat den ordningen. Tabellen nedan står kvar tills vidare eftersom den beskriver stegen i pipelinen, vilket fortfarande stämmer.
 
 Arbetet delas upp per steg i pipelinen, en person per steg. Gruppen består av sex personer, därför är CI/CD och konfiguration egna ansvarsområden. Båda ingår i det som bedöms, och utan en tydlig ägare blir de lätt ingens ansvar.
 
@@ -205,34 +211,48 @@ Nya beroenden läggs till i `requirements.txt` och committas, så att alla i gru
 
 ## Projektstruktur
 
-Så här ser repot ut när alla sex steg är mergade till `main`.
+Så här ser repot ut när alla uppgifter är mergade till `main`. Siffrorna hänvisar till [TASKS.md](TASKS.md).
 
 ```text
 cicd-grupparbete-grupp7/
 ├── .github/
 │   └── workflows/
-│       └── ci.yml            # steg 5, lint och test vid push och pull request
+│       └── ci.yml            # 2, lint och test vid push och pull request
 ├── data/
-│   ├── raw/                  # rådata från källan, gitignorerad
-│   └── output.json           # slutlig utdata, sökväg från OUTPUT_PATH
+│   └── raw/                  # rådata från källan, gitignorerad
+├── docs/                     # 29, publiceras av Cloudflare Pages
+│   ├── index.html            # 12 och 13, avgångstavlan i webbläsaren
+│   └── data/
+│       └── avgangar.json     # 11, sökväg från OUTPUT_PATH
 ├── src/
-│   ├── __init__.py
-│   ├── main.py               # kör hela pipelinen från början till slut
-│   ├── hamta.py              # steg 1
-│   ├── transformera.py       # steg 2
-│   └── resultat.py           # steg 4
+│   ├── __init__.py           # 1
+│   ├── main.py               # 14 och 21, kör hela kedjan
+│   ├── config.py             # 3
+│   ├── hamta.py              # 5
+│   ├── transformera.py       # 7, 8 och 9
+│   ├── validera.py           # 10
+│   ├── resultat.py           # 11
+│   ├── stationer.py          # 15
+│   ├── linjer.py             # 16
+│   ├── avvikelser.py         # 17
+│   ├── tid.py                # 18
+│   ├── statistik.py          # 19
+│   └── filter.py             # 20
 ├── tests/
-│   ├── __init__.py
-│   └── test_pipeline.py      # steg 3
+│   ├── __init__.py           # 1
+│   ├── exempel/              # 6, sparat svar som testerna kör mot
+│   └── test_*.py             # 22 till 27, ett test per modul
 ├── .env                      # lokala värden, committas aldrig
 ├── .env.example              # mall med tomma platshållare
 ├── .gitignore
 ├── README.md
+├── SUGGESTION.md             # vad vi bygger och hur API:et fungerar
+├── TASKS.md                  # uppgiftstavlan, ta en uppgift här
 └── requirements.txt
 ```
 
 > [!NOTE]
-> I repot finns just nu `.env.example`, `.gitignore`, `README.md` och `requirements.txt`. Mapparna `src/`, `tests/`, `data/` och `.github/` skapas av respektive roll i den egna feature branchen.
+> I repot finns just nu `.env.example`, `.gitignore`, `README.md`, `SUGGESTION.md`, `TASKS.md` och `requirements.txt`. Resten skapas av den som tar respektive uppgift, i sin egen branch.
 
 Filnamn i `src/` skrivs utan å, ä och ö, eftersom modulnamn importeras i kod. Därför `hamta.py` och inte `hämta.py`.
 
@@ -302,6 +322,15 @@ Pipelinen körs automatiskt vid varje push och vid varje pull request mot `main`
 </table>
 
 En pull request får mergas först när alla steg är gröna och en gruppmedlem har godkänt granskningen.
+
+**Publicering**
+
+Avgångstavlan ligger på **Cloudflare Pages** och nås på `sl.t4ngo.com`. Varje merge till `main` publicerar om sidan automatiskt, direkt från mappen `docs/`.
+
+> [!NOTE]
+> Cloudflare Pages fungerar med privata repon på gratisplanen, till skillnad från GitHub Pages som kräver Pro. Repot förblir alltså privat medan sidan är publik.
+
+Det innebär också att **ingen behöver ha en dator igång**. Sidan är statisk, så det körs ingen Python på servern. Färska avgångstider hämtas av besökarens webbläsare direkt från SL, och den committade JSON filen i `docs/data/` är bara det som visas medan sidan laddar.
 
 ***
 
