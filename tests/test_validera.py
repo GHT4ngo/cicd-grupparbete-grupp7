@@ -2,7 +2,6 @@ import pytest
 
 from src.validera import validera_post
 
-
 GILTIG_POST = {
     "linje": "14",
     "linjegrupp": None,
