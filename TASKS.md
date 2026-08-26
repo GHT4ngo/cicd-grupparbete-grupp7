@@ -156,6 +156,38 @@ Så här ser en avgång ut efter att den tvättats. Åtta fält, alla platta, in
 > [!IMPORTANT]
 > Det här är det viktigaste i hela filen. Uppgift 7 fyller fälten, uppgift 10 kontrollerar dem, uppgift 12 visar dem. Så länge alla håller sig till kontraktet kan de tre uppgifterna göras av tre olika personer utan att de behöver prata med varandra.
 
+### Och så här ser hela filen ut
+
+Kontraktet ovan gäller **en avgång**. Posterna ligger i sin tur inuti ett objekt, och det är det objektet som hamnar i `docs/data/avgangar.json`.
+
+```json
+{
+  "station": "Slussen",
+  "station_id": "9192",
+  "uppdaterad": "2026-08-25T13:22:03",
+  "riktningar": {
+    "1": "Mot norr",
+    "2": "Mot söder"
+  },
+  "avgangar": [
+    { "linje": "14", "linjegrupp": "Tunnelbanans röda linje", "transportmedel": "METRO", "riktning_kod": 1, "riktning": "Mörby centrum", "destination": "Mörby centrum", "avgar_klocka": "13:22", "minuter": 0 }
+  ]
+}
+```
+
+| Fält | Vad det är | Varifrån |
+|---|---|---|
+| `station` | Hållplatsens namn, används som rubrik på sidan | `SITE_NAME` ur konfigurationen |
+| `station_id` | Samma id som hämtningen använde | `SITE_ID` ur konfigurationen |
+| `uppdaterad` | När filen skrevs, lokal tid utan tidszon | `datetime.now().isoformat(timespec="seconds")` |
+| `riktningar` | Kopplar riktningskoden till en rubrik | Skrivs för hand, `1` och `2` är de två hållen |
+| `avgangar` | Listan med poster enligt kontraktet ovan | Uppgift 7 till 10 |
+
+> [!WARNING]
+> `skriv_resultat` från uppgift 11 skriver rakt av vad den får. Skickar uppgift 14 in bara listan blir filen en lista, och då hittar sidan varken `station` eller `riktningar` och renderar tomt. **Bygg hela objektet i `src/main.py` innan du skickar det vidare.**
+
+Nycklarna i `riktningar` är strängar, inte tal, eftersom JSON bara tillåter strängar som nycklar. Posternas `riktning_kod` är däremot ett tal. Sidan gör om koden till sträng när den slår upp rubriken, så det är inget att bry sig om, men det förklarar varför de ser olika ut.
+
 ***
 
 ## Så löser du uppgifterna
@@ -231,6 +263,8 @@ Den här lilla uppgiften låser upp tre andra. Uppgift 7, 22 och 27 behöver se 
 
 Loopa över `svar["departures"]` och plocka de åtta fälten ur kontraktet. Linjenumret sitter i `x["line"]["designation"]`, färggruppen i `x["line"]["group_of_lines"]`, färdmedlet i `x["line"]["transport_mode"]`. Riktning och destination ligger direkt på `x`.
 
+**Använd `.get("group_of_lines")`, inte hakparenteser.** Nyckeln saknas helt för ungefär hälften av bussarna, verifierat mot ett live svar där 57 av 113 avgångar var utan den. Exempelfilen från uppgift 6 är bara tunnelbana, så alla poster där har fältet och felet syns inte förrän pipelinen körs på riktigt.
+
 *Klar när:* en post ur exempelfilen ger tillbaka de åtta fälten och inget mer.
 
 <br>
@@ -275,7 +309,9 @@ Filen ska **committas**. Den är det sidan visar direkt vid laddning, innan den 
 
 Anropa hämta, transformera, validera och resultat i den ordningen. Skriv ut hur många avgångar som skrevs.
 
-*Klar när:* `python -m src.main` skapar JSON filen.
+**Bygg hela objektet innan du skickar det till `skriv_resultat`.** Listan med poster är bara fältet `avgangar`. Runt den ska `station`, `station_id`, `uppdaterad` och `riktningar` med, se [datakontraktet](#datakontraktet). Skickar du in bara listan renderar sidan tomt.
+
+*Klar när:* `python -m src.main` skapar JSON filen och avgångstavlan visar den.
 
 </details>
 
