@@ -7,7 +7,7 @@
 <p>
 <img alt="Kärnan" src="https://img.shields.io/badge/K%C3%A4rnan-16%20uppgifter-0e8a16?style=for-the-badge">
 <img alt="Tavla" src="https://img.shields.io/badge/Status%20finns%20i-GitHub%20Projects-8957e5?style=for-the-badge">
-<img alt="Bonus" src="https://img.shields.io/badge/Bonus-13%20frivilliga-c5def5?style=for-the-badge">
+<img alt="Bonus" src="https://img.shields.io/badge/Bonus-14%20frivilliga-c5def5?style=for-the-badge">
 <img alt="Hosting" src="https://img.shields.io/badge/Publiceras-Cloudflare%20Pages-F38020?style=for-the-badge">
 </p>
 
@@ -110,7 +110,7 @@ Sexton uppgifter. Det här, och inget mer, är vad som måste bli gjort.
 
 ### Bonus
 
-Tretton uppgifter som är helt frivilliga. Inget här behövs för att bli godkänd, och inget här behövs för att projektet ska fungera.
+Fjorton uppgifter som är helt frivilliga. Inget här behövs för att bli godkänd, och inget här behövs för att projektet ska fungera.
 
 De ligger kvar som issues med etiketten `bonus`, så det finns alltid något att ta för den som vill göra mer.
 
@@ -129,6 +129,7 @@ De ligger kvar som issues med etiketten `bonus`, så det finns alltid något att
 | [25](../../issues/33) | Test för avvikelser | 2 test | 17 |
 | [26](../../issues/34) | Test för stationssökningen | 2 test | 15 |
 | [27](../../issues/35) | Test för filtreringen | 2 test | 20 |
+| [30](../../issues/48) | Test för valideringen | 3 test | 10 |
 
 > [!NOTE]
 > Uppgift 13 är den enda i bonushögen som märks utifrån. Utan den visar sidan de tider som låg i JSON filen när den senast committades. Med den blir tavlan levande. Bra att ta om någon vill göra något som syns.
@@ -395,7 +396,7 @@ Behåll bara poster där `state` inte är `CANCELLED` och `minuter` inte är neg
 </details>
 
 <details>
-<summary><b>Tester, uppgift 22 till 27</b> &nbsp;&bull;&nbsp; <i>22 och 23 är kärna, resten bonus</i></summary>
+<summary><b>Tester, uppgift 22 till 27 och 30</b> &nbsp;&bull;&nbsp; <i>22 och 23 är kärna, resten bonus</i></summary>
 
 <br>
 
@@ -412,6 +413,7 @@ Samma mönster i allihop: skriv en liten handskriven dictionary överst i testfi
 | [25](../../issues/33) | `tests/test_avvikelser.py` | både tomt och ifyllt svar |
 | [26](../../issues/34) | `tests/test_stationer.py` | skiftlägesokänslig, hittar delsträngar |
 | [27](../../issues/35) | `tests/test_filter.py` | inställd tur, och tur som redan gått |
+| [30](../../issues/48) | `tests/test_validera.py` | saknat fält, fel riktningskod, negativa minuter |
 
 **En fälla i uppgift 23.** Tidsstämplarna från SL saknar tidszon och är svensk lokaltid, medan CI kör i UTC. Ett test som räknar mot `datetime.now()` går igenom på din dator och fallerar i CI. Lås en fast tidpunkt i testet i stället.
 
