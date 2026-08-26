@@ -373,11 +373,15 @@ Rena funktioner i egna filer. De kan omöjligt krocka med någon annans arbete, 
 
 **Task #15 · Sök hållplats** &nbsp;&bull;&nbsp; `src/stationer.py`
 
-Hämta `https://transport.integration.sl.se/v1/sites?expand=true` och filtrera på `namn.lower() in site["name"].lower()`. Returnera id och namn för träffarna.
+Hämta `https://transport.integration.sl.se/v1/sites` och filtrera på `namn.lower() in site["name"].lower()`. Returnera id och namn för träffarna.
 
-Nyttan är konkret: svaret innehåller **6510 hållplatser och väger 1,6 MB**, så att leta upp ett id för hand är projektets segaste moment. Det finns dessutom två Slussen, `9192` och `9208`, och sökningen ska visa båda.
+Nyttan är konkret: svaret innehåller **6511 hållplatser och väger 1,35 MB**, så att leta upp ett id för hand är projektets segaste moment. Det finns dessutom två Slussen, `9192` och `9208`, och sökningen ska visa båda.
 
-*Klar när:* `"slussen"` ger båda träffarna.
+**Sätt inte `?expand=true`.** Det lägger bara till fältet `stop_areas` som vi inte använder, och mätt tre gånger tar anropet 5 till 8,6 sekunder med flaggan mot 1,3 utan. Med `timeout=10` ligger den varianten obehagligt nära att falla på en trög dag.
+
+Dela funktionen i två, en som hämtar listan och en som filtrerar den. Då kan uppgift 26 testa sökningen mot en handskriven lista i stället för att gå ut på nätet.
+
+*Klar när:* `"slussen"` ger fyra träffar, alltså båda Slussen plus Stadsgården och Södermalmstorg.
 
 <br>
 
