@@ -1,0 +1,768 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Avgångstavla</title>
+<style>
+  /*
+    Avgångstavla, grupp 7.
+    Fristående sida utan byggsteg och utan externa bibliotek.
+    Läser docs/data/avgangar.json, som pipelinen skriver i uppgift 11.
+
+    Medvetet enbart mörkt läge. Det här är en skyltsida av samma sort
+    som SL har på perrongerna, och den ska se likadan ut överallt.
+  */
+
+  :root {
+    --bakgrund: #14161a;
+    --panel: #1c1f26;
+    --panel-kant: #2a2f3a;
+    --hover: #232833;
+    --text: #f5f7fa;
+    --text-svag: #9aa4b2;
+    --gul: #f2c200;
+
+    --gron: #148541;
+    --rod: #d71d24;
+    --bla: #007db8;
+    --blabuss: #005aa3;
+    --pendeltag: #f0677f;
+    --sparvag: #b65f1f;
+    --bat: #00a5b5;
+    --standard: #5a6472;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    padding: clamp(1rem, 3vw, 2.5rem);
+    background: var(--bakgrund);
+    color: var(--text);
+    font-family: "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
+    font-variant-numeric: tabular-nums;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .tavla { max-width: 1100px; margin: 0 auto; }
+
+  :focus-visible { outline: 2px solid var(--gul); outline-offset: 2px; }
+
+  /* Rubrik */
+
+  .topp {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.75rem 1.25rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--panel-kant);
+  }
+
+  .marke {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bla);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.14em;
+    padding: 0.4rem 0.7rem;
+    border-radius: 999px;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  .stampel {
+    margin-left: auto;
+    font-size: 0.85rem;
+    color: var(--text-svag);
+  }
+
+  .stampel[data-lage="gammal"] { color: var(--gul); }
+  .stampel[data-lage="fel"] { color: #ff8a80; }
+
+  /* Verktygsrad */
+
+  .verktyg {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-top: 1.25rem;
+  }
+
+  .sok { position: relative; flex: 1 1 260px; max-width: 340px; }
+
+  .sok input {
+    width: 100%;
+    padding: 0.6rem 0.85rem;
+    border-radius: 8px;
+    border: 1px solid var(--panel-kant);
+    background: var(--panel);
+    color: var(--text);
+    font: inherit;
+  }
+
+  .sok input::placeholder { color: var(--text-svag); }
+
+  .traffar {
+    position: absolute;
+    z-index: 10;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    margin: 0;
+    padding: 0.25rem;
+    list-style: none;
+    background: var(--panel);
+    border: 1px solid var(--panel-kant);
+    border-radius: 8px;
+    max-height: 15rem;
+    overflow-y: auto;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
+  }
+
+  .traffar[hidden] { display: none; }
+
+  .traffar button {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+    padding: 0.5rem 0.6rem;
+    border: 0;
+    border-radius: 6px;
+    background: none;
+    color: var(--text);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .traffar button:hover,
+  .traffar button:focus-visible { background: var(--hover); }
+
+  .traffar .id { color: var(--text-svag); font-size: 0.85rem; }
+
+  .chippar { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; }
+
+  .avdelare {
+    width: 1px;
+    align-self: stretch;
+    margin: 0 0.25rem;
+    background: var(--panel-kant);
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    padding: 0;
+    border: 1px solid var(--panel-kant);
+    border-radius: 10px;
+    background: var(--panel);
+    color: var(--text-svag);
+    cursor: pointer;
+  }
+
+  .chip svg { width: 1.25rem; height: 1.25rem; display: block; }
+
+  .chip:hover { background: var(--hover); color: var(--text); }
+
+  .chip[aria-pressed="true"] {
+    background: var(--text);
+    border-color: var(--text);
+    color: var(--bakgrund);
+  }
+
+  /* Linjeknappar: rund, fylld med linjens egen färg. */
+
+  .chip.linjechip { border-radius: 50%; background: var(--standard); border-color: transparent; }
+  .chip.linjechip[data-farg="gron"] { background: var(--gron); }
+  .chip.linjechip[data-farg="rod"] { background: var(--rod); }
+  .chip.linjechip[data-farg="bla"] { background: var(--bla); }
+  .chip.linjechip[data-farg="blabuss"] { background: var(--blabuss); }
+  .chip.linjechip[data-farg="pendeltag"] { background: var(--pendeltag); }
+  .chip.linjechip[data-farg="sparvag"] { background: var(--sparvag); }
+  .chip.linjechip[data-farg="bat"] { background: var(--bat); }
+
+  .chip.linjechip { opacity: 0.45; transition: opacity 0.12s ease; }
+  .chip.linjechip:hover { opacity: 0.8; }
+  .chip.linjechip[aria-pressed="true"] {
+    opacity: 1;
+    box-shadow: 0 0 0 2px var(--bakgrund), 0 0 0 4px var(--text);
+  }
+
+  .chip.rensa { color: var(--text-svag); }
+  .chip.rensa:hover { color: #ff8a80; border-color: #ff8a80; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .chip.linjechip { transition: none; }
+  }
+
+  /* Kolumner, en per riktning */
+
+  .riktningar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.25rem;
+    margin-top: 1.5rem;
+  }
+
+  .riktning {
+    background: var(--panel);
+    border: 1px solid var(--panel-kant);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .riktning h2 { margin: 0; }
+
+  .riktning h2 button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+    padding: 0.85rem 1.1rem;
+    border: 0;
+    border-bottom: 1px solid var(--panel-kant);
+    background: #171a20;
+    color: var(--text-svag);
+    font: inherit;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .riktning h2 button:hover { background: #1f242d; color: var(--text); }
+  .riktning h2 svg { width: 1rem; height: 1rem; flex: none; }
+
+  .riktningar[data-solo] { grid-template-columns: 1fr; }
+
+  .mer {
+    padding: 0.7rem 1.1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    color: var(--text-svag);
+    font-size: 0.8rem;
+  }
+
+  /* Rader */
+
+  ol { list-style: none; margin: 0; padding: 0; }
+
+  li {
+    display: grid;
+    grid-template-columns: 3.1rem 1fr auto;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 0.8rem 1.1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  li:last-child { border-bottom: 0; }
+
+  .linje {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2rem;
+    padding: 0.15rem 0.3rem;
+    border-radius: 6px;
+    background: var(--standard);
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.05rem;
+  }
+
+  .linje[data-farg="gron"] { background: var(--gron); }
+  .linje[data-farg="rod"] { background: var(--rod); }
+  .linje[data-farg="bla"] { background: var(--bla); }
+  .linje[data-farg="blabuss"] { background: var(--blabuss); }
+  .linje[data-farg="pendeltag"] { background: var(--pendeltag); color: #3a1420; }
+  .linje[data-farg="sparvag"] { background: var(--sparvag); }
+  .linje[data-farg="bat"] { background: var(--bat); color: #04262a; }
+
+  .mot { min-width: 0; }
+
+  .destination {
+    font-size: 1.05rem;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .klocka { font-size: 0.78rem; color: var(--text-svag); }
+
+  .minuter {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--gul);
+    white-space: nowrap;
+  }
+
+  .minuter[data-nu="ja"] { color: #fff; }
+
+  /* Meddelanden */
+
+  .tomt, .notis {
+    margin-top: 1.25rem;
+    padding: 0.9rem 1.1rem;
+    border-radius: 10px;
+    border: 1px solid var(--panel-kant);
+    background: var(--panel);
+    color: var(--text-svag);
+    font-size: 0.9rem;
+  }
+
+  .tomt[hidden], .notis[hidden] { display: none; }
+  .tomt b { color: var(--text); }
+
+  footer { margin-top: 1.5rem; font-size: 0.78rem; color: var(--text-svag); }
+
+  @media (max-width: 480px) {
+    li { grid-template-columns: 2.7rem 1fr auto; gap: 0.7rem; }
+    .stampel { margin-left: 0; width: 100%; }
+    .sok { max-width: none; }
+  }
+</style>
+</head>
+<body>
+
+<main class="tavla">
+  <div class="topp">
+    <span class="marke">SL</span>
+    <h1 id="station">Avgångstavla</h1>
+    <span class="stampel" id="stampel">Laddar</span>
+  </div>
+
+  <div class="verktyg" id="verktyg"></div>
+
+  <div class="riktningar" id="riktningar"></div>
+
+  <p class="tomt" id="tomt" hidden></p>
+  <p class="notis" id="notis" hidden></p>
+
+  <footer>
+    Grupp 7 &middot; DevOps DE25 &middot; Data från SL Transport, Trafiklab
+  </footer>
+</main>
+
+<script>
+  "use strict";
+
+  var DATAKALLA = "data/avgangar.json";
+
+  // Ett urval hållplatser. Uppgift 15 hämtar hela listan från
+  // /v1/sites?expand=true, som innehåller 6510 stycken och väger 1,6 MB.
+  var STATIONER = [
+    { id: "9001", namn: "T-Centralen" },
+    { id: "9192", namn: "Slussen" },
+    { id: "9117", namn: "Odenplan" },
+    { id: "9189", namn: "Gullmarsplan" },
+    { id: "9115", namn: "Fridhemsplan" },
+    { id: "9191", namn: "Medborgarplatsen" },
+    { id: "1002", namn: "Stockholm Centralen" }
+  ];
+
+  var FARGER = {
+    "Tunnelbanans gröna linje": "gron",
+    "Tunnelbanans röda linje": "rod",
+    "Tunnelbanans blå linje": "bla",
+    "Blåbuss": "blabuss",
+    "Pendeltåg": "pendeltag",
+    "Pendelbåt": "bat"
+  };
+
+  var RESERVFARG = {
+    METRO: "bla", TRAIN: "pendeltag", TRAM: "sparvag", SHIP: "bat", BUS: "rod"
+  };
+
+  var FARDMEDEL = {
+    METRO: "Tunnelbana", BUS: "Buss", TRAIN: "Pendeltåg",
+    TRAM: "Spårvagn", SHIP: "Båt"
+  };
+
+  var data = null;
+  var valtFardmedel = null;
+  var valdLinjegrupp = null;
+  var soloRiktning = null;
+
+  // Hur många avgångar som visas per kolumn. Fler när en riktning står ensam,
+  // och eftersom filtren krymper urvalet ser man längre fram i tiden med dem på.
+  var TAK_BADA = 6;
+  var TAK_SOLO = 14;
+
+  function farg(a) {
+    // group_of_lines saknas för de flesta bussar, därför reservfärgen.
+    return FARGER[a.linjegrupp] || RESERVFARG[a.transportmedel] || "standard";
+  }
+
+  function element(tagg, klass, text) {
+    var el = document.createElement(tagg);
+    if (klass) el.className = klass;
+    if (text !== undefined) el.textContent = text;
+    return el;
+  }
+
+  function unika(lista, valj) {
+    var sedda = [];
+    lista.forEach(function (x) {
+      var v = valj(x);
+      if (v && sedda.indexOf(v) === -1) sedda.push(v);
+    });
+    return sedda;
+  }
+
+  /* Verktygsraden */
+
+  // Ikoner, 24x24, tecknade med currentColor så de följer knappens tillstånd.
+  var IKONER = {
+    METRO: '<path d="M7 4h10a3 3 0 0 1 3 3v7a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V7a3 3 0 0 1 3-3z"/>' +
+           '<path d="M4 10h16"/><circle cx="8.5" cy="13.5" r="1"/><circle cx="15.5" cy="13.5" r="1"/>' +
+           '<path d="M8 17l-2 3M16 17l2 3"/>',
+    BUS:   '<path d="M4 6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v9H4z"/><path d="M4 10h16"/>' +
+           '<circle cx="7.5" cy="17.5" r="1.6"/><circle cx="16.5" cy="17.5" r="1.6"/>',
+    TRAIN: '<path d="M12 3c4 0 6 1 6 3v8a3 3 0 0 1-3 3H9a3 3 0 0 1-3-3V6c0-2 2-3 6-3z"/>' +
+           '<path d="M6 10h12"/><path d="M9 17l-2 3M15 17l2 3"/>',
+    TRAM:  '<path d="M7 6h10a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z"/>' +
+           '<path d="M5 11h14"/><path d="M12 6V3"/><path d="M8 3h8"/>' +
+           '<path d="M8 17l-2 3M16 17l2 3"/>',
+    SHIP:  '<path d="M3 17l1.6-5h14.8L21 17"/><path d="M12 12V6"/><path d="M7 6h10l-5-3z"/>' +
+           '<path d="M2 20c1.6 0 1.6 1 3.2 1s1.6-1 3.2-1 1.6 1 3.2 1 1.6-1 3.2-1 1.6 1 3.2 1"/>'
+  };
+
+  function svg(inre) {
+    return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+           'stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" ' +
+           'aria-hidden="true">' + inre + '</svg>';
+  }
+
+  function chip(klass, etikett, aktiv, vidKlick) {
+    var b = element("button", "chip" + (klass ? " " + klass : ""));
+    b.type = "button";
+    b.title = etikett;
+    b.setAttribute("aria-label", etikett);
+    b.setAttribute("aria-pressed", aktiv ? "true" : "false");
+    b.addEventListener("click", vidKlick);
+    return b;
+  }
+
+  function avdelare() { return element("span", "avdelare"); }
+
+  function ritaSok() {
+    var box = element("div", "sok");
+
+    var input = document.createElement("input");
+    input.type = "search";
+    input.placeholder = "Sök hållplats";
+    input.setAttribute("aria-label", "Sök hållplats");
+    input.autocomplete = "off";
+
+    var lista = element("ul", "traffar");
+    lista.hidden = true;
+
+    function stang() { lista.hidden = true; }
+
+    function sok() {
+      var q = input.value.trim().toLowerCase();
+      lista.textContent = "";
+      if (!q) return stang();
+
+      var traffar = STATIONER.filter(function (s) {
+        return s.namn.toLowerCase().indexOf(q) !== -1;
+      });
+
+      if (traffar.length === 0) {
+        var tom = element("li");
+        tom.appendChild(element("span", "id", "Ingen träff"));
+        tom.style.padding = "0.5rem 0.6rem";
+        lista.appendChild(tom);
+      }
+
+      traffar.forEach(function (s) {
+        var rad = document.createElement("li");
+        var b = document.createElement("button");
+        b.type = "button";
+        b.appendChild(element("span", null, s.namn));
+        b.appendChild(element("span", "id", s.id));
+        b.addEventListener("click", function () {
+          input.value = s.namn;
+          stang();
+          valjStation(s);
+        });
+        rad.appendChild(b);
+        lista.appendChild(rad);
+      });
+
+      lista.hidden = false;
+    }
+
+    input.addEventListener("input", sok);
+    input.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") { input.value = ""; stang(); }
+    });
+    document.addEventListener("click", function (e) {
+      if (!box.contains(e.target)) stang();
+    });
+
+    box.appendChild(input);
+    box.appendChild(lista);
+    return box;
+  }
+
+  function ritaVerktyg() {
+    var verktyg = document.getElementById("verktyg");
+    verktyg.textContent = "";
+    verktyg.appendChild(ritaSok());
+
+    if (!data) return;
+
+    var alla = data.avgangar || [];
+    var rad = element("div", "chippar");
+    var nagot = false;
+
+    // Färdmedel. Visas bara när det finns fler än ett att välja mellan.
+    var fardmedel = unika(alla, function (a) { return a.transportmedel; });
+    if (fardmedel.length > 1) {
+      fardmedel.forEach(function (v) {
+        var aktiv = valtFardmedel === v;
+        var b = chip(null, FARDMEDEL[v] || v, aktiv, function () {
+          valtFardmedel = aktiv ? null : v;
+          valdLinjegrupp = null;
+          rita();
+        });
+        b.innerHTML = svg(IKONER[v] || IKONER.BUS);
+        rad.appendChild(b);
+      });
+      nagot = true;
+    }
+
+    // Linjer, begränsade till valt färdmedel så inga omöjliga val visas.
+    var synliga = valtFardmedel
+      ? alla.filter(function (a) { return a.transportmedel === valtFardmedel; })
+      : alla;
+    var linjegrupper = unika(synliga, function (a) { return a.linjegrupp; });
+
+    if (linjegrupper.length > 1) {
+      if (nagot) rad.appendChild(avdelare());
+      linjegrupper.forEach(function (v) {
+        var aktiv = valdLinjegrupp === v;
+        var b = chip("linjechip", v, aktiv, function () {
+          valdLinjegrupp = aktiv ? null : v;
+          rita();
+        });
+        b.dataset.farg = FARGER[v] || "standard";
+        rad.appendChild(b);
+      });
+      nagot = true;
+    }
+
+    // Nollställ, syns bara när något faktiskt är valt.
+    if (valtFardmedel || valdLinjegrupp) {
+      if (nagot) rad.appendChild(avdelare());
+      var x = chip("rensa", "Visa alla igen", false, function () {
+        valtFardmedel = null;
+        valdLinjegrupp = null;
+        rita();
+      });
+      x.innerHTML = svg('<path d="M6 6l12 12M18 6L6 18"/>');
+      rad.appendChild(x);
+      nagot = true;
+    }
+
+    if (nagot) verktyg.appendChild(rad);
+  }
+
+  /* Tavlan */
+
+  function ritaRad(a) {
+    var rad = document.createElement("li");
+
+    var linje = element("span", "linje", a.linje);
+    linje.dataset.farg = farg(a);
+
+    var mot = element("div", "mot");
+    mot.appendChild(element("div", "destination", a.destination));
+    mot.appendChild(element("div", "klocka", a.avgar_klocka));
+
+    var minuter = element("span", "minuter", a.minuter === 0 ? "Nu" : a.minuter + " min");
+    if (a.minuter === 0) minuter.dataset.nu = "ja";
+
+    rad.appendChild(linje);
+    rad.appendChild(mot);
+    rad.appendChild(minuter);
+    return rad;
+  }
+
+  function rita() {
+    var behallare = document.getElementById("riktningar");
+    behallare.textContent = "";
+    if (!data) return;
+
+    document.getElementById("station").textContent = data.station || "Avgångstavla";
+
+    var kvar = (data.avgangar || []).filter(function (a) {
+      if (valtFardmedel && a.transportmedel !== valtFardmedel) return false;
+      if (valdLinjegrupp && a.linjegrupp !== valdLinjegrupp) return false;
+      return true;
+    });
+
+    var etiketter = data.riktningar || {};
+    var koder = [];
+    var grupper = {};
+
+    kvar.forEach(function (a) {
+      var kod = String(a.riktning_kod);
+      if (!grupper[kod]) { grupper[kod] = []; koder.push(kod); }
+      grupper[kod].push(a);
+    });
+
+    koder.sort();
+
+    // Om den solade riktningen filtrerats bort helt, gå tillbaka till båda.
+    if (soloRiktning && koder.indexOf(soloRiktning) === -1) soloRiktning = null;
+
+    var visade = soloRiktning ? [soloRiktning] : koder;
+    var tak = soloRiktning ? TAK_SOLO : TAK_BADA;
+
+    if (soloRiktning) {
+      behallare.dataset.solo = soloRiktning;
+    } else {
+      delete behallare.dataset.solo;
+    }
+
+    visade.forEach(function (kod) {
+      var alla = grupper[kod].slice().sort(function (a, b) {
+        return a.minuter - b.minuter;
+      });
+      var visas = alla.slice(0, tak);
+
+      var kolumn = element("section", "riktning");
+
+      var rubrik = document.createElement("h2");
+      var knapp = document.createElement("button");
+      knapp.type = "button";
+      var ensam = soloRiktning === kod;
+      knapp.title = ensam ? "Visa båda riktningarna" : "Visa bara den här riktningen";
+      knapp.setAttribute("aria-label", knapp.title);
+      knapp.setAttribute("aria-pressed", ensam ? "true" : "false");
+      knapp.appendChild(element("span", null, etiketter[kod] || "Riktning " + kod));
+      knapp.insertAdjacentHTML("beforeend", svg(ensam
+        ? '<path d="M9 4v5H4"/><path d="M15 20v-5h5"/><path d="M4 9l6-6"/><path d="M20 15l-6 6"/>'
+        : '<path d="M4 9V4h5"/><path d="M20 15v5h-5"/><path d="M4 4l6 6"/><path d="M20 20l-6-6"/>'));
+      knapp.addEventListener("click", function () {
+        soloRiktning = ensam ? null : kod;
+        rita();
+      });
+      rubrik.appendChild(knapp);
+      kolumn.appendChild(rubrik);
+
+      var lista = document.createElement("ol");
+      visas.forEach(function (a) { lista.appendChild(ritaRad(a)); });
+      kolumn.appendChild(lista);
+
+      if (alla.length > visas.length) {
+        kolumn.appendChild(element("div", "mer",
+          "+" + (alla.length - visas.length) + " till inom en timme"));
+      }
+
+      behallare.appendChild(kolumn);
+    });
+
+    visaTomt(kvar.length === 0
+      ? "Inga avgångar matchar filtret. Tryck <b>&times;</b> för att se allt igen."
+      : null);
+
+    ritaVerktyg();
+  }
+
+  /* Statusmeddelanden */
+
+  function visaTomt(html) {
+    var el = document.getElementById("tomt");
+    if (!html) { el.hidden = true; return; }
+    el.innerHTML = html;
+    el.hidden = false;
+  }
+
+  function visaNotis(text) {
+    var el = document.getElementById("notis");
+    el.textContent = text;
+    el.hidden = false;
+  }
+
+  function sattStampel(text, lage) {
+    var el = document.getElementById("stampel");
+    el.textContent = text;
+    if (lage) { el.dataset.lage = lage; } else { delete el.dataset.lage; }
+  }
+
+  function klockslag(iso) {
+    if (!iso) return null;
+    var d = new Date(iso);
+    if (isNaN(d)) return iso.length >= 16 ? iso.slice(11, 16) : iso;
+    return String(d.getHours()).padStart(2, "0") + ":" +
+           String(d.getMinutes()).padStart(2, "0");
+  }
+
+  function valjStation(s) {
+    if (data && String(data.station_id) === s.id) return;
+
+    // Uppgift 13 byter ut det här mot ett riktigt anrop till SL med s.id.
+    data = null;
+    document.getElementById("station").textContent = s.namn;
+    document.getElementById("riktningar").textContent = "";
+    sattStampel("Ingen sparad data", "fel");
+    visaTomt(
+      "Pipelinen är konfigurerad för en hållplats i taget. Sätt " +
+      "<b>SITE_ID=" + s.id + "</b> i <b>.env</b> och kör <b>python -m src.main</b> " +
+      "för att hämta " + s.namn + "."
+    );
+    ritaVerktyg();
+  }
+
+  function ladda() {
+    fetch(DATAKALLA, { cache: "no-store" })
+      .then(function (svar) {
+        if (!svar.ok) throw new Error("HTTP " + svar.status);
+        return svar.json();
+      })
+      .then(function (laddad) {
+        data = laddad;
+        rita();
+        var tid = klockslag(data.uppdaterad);
+        sattStampel(tid ? "Uppdaterad " + tid : "Uppdaterad", "gammal");
+        visaNotis(
+          "Sidan visar sparad exempeldata. Uppgift 13 gör att tiderna hämtas " +
+          "direkt från SL och räknas ner av sig själva."
+        );
+      })
+      .catch(function (fel) {
+        sattStampel("Kunde inte hämta data", "fel");
+        visaTomt("Filen <b>" + DATAKALLA + "</b> gick inte att läsa: " + fel.message);
+        ritaVerktyg();
+      });
+  }
+
+  ritaVerktyg();
+  ladda();
+</script>
+
+</body>
+</html>
