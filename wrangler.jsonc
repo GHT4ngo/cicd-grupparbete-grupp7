@@ -1,0 +1,11 @@
+{
+  // Talar om för Cloudflare vad som ska publiceras.
+  // Sidan är statisk, så det finns ingen Worker kod, bara mappen docs.
+  // Utan den här filen faller publiceringen med
+  // "error occurred while running deploy command".
+  "name": "cicd-grupparbete-grupp7",
+  "compatibility_date": "2026-08-26",
+  "assets": {
+    "directory": "./docs"
+  }
+}
