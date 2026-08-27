@@ -7,7 +7,7 @@
 <p>
 <img alt="Kärnan" src="https://img.shields.io/badge/K%C3%A4rnan-16%20uppgifter-0e8a16?style=for-the-badge">
 <img alt="Tavla" src="https://img.shields.io/badge/Status%20finns%20i-GitHub%20Projects-8957e5?style=for-the-badge">
-<img alt="Bonus" src="https://img.shields.io/badge/Bonus-13%20frivilliga-c5def5?style=for-the-badge">
+<img alt="Bonus" src="https://img.shields.io/badge/Bonus-14%20frivilliga-c5def5?style=for-the-badge">
 <img alt="Hosting" src="https://img.shields.io/badge/Publiceras-Cloudflare%20Pages-F38020?style=for-the-badge">
 </p>
 
@@ -110,7 +110,7 @@ Sexton uppgifter. Det här, och inget mer, är vad som måste bli gjort.
 
 ### Bonus
 
-Tretton uppgifter som är helt frivilliga. Inget här behövs för att bli godkänd, och inget här behövs för att projektet ska fungera.
+Fjorton uppgifter som är helt frivilliga. Inget här behövs för att bli godkänd, och inget här behövs för att projektet ska fungera.
 
 De ligger kvar som issues med etiketten `bonus`, så det finns alltid något att ta för den som vill göra mer.
 
@@ -129,6 +129,7 @@ De ligger kvar som issues med etiketten `bonus`, så det finns alltid något att
 | [25](../../issues/33) | Test för avvikelser | 2 test | 17 |
 | [26](../../issues/34) | Test för stationssökningen | 2 test | 15 |
 | [27](../../issues/35) | Test för filtreringen | 2 test | 20 |
+| [30](../../issues/48) | Test för valideringen | 3 test | 10 |
 
 > [!NOTE]
 > Uppgift 13 är den enda i bonushögen som märks utifrån. Utan den visar sidan de tider som låg i JSON filen när den senast committades. Med den blir tavlan levande. Bra att ta om någon vill göra något som syns.
@@ -154,6 +155,38 @@ Så här ser en avgång ut efter att den tvättats. Åtta fält, alla platta, in
 
 > [!IMPORTANT]
 > Det här är det viktigaste i hela filen. Uppgift 7 fyller fälten, uppgift 10 kontrollerar dem, uppgift 12 visar dem. Så länge alla håller sig till kontraktet kan de tre uppgifterna göras av tre olika personer utan att de behöver prata med varandra.
+
+### Och så här ser hela filen ut
+
+Kontraktet ovan gäller **en avgång**. Posterna ligger i sin tur inuti ett objekt, och det är det objektet som hamnar i `docs/data/avgangar.json`.
+
+```json
+{
+  "station": "Slussen",
+  "station_id": "9192",
+  "uppdaterad": "2026-08-25T13:22:03",
+  "riktningar": {
+    "1": "Mot norr",
+    "2": "Mot söder"
+  },
+  "avgangar": [
+    { "linje": "14", "linjegrupp": "Tunnelbanans röda linje", "transportmedel": "METRO", "riktning_kod": 1, "riktning": "Mörby centrum", "destination": "Mörby centrum", "avgar_klocka": "13:22", "minuter": 0 }
+  ]
+}
+```
+
+| Fält | Vad det är | Varifrån |
+|---|---|---|
+| `station` | Hållplatsens namn, används som rubrik på sidan | `SITE_NAME` ur konfigurationen |
+| `station_id` | Samma id som hämtningen använde | `SITE_ID` ur konfigurationen |
+| `uppdaterad` | När filen skrevs, lokal tid utan tidszon | `datetime.now().isoformat(timespec="seconds")` |
+| `riktningar` | Kopplar riktningskoden till en rubrik | Skrivs för hand, `1` och `2` är de två hållen |
+| `avgangar` | Listan med poster enligt kontraktet ovan | Uppgift 7 till 10 |
+
+> [!WARNING]
+> `skriv_resultat` från uppgift 11 skriver rakt av vad den får. Skickar uppgift 14 in bara listan blir filen en lista, och då hittar sidan varken `station` eller `riktningar` och renderar tomt. **Bygg hela objektet i `src/main.py` innan du skickar det vidare.**
+
+Nycklarna i `riktningar` är strängar, inte tal, eftersom JSON bara tillåter strängar som nycklar. Posternas `riktning_kod` är däremot ett tal. Sidan gör om koden till sträng när den slår upp rubriken, så det är inget att bry sig om, men det förklarar varför de ser olika ut.
 
 ***
 
@@ -230,6 +263,8 @@ Den här lilla uppgiften låser upp tre andra. Uppgift 7, 22 och 27 behöver se 
 
 Loopa över `svar["departures"]` och plocka de åtta fälten ur kontraktet. Linjenumret sitter i `x["line"]["designation"]`, färggruppen i `x["line"]["group_of_lines"]`, färdmedlet i `x["line"]["transport_mode"]`. Riktning och destination ligger direkt på `x`.
 
+**Använd `.get("group_of_lines")`, inte hakparenteser.** Nyckeln saknas helt för ungefär hälften av bussarna, verifierat mot ett live svar där 57 av 113 avgångar var utan den. Exempelfilen från uppgift 6 är bara tunnelbana, så alla poster där har fältet och felet syns inte förrän pipelinen körs på riktigt.
+
 *Klar när:* en post ur exempelfilen ger tillbaka de åtta fälten och inget mer.
 
 <br>
@@ -274,7 +309,9 @@ Filen ska **committas**. Den är det sidan visar direkt vid laddning, innan den 
 
 Anropa hämta, transformera, validera och resultat i den ordningen. Skriv ut hur många avgångar som skrevs.
 
-*Klar när:* `python -m src.main` skapar JSON filen.
+**Bygg hela objektet innan du skickar det till `skriv_resultat`.** Listan med poster är bara fältet `avgangar`. Runt den ska `station`, `station_id`, `uppdaterad` och `riktningar` med, se [datakontraktet](#datakontraktet). Skickar du in bara listan renderar sidan tomt.
+
+*Klar när:* `python -m src.main` skapar JSON filen och avgångstavlan visar den.
 
 </details>
 
@@ -336,11 +373,15 @@ Rena funktioner i egna filer. De kan omöjligt krocka med någon annans arbete, 
 
 **Task #15 · Sök hållplats** &nbsp;&bull;&nbsp; `src/stationer.py`
 
-Hämta `https://transport.integration.sl.se/v1/sites?expand=true` och filtrera på `namn.lower() in site["name"].lower()`. Returnera id och namn för träffarna.
+Hämta `https://transport.integration.sl.se/v1/sites` och filtrera på `namn.lower() in site["name"].lower()`. Returnera id och namn för träffarna.
 
-Nyttan är konkret: svaret innehåller **6510 hållplatser och väger 1,6 MB**, så att leta upp ett id för hand är projektets segaste moment. Det finns dessutom två Slussen, `9192` och `9208`, och sökningen ska visa båda.
+Nyttan är konkret: svaret innehåller **6511 hållplatser och väger 1,35 MB**, så att leta upp ett id för hand är projektets segaste moment. Det finns dessutom två Slussen, `9192` och `9208`, och sökningen ska visa båda.
 
-*Klar när:* `"slussen"` ger båda träffarna.
+**Sätt inte `?expand=true`.** Det lägger bara till fältet `stop_areas` som vi inte använder, och mätt tre gånger tar anropet 5 till 8,6 sekunder med flaggan mot 1,3 utan. Med `timeout=10` ligger den varianten obehagligt nära att falla på en trög dag.
+
+Dela funktionen i två, en som hämtar listan och en som filtrerar den. Då kan uppgift 26 testa sökningen mot en handskriven lista i stället för att gå ut på nätet.
+
+*Klar när:* `"slussen"` ger fyra träffar, alltså båda Slussen plus Stadsgården och Södermalmstorg.
 
 <br>
 
@@ -395,7 +436,7 @@ Behåll bara poster där `state` inte är `CANCELLED` och `minuter` inte är neg
 </details>
 
 <details>
-<summary><b>Tester, uppgift 22 till 27</b> &nbsp;&bull;&nbsp; <i>22 och 23 är kärna, resten bonus</i></summary>
+<summary><b>Tester, uppgift 22 till 27 och 30</b> &nbsp;&bull;&nbsp; <i>22 och 23 är kärna, resten bonus</i></summary>
 
 <br>
 
@@ -412,6 +453,7 @@ Samma mönster i allihop: skriv en liten handskriven dictionary överst i testfi
 | [25](../../issues/33) | `tests/test_avvikelser.py` | både tomt och ifyllt svar |
 | [26](../../issues/34) | `tests/test_stationer.py` | skiftlägesokänslig, hittar delsträngar |
 | [27](../../issues/35) | `tests/test_filter.py` | inställd tur, och tur som redan gått |
+| [30](../../issues/48) | `tests/test_validera.py` | saknat fält, fel riktningskod, negativa minuter |
 
 **En fälla i uppgift 23.** Tidsstämplarna från SL saknar tidszon och är svensk lokaltid, medan CI kör i UTC. Ett test som räknar mot `datetime.now()` går igenom på din dator och fallerar i CI. Lås en fast tidpunkt i testet i stället.
 
