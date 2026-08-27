@@ -1,7 +1,6 @@
 import json
 from collections import Counter
 
-
 with open("docs/data/avgangar.json", "r", encoding="utf-8") as f:
     data = json.load(f)
 
