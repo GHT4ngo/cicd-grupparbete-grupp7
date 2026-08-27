@@ -12,6 +12,7 @@ linjer_statistik = Counter(a["linje"] for a in avgangar)
 riktningar_statistik = Counter(a["riktning"] for a in avgangar)
 print(f"\nTotalt antal avgångar i JSON: {avgangar_antal_json}")
 
+#Count departures by line
 print("\nLinjer statistik")
 print("-" * 30)
 
@@ -26,7 +27,7 @@ if avgangar_antal_json == avgangar_antal_linje:
 else:
     print("Kontroll misslyckades")
 
-
+#Count departures by direction
 print("\n\nRiktningar statistik")
 print("-" * 30)
 
@@ -41,6 +42,12 @@ if avgangar_antal_json == avgangar_antal_riktning:
 else:
     print("Kontroll misslyckades")
 
-print()
+#Find the most common direction
+vanligaste_riktning, antal = riktningar_statistik.most_common(1)[0]
 
-    
+print(
+    f"\nVanligaste riktning: {vanligaste_riktning} "
+    f"({antal} avgångar)"
+)    
+
+print()
