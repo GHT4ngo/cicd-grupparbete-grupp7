@@ -8,6 +8,7 @@ def platta_ut_avgangar(svar):
             "avgar_klocka": x["expected"][11:16],
             "linje": x["line"]["designation"],
             "transportmedel": x["line"]["transport_mode"],
+            "linjegrupp": x["line"].get("group_of_lines"),
         }
         resultat.append(avgang)
     return resultat
