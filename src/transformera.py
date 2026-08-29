@@ -17,6 +17,7 @@ def platta_ut_avgangar(svar):
             "linje": x["line"]["designation"],
             "transportmedel": x["line"]["transport_mode"],
             "linjegrupp": x["line"].get("group_of_lines"),
+            "minuter": rakna_minuter(x["expected"]),
         }
         resultat.append(avgang)
     return resultat
