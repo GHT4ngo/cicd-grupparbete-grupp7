@@ -1,14 +1,15 @@
 from datetime import datetime
 
+
 def rakna_minuter(expected_tid_str):
     expected_tid = datetime.fromisoformat(expected_tid_str)
 
-    nu = datetime.now()
+    nu = datetime.now()  # noqa: DTZ005
 
     differens = expected_tid - nu
 
     minuter = round(differens.total_seconds() / 60)
-    
+
     return max(0, minuter)
 
 def platta_ut_avgangar(svar):
