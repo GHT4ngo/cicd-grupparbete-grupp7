@@ -1,4 +1,5 @@
 from datetime import datetime
+
 from src.config import las_config
 from src.hamta import hamta_avgangar
 from src.resultat import skriv_resultat
