@@ -10,8 +10,12 @@ def main():
     
     svar = hamta_avgangar() 
     avgangar = platta_ut_avgangar(svar)
+
+    for avgang in avgangar:
+        validera_post(avgang)
+        
+    print("Valideringen lyckades! Inga kraschar.")
     
-    print(f"Antal hämtade avgångar: {len(avgangar)}")
     
 
 if __name__ == "__main__":
