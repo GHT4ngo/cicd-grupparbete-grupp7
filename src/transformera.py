@@ -1,3 +1,6 @@
+from collections import defaultdict
+
+
 def platta_ut_avgangar(svar):
     resultat = []
     for x in svar["departures"]:
@@ -12,3 +15,12 @@ def platta_ut_avgangar(svar):
         }
         resultat.append(avgang)
     return resultat
+
+
+def gruppera_per_riktning(poster):
+    grupper = defaultdict(lambda: defaultdict(list))
+
+    for post in poster:
+        grupper[post["linjegrupp"]][post["riktning_kod"]].append(post)
+
+    return grupper
