@@ -13,9 +13,20 @@ def main():
 
     for avgang in avgangar:
         validera_post(avgang)
-        
-    print("Valideringen lyckades! Inga kraschar.")
-    
+
+    riktningar = []
+    sedda = set()
+    for avgang in avgangar:
+        nyckel = (avgang["riktning_kod"], avgang["riktning"])
+        if nyckel not in sedda:
+            sedda.add(nyckel)
+            riktningar.append({
+                "riktning_kod": avgang["riktning_kod"],
+                "riktning": avgang["riktning"],
+            })
+
+    print(f"Hittade {len(riktningar)} unika riktningar.")
+            
     
 
 if __name__ == "__main__":
