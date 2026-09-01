@@ -161,12 +161,12 @@ Var och en tar så många uppgifter hen vill, i sin egen takt. Dra ett kort till
 <tr><th align="left">Hög</th><th align="left">Antal</th><th align="left">Vad det är</th></tr>
 </thead>
 <tbody>
-<tr><td><b>Kärnan</b></td><td>16</td><td>Det som måste bli gjort för att projektet ska fungera och alla bli godkända</td></tr>
+<tr><td><b>Kärnan</b></td><td>17</td><td>Det som måste bli gjort för att projektet ska fungera och alla bli godkända</td></tr>
 <tr><td><b>Bonus</b></td><td>13</td><td>Helt frivilligt, tas när kärnan är i hamn</td></tr>
 </tbody>
 </table>
 
-Sexton kärnuppgifter fördelat på sex personer blir under tre var.
+Sjutton kärnuppgifter fördelat på sex personer blir under tre var.
 
 > [!NOTE]
 > Tidigare låg här ett förslag med sex fasta roller. Det byttes mot en uppgiftstavla eftersom en otagen roll blockerade allt nedanför sig. Nu kan de flesta uppgifter tas i vilken ordning som helst.
