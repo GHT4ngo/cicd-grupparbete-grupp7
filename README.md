@@ -465,7 +465,7 @@ Avsluta med en kort reflektion: vilka moment inom DevOps användes, och vilka ut
 <tr><th align="left">Namn</th><th align="left">GitHub</th><th align="left">Uppgifter</th></tr>
 </thead>
 <tbody>
-<tr><td>Christofer</td><td><code>GHT4ngo</code></td><td>1, 2, 3</td></tr>
+<tr><td>Christofer</td><td><code>GHT4ngo</code></td><td>1, 2, 3, 4</td></tr>
 <tr><td></td><td><code>somrar99</code></td><td>5</td></tr>
 <tr><td></td><td><code>nibir03</code></td><td></td></tr>
 <tr><td></td><td><code>Yearofthedragon24</code></td><td></td></tr>
