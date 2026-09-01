@@ -36,11 +36,13 @@ det finns inget att skriva om i rapporten då.
 Är tavlan tom och alla PR:er mergade när du börjar skriva, då är det för sent.
 Kolla din rad i tabellen längst ner i den här filen redan nu.
 
-> **Frågetecken att ta med läraren.** Uppgiften säger "länka till gruppens
-> gemensamma **publika** repo". Vårt repo är privat, och det har vi gjort
-> avsiktligt. Fråga läraren vad som gäller innan du lämnar in. Alternativen är
-> att repot görs publikt vid inlämning, att läraren bjuds in som medlem, eller
-> att du bifogar skärmdumpar. Uppgiften nämner själv att skärmdumpar är
+> **Om att repot är privat.** Uppgiften säger "länka till gruppens gemensamma
+> **publika** repo". Vårt repo är privat, och det har vi gjort avsiktligt.
+>
+> Läraren, `LindaLiBogardi`, är redan medlem i repot och ser därför allt du
+> länkar till. Det löser problemet i praktiken. Nämn det ändå i en mening i
+> rapporten, så att ingen tror att en länk är trasig. Behöver du visa något för
+> någon utanför repot fungerar skärmdumpar, uppgiften nämner själv att de är
 > välkomna.
 
 ***
@@ -53,7 +55,7 @@ Förklara med egna ord och **koppla varje svar till något konkret hos oss**. De
 | Nr | Fråga | Var du hittar exempel hos oss |
 |---|---|---|
 | 1.1 | Vad är DevOps, vilket problem löser vårt projekt, minst två delar av kedjan | `README.md` och `SUGGESTION.md` beskriver problemet |
-| 1.2 | Vad är CI, vad är CD, hur skiljer de sig, vilket använde vi | Vi har båda. CI är `.github/workflows/ci.yml`, CD är Cloudflare Pages som publicerar om vid varje merge till `main` |
+| 1.2 | Vad är CI, vad är CD, hur skiljer de sig, vilket använde vi | Vi har båda. CI är `.github/workflows/ci.yml`, CD är Cloudflare som bygger om `docs/` vid varje merge till `main`, styrt av `wrangler.jsonc` |
 | 1.3 | Vad är en pipeline, förklara vår build pipeline | Två att välja på, se nedan |
 | 1.4 | Hur gruppen arbetade | `TASKS.md`, uppgiftstavlan, en uppgift per branch och pull request |
 | 1.5 | Syftet med kodgranskning | Använd ett verkligt exempel från våra PR:er |
@@ -133,9 +135,17 @@ Händelser hos oss som fungerar för 3.1:
 - Uppgift 28, där alla sex fyller i samma tabell i `README.md` och får merge
   konflikter på riktigt
 - En pull request där uppgiftstexten i `TASKS.md` var fel och ledde utvecklaren
-  fel, se PR #47 om `?expand=true`
+  fel, se PR #47 om `?expand=true`, rättat i PR #63
 - En committad datafil som inte följde datakontraktet och togs bort igen, se
   PR #46
+- En riktig merge konflikt i `src/transformera.py` mellan uppgift 8 och 9, som
+  löstes av båda parter i tur och ordning, se PR #61
+- Cloudflare slutade publicera helt när tjänsten bytte från Pages till Workers.
+  Bygget föll på `Missing entry-point to Worker script or to assets directory`
+  och löstes med `wrangler.jsonc` i repotroten, se PR #57
+- Ett fält i datakontraktet som visade sig omöjligt att räkna fram. `riktningar`
+  skulle koppla riktningskoden till en rubrik, men SL har inget riktningsnamn
+  per hållplats. Fältet togs bort och sidan bygger rubriken själv, se PR #63
 - Att gruppen kom igång sent, och att rollfördelningen byttes mot en
   uppgiftstavla för att ingen skulle blockeras av någon annan
 
@@ -167,28 +177,54 @@ uppe till höger och välj **Copy link**. Den länken går direkt till kommentar
 
 ***
 
-## Var vi står, ögonblicksbild 2026-08-27
+## Var vi står, ögonblicksbild 2026-09-01
 
-Kolla din rad. Ett kryss betyder att det redan finns spår i repot att länka
-till, ett streck betyder att du behöver göra något innan gruppen är klar.
+Kolla din rad. Ja betyder att det redan finns spår i repot att länka till, nej
+betyder att du behöver göra något innan gruppen är klar.
 
-| GitHub | Egna commits | Egen PR | 2.3 granskat andra | 2.4 fått granskning |
+| GitHub | Commits på main | Egen PR | 2.3 granskat andra | 2.4 fått granskning |
 |---|---|---|---|---|
-| `GHT4ngo` | ja | #39, #40, #41, #51 | ja, #42, #44, #45, #46, #47 | ja, #41 |
-| `somrar99` | ja | #42, #45, #47 | ja, #44, #46 | ja, #42, #45, #47 |
-| `Yearofthedragon24` | ja | #44, #46, #50 | tunt, se nedan | ja, #46, #50 |
-| `nibir03` | nej | nej | nej | nej |
-| ej ifylld | nej | nej | nej | nej |
-| ej ifylld | nej | nej | nej | nej |
+| `GHT4ngo` | 39 | #39, #40, #41, #43, #49, #51, #53, #55, #56, #57, #63 | ja, #42, #44, #45, #46, #47, #58, #62 | tunt, se nedan |
+| `somrar99` | 18 | #42, #45, #47, #58 | ja, #44, #46 | ja, #42, #47, #58 |
+| `Yearofthedragon24` | 8 | #44, #46, #50, #61 | ja, #47, #60 | ja, #44, #46, #61 |
+| `nibir03` | 12 | #59, #60, #62 | ja, #61 | ja, #60, #62 |
+| `mahtotbelai` | 1 | #54 | nej | nej |
+| `Haydslife` | 0 | nej | nej | nej |
 
-**Yearofthedragon24**, din granskning på #47 är en Approve med texten "Ser bra
-ut enligt mig". Det går att länka till, men det finns inget att skriva om i
-rapporten. Lämna en kommentar till som säger något konkret, så har du ett
-riktigt svar på 2.3.
+Sedan förra ögonblicksbilden har mycket lossnat. Fyra av sex har nu allt de
+behöver för Del 2.
 
-**nibir03**, du har uppgift 7 och 8 tilldelade men ingen commit ännu. Utan en
-egen branch, en egen pull request och en grön CI-körning går varken grupparbetet
-eller den här rapporten att bli godkänd.
+**Yearofthedragon24**, anmärkningen om tunn granskning gäller inte längre. Dina
+Approve på #47 och #60 har båda riktig text som säger vad du kontrollerat mot
+uppgiftskortet. Det är precis vad 2.3 efterfrågar.
 
-**Två rader i `README.md` är fortfarande tomma.** Uppgift 28 innebär att var och
-en fyller i sin egen, i sin egen branch.
+**nibir03**, du har gått från noll till tolv commits och tre pull requests.
+Kommentaren du lämnade på #61 om merge konflikten i `transformera.py` duger som
+svar på 2.3. Kvar är att slutföra #62.
+
+**somrar99**, en varning som bara rör dig. Tio av dina arton commits är gjorda
+med e-postadressen `kun.song@student.forsbergsskola.se`, som inte är kopplad
+till ditt GitHub konto. De räknas därför inte i GitHubs statistik och visas utan
+din profilbild. De ligger kvar i historiken och går att länka till, så det
+duger för rapporten, men lägg gärna till adressen under Settings, Emails.
+
+**mahtotbelai**, du har uppgift 18 mergad i #54, vilket täcker 2.1 och 2.2. Men
+ingen granskade din PR och du har inte granskat någon annans. Både 2.3 och 2.4
+saknas alltså. Ta en av de öppna PR:erna och skriv en kommentar med innehåll, så
+löser det halva problemet direkt.
+
+**Haydslife**, du har uppgift 16 tilldelad och en branch `task/16-linjefarger`,
+men inga commits på den. Utan en egen branch med commits, en pull request och en
+grön CI-körning går varken grupparbetet eller rapporten att bli godkänd.
+
+**Fyra rader i `README.md` är fortfarande tomma.** Uppgift 28 innebär att var och
+en fyller i sin egen, i sin egen branch. Ingen har gjort det utom Christofer.
+
+**Christofer**, ditt eget 2.4 är svagt. Granskningarna du fått är "Tested
+locally, works as expected" på #41 och #51. Det går att länka till men det finns
+inget resonemang att skriva om. Be någon i gruppen granska #56 med en riktig
+kommentar.
+
+> Den sjunde medlemmen i repot, `LindaLiBogardi`, är läraren. Hon är redan
+> inbjuden och ser allt, så länkarna i din rapport fungerar för henne trots att
+> repot är privat.
