@@ -213,7 +213,11 @@ cicd-grupparbete-grupp7/
 ├── docs/                     # 29, publiceras av Cloudflare
 │   ├── index.html            # 12 och 13, avgångstavlan i webbläsaren
 │   └── data/
-│       └── avgangar.json     # 11, sökväg från OUTPUT_PATH
+│       ├── avgangar.json     # 11, sökväg från OUTPUT_PATH
+│       └── hallplatser.json  # 32, sökväg från STATIONER_PATH
+├── presentation/             # redovisningen, lektion 8
+│   ├── index.html            # bildspelet, öppnas direkt i webbläsaren
+│   └── manus.md              # vem säger vad, tider och live-demona
 ├── src/
 │   ├── __init__.py           # 1
 │   ├── main.py               # 14 och 21, kör hela kedjan
@@ -222,7 +226,7 @@ cicd-grupparbete-grupp7/
 │   ├── transformera.py       # 7, 8 och 9
 │   ├── validera.py           # 10
 │   ├── resultat.py           # 11
-│   ├── stationer.py          # 15
+│   ├── stationer.py          # 15 och 32
 │   ├── linjer.py             # 16
 │   ├── avvikelser.py         # 17
 │   ├── tid.py                # 18
@@ -244,7 +248,7 @@ cicd-grupparbete-grupp7/
 ```
 
 > [!NOTE]
-> Mergat till `main` just nu: uppgift 1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 15, 18, 19 och 29. Kvar att skapa är `src/main.py`, `src/linjer.py`, `src/avvikelser.py`, `src/filter.py` och testerna 22 till 27. Filerna skapas av den som tar respektive uppgift, i sin egen branch.
+> Mergat till `main` just nu: uppgift 1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 18, 19, 29 och 30. Uppgift 14 ligger i en öppen pull request. Kvar att skapa är `src/main.py`, `src/linjer.py`, `src/avvikelser.py`, `src/filter.py`, `docs/data/hallplatser.json` och testerna 22 till 27 samt 31. Filerna skapas av den som tar respektive uppgift, i sin egen branch.
 
 Filnamn i `src/` skrivs utan å, ä och ö, eftersom modulnamn importeras i kod. Därför `hamta.py` och inte `hämta.py`.
 

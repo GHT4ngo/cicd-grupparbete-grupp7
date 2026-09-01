@@ -19,6 +19,10 @@ CLAUDE.md
 AGENTS.md
 .claude/
 
+# Cloudflare
+# npx wrangler login sparar konto-id har, det hor inte hemma i repot
+.wrangler/
+
 # Editor och OS
 .vscode/
 .idea/
