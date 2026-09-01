@@ -2,10 +2,6 @@
   "station": "Slussen",
   "station_id": "9192",
   "uppdaterad": "2026-08-25T13:22:03",
-  "riktningar": {
-    "1": "Mot norr",
-    "2": "Mot söder"
-  },
   "avgangar": [
     {
       "linje": "14",

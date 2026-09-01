@@ -600,6 +600,21 @@
 
   /* Tavlan */
 
+  // SL har inget riktningsnamn för en hållplats. Koden 1 och 2 betyder något
+  // bara inom en linje, så på Slussen finns det tjugosju olika mål under kod 1.
+  // Därför byggs rubriken av de avgångar som just nu visas. Väljer man en
+  // linjegrupp blir den exakt rätt, annars faller den tillbaka på koden.
+  function riktningsNamn(poster, kod) {
+    var mal = [];
+    for (var i = 0; i < poster.length; i++) {
+      if (mal.indexOf(poster[i].riktning) === -1) mal.push(poster[i].riktning);
+    }
+    mal.sort();
+    if (mal.length === 1) return mal[0];
+    if (mal.length === 2) return mal[0] + " och " + mal[1];
+    return "Riktning " + kod;
+  }
+
   function ritaRad(a) {
     var rad = document.createElement("li");
 
@@ -632,7 +647,6 @@
       return true;
     });
 
-    var etiketter = data.riktningar || {};
     var koder = [];
     var grupper = {};
 
@@ -671,7 +685,7 @@
       knapp.title = ensam ? "Visa båda riktningarna" : "Visa bara den här riktningen";
       knapp.setAttribute("aria-label", knapp.title);
       knapp.setAttribute("aria-pressed", ensam ? "true" : "false");
-      knapp.appendChild(element("span", null, etiketter[kod] || "Riktning " + kod));
+      knapp.appendChild(element("span", null, riktningsNamn(alla, kod)));
       knapp.insertAdjacentHTML("beforeend", svg(ensam
         ? '<path d="M9 4v5H4"/><path d="M15 20v-5h5"/><path d="M4 9l6-6"/><path d="M20 15l-6 6"/>'
         : '<path d="M4 9V4h5"/><path d="M20 15v5h-5"/><path d="M4 4l6 6"/><path d="M20 20l-6-6"/>'));
@@ -775,16 +789,6 @@
     return m < 0 ? 0 : m;
   }
 
-  // Riktningsnamnen är handskrivna i den sparade filen. SL har inget fält för
-  // dem, så vi återanvänder dem när det är samma hållplats. Annars ritar tavlan
-  // "Riktning 1" och "Riktning 2" av sig själv.
-  function riktningsEtiketter(stationId) {
-    if (reservdata && String(reservdata.station_id) === String(stationId)) {
-      return reservdata.riktningar || {};
-    }
-    return {};
-  }
-
   function hamtaLive(station) {
     var url = SL_AVGANGAR + station.id + "/departures?forecast=" + PROGNOS_MINUTER;
 
@@ -798,7 +802,6 @@
           station: station.namn,
           station_id: station.id,
           uppdaterad: new Date().toISOString(),
-          riktningar: riktningsEtiketter(station.id),
           avgangar: (svar.departures || []).map(plattaUt)
         };
       });
