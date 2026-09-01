@@ -93,8 +93,10 @@ https://transport.integration.sl.se/v1/sites/9192/departures?forecast=30
 **Hitta fler hållplatser**
 
 ```
-https://transport.integration.sl.se/v1/sites?expand=true
+https://transport.integration.sl.se/v1/sites
 ```
+
+Svaret är 6511 hållplatser och väger 1,35 MB, så leta med uppgift 15 i stället för för hand. `?expand=true` stod här tidigare och är fel, den varianten finns inte.
 
 <details>
 <summary><b>Några hållplats id att börja med</b></summary>
@@ -114,7 +116,7 @@ https://transport.integration.sl.se/v1/sites?expand=true
 
 ### Fälten vi använder
 
-Av allt som API:et skickar tillbaka behöver vi bara sex saker.
+Av allt som API:et skickar tillbaka behöver vi bara åtta saker.
 
 <table>
 <thead>
@@ -125,10 +127,14 @@ Av allt som API:et skickar tillbaka behöver vi bara sex saker.
 <tr><td>Typ</td><td><code>line.transport_mode</code></td><td>METRO, BUS, TRAM, TRAIN, SHIP</td></tr>
 <tr><td>Linje</td><td><code>line.designation</code></td><td>17</td></tr>
 <tr><td>Linjefärg</td><td><code>line.group_of_lines</code></td><td>Tunnelbanans gröna linje</td></tr>
-<tr><td>Mot</td><td><code>destination</code></td><td>Skarpnäck</td></tr>
+<tr><td>Riktning</td><td><code>direction</code></td><td>Fruängen</td></tr>
+<tr><td>Riktningskod</td><td><code>direction_code</code></td><td>1 eller 2</td></tr>
+<tr><td>Mot</td><td><code>destination</code></td><td>Liljeholmen</td></tr>
 <tr><td>Klockan</td><td><code>expected</code></td><td>2026-08-20T10:43:00</td></tr>
 </tbody>
 </table>
+
+`direction` är linjens ändhållplats, `destination` är där just den turen faktiskt vänder. De skiljer sig oftare än man tror, 40 av 112 avgångar på Slussen. Linje 14 mot Fruängen som vänder vid Liljeholmen är ett vanligt fall.
 
 > [!WARNING]
 > **Två fällor som vi redan har hittat i riktig data.**
@@ -136,6 +142,8 @@ Av allt som API:et skickar tillbaka behöver vi bara sex saker.
 > Det finns ett fält som heter `display`. Använd det inte. Det blandar `"Nu"`, `"3 min"` och `"13:25"` i samma svar, eftersom det växlar från minuter till klockslag efter ungefär tio minuter. Räkna ut minuterna själv från `expected`.
 >
 > Avgångar som redan har gått finns kvar i listan och ger **negativa minuter**. Det finns också ett fält `state` som kan vara `CANCELLED`. Vi filtrerar bort båda.
+>
+> `direction_code` betyder något bara **inom en linje**, inte för hållplatsen. Det finns alltså inget riktningsnamn att hämta. På Slussen ligger 27 olika `direction` under kod 1. Sidan bygger därför rubriken av de avgångar som visas för tillfället.
 
 > [!NOTE]
 > Tidigare stod här att listan inte kommer sorterad. **Det stämmer inte.** Tre riktiga svar har kontrollerats och alla var sorterade på `expected`. Det som ser osorterat ut är just `display`, av samma skäl som ovan.
