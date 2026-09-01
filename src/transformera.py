@@ -1,3 +1,4 @@
+from collections import defaultdict
 from datetime import datetime
 
 
@@ -11,6 +12,7 @@ def rakna_minuter(expected_tid_str):
     minuter = round(differens.total_seconds() / 60)
 
     return max(0, minuter)
+
 
 def platta_ut_avgangar(svar):
     resultat = []
@@ -27,3 +29,12 @@ def platta_ut_avgangar(svar):
         }
         resultat.append(avgang)
     return resultat
+
+
+def gruppera_per_riktning(poster):
+    grupper = defaultdict(lambda: defaultdict(list))
+
+    for post in poster:
+        grupper[post["linjegrupp"]][post["riktning_kod"]].append(post)
+
+    return grupper

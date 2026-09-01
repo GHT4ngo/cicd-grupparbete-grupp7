@@ -210,7 +210,7 @@ cicd-grupparbete-grupp7/
 │       └── ci.yml            # 2, lint och test vid push och pull request
 ├── data/
 │   └── raw/                  # rådata från källan, gitignorerad
-├── docs/                     # 29, publiceras av Cloudflare Pages
+├── docs/                     # 29, publiceras av Cloudflare
 │   ├── index.html            # 12 och 13, avgångstavlan i webbläsaren
 │   └── data/
 │       └── avgangar.json     # 11, sökväg från OUTPUT_PATH
@@ -235,14 +235,16 @@ cicd-grupparbete-grupp7/
 ├── .env                      # lokala värden, committas aldrig
 ├── .env.example              # mall med tomma platshållare
 ├── .gitignore
+├── EXAMINATION.md            # checklista för den individuella examinationen
 ├── README.md
 ├── SUGGESTION.md             # vad vi bygger och hur API:et fungerar
 ├── TASKS.md                  # uppgiftstavlan, ta en uppgift här
-└── requirements.txt
+├── requirements.txt
+└── wrangler.jsonc            # talar om för Cloudflare att docs ska publiceras
 ```
 
 > [!NOTE]
-> I repot finns just nu `.env.example`, `.gitignore`, `README.md`, `SUGGESTION.md`, `TASKS.md` och `requirements.txt`. Resten skapas av den som tar respektive uppgift, i sin egen branch.
+> Mergat till `main` just nu: uppgift 1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 15, 18, 19 och 29. Kvar att skapa är `src/main.py`, `src/linjer.py`, `src/avvikelser.py`, `src/filter.py` och testerna 22 till 27. Filerna skapas av den som tar respektive uppgift, i sin egen branch.
 
 Filnamn i `src/` skrivs utan å, ä och ö, eftersom modulnamn importeras i kod. Därför `hamta.py` och inte `hämta.py`.
 
