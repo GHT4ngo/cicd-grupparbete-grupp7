@@ -8,7 +8,8 @@
   /*
     Avgångstavla, grupp 7.
     Fristående sida utan byggsteg och utan externa bibliotek.
-    Läser docs/data/avgangar.json, som pipelinen skriver i uppgift 11.
+    Hämtar färska tider direkt från SL var trettionde sekund, uppgift 13.
+    Faller tillbaka på docs/data/avgangar.json när anropet misslyckas.
 
     Medvetet enbart mörkt läge. Det här är en skyltsida av samma sort
     som SL har på perrongerna, och den ska se likadan ut överallt.
@@ -368,8 +369,14 @@
 
   var DATAKALLA = "data/avgangar.json";
 
+  // SL Transport kräver ingen nyckel och skickar access-control-allow-origin: *,
+  // så webbläsaren får ringa direkt utan proxy.
+  var SL_AVGANGAR = "https://transport.integration.sl.se/v1/sites/";
+  var PROGNOS_MINUTER = 60;
+  var UPPDATERINGSINTERVALL = 30000;
+
   // Ett urval hållplatser. Uppgift 15 hämtar hela listan från
-  // /v1/sites?expand=true, som innehåller 6510 stycken och väger 1,6 MB.
+  // /v1/sites, som innehåller 6511 stycken och väger 1,35 MB.
   var STATIONER = [
     { id: "9001", namn: "T-Centralen" },
     { id: "9192", namn: "Slussen" },
@@ -399,6 +406,8 @@
   };
 
   var data = null;
+  var reservdata = null;
+  var aktivStation = null;
   var valtFardmedel = null;
   var valdLinjegrupp = null;
   var soloRiktning = null;
@@ -591,6 +600,21 @@
 
   /* Tavlan */
 
+  // SL har inget riktningsnamn för en hållplats. Koden 1 och 2 betyder något
+  // bara inom en linje, så på Slussen finns det tjugosju olika mål under kod 1.
+  // Därför byggs rubriken av de avgångar som just nu visas. Väljer man en
+  // linjegrupp blir den exakt rätt, annars faller den tillbaka på koden.
+  function riktningsNamn(poster, kod) {
+    var mal = [];
+    for (var i = 0; i < poster.length; i++) {
+      if (mal.indexOf(poster[i].riktning) === -1) mal.push(poster[i].riktning);
+    }
+    mal.sort();
+    if (mal.length === 1) return mal[0];
+    if (mal.length === 2) return mal[0] + " och " + mal[1];
+    return "Riktning " + kod;
+  }
+
   function ritaRad(a) {
     var rad = document.createElement("li");
 
@@ -623,7 +647,6 @@
       return true;
     });
 
-    var etiketter = data.riktningar || {};
     var koder = [];
     var grupper = {};
 
@@ -662,7 +685,7 @@
       knapp.title = ensam ? "Visa båda riktningarna" : "Visa bara den här riktningen";
       knapp.setAttribute("aria-label", knapp.title);
       knapp.setAttribute("aria-pressed", ensam ? "true" : "false");
-      knapp.appendChild(element("span", null, etiketter[kod] || "Riktning " + kod));
+      knapp.appendChild(element("span", null, riktningsNamn(alla, kod)));
       knapp.insertAdjacentHTML("beforeend", svg(ensam
         ? '<path d="M9 4v5H4"/><path d="M15 20v-5h5"/><path d="M4 9l6-6"/><path d="M20 15l-6 6"/>'
         : '<path d="M4 9V4h5"/><path d="M20 15v5h-5"/><path d="M4 4l6 6"/><path d="M20 20l-6-6"/>'));
@@ -707,6 +730,10 @@
     el.hidden = false;
   }
 
+  function doljNotis() {
+    document.getElementById("notis").hidden = true;
+  }
+
   function sattStampel(text, lage) {
     var el = document.getElementById("stampel");
     el.textContent = text;
@@ -722,46 +749,128 @@
   }
 
   function valjStation(s) {
-    if (data && String(data.station_id) === s.id) return;
+    if (aktivStation && aktivStation.id === s.id) return;
 
-    // Uppgift 13 byter ut det här mot ett riktigt anrop till SL med s.id.
+    aktivStation = { id: s.id, namn: s.namn };
     data = null;
     document.getElementById("station").textContent = s.namn;
     document.getElementById("riktningar").textContent = "";
-    sattStampel("Ingen sparad data", "fel");
-    visaTomt(
-      "Pipelinen är konfigurerad för en hållplats i taget. Sätt " +
-      "<b>SITE_ID=" + s.id + "</b> i <b>.env</b> och kör <b>python -m src.main</b> " +
-      "för att hämta " + s.namn + "."
-    );
+    sattStampel("Hämtar " + s.namn);
+    visaTomt(null);
     ritaVerktyg();
+    uppdatera();
   }
 
-  function ladda() {
-    fetch(DATAKALLA, { cache: "no-store" })
+  /* Färska tider direkt från SL, uppgift 13 */
+
+  // Samma omvandling som uppgift 7 och 8 gör i Python, fast här i webbläsaren.
+  // SL skickar sina egna fältnamn, sidan ritar våra åtta.
+  function plattaUt(avgang) {
+    var linje = avgang.line || {};
+    return {
+      linje: linje.designation,
+      linjegrupp: linje.group_of_lines || null,
+      transportmedel: linje.transport_mode,
+      riktning_kod: avgang.direction_code,
+      riktning: avgang.direction,
+      destination: avgang.destination,
+      avgar_klocka: klockslag(avgang.expected),
+      minuter: minuterKvar(avgang.expected)
+    };
+  }
+
+  // Tidsstämplarna från SL saknar tidszon och är svensk lokaltid. Det är precis
+  // så new Date tolkar dem, så ingen omräkning behövs. Turer som redan gått
+  // ligger kvar i svaret en stund och ger negativa tal, dem klampar vi till noll.
+  function minuterKvar(expected) {
+    var d = new Date(expected);
+    if (isNaN(d)) return 0;
+    var m = Math.round((d - new Date()) / 60000);
+    return m < 0 ? 0 : m;
+  }
+
+  function hamtaLive(station) {
+    var url = SL_AVGANGAR + station.id + "/departures?forecast=" + PROGNOS_MINUTER;
+
+    return fetch(url, { cache: "no-store" })
+      .then(function (svar) {
+        if (!svar.ok) throw new Error("HTTP " + svar.status);
+        return svar.json();
+      })
+      .then(function (svar) {
+        return {
+          station: station.namn,
+          station_id: station.id,
+          uppdaterad: new Date().toISOString(),
+          avgangar: (svar.departures || []).map(plattaUt)
+        };
+      });
+  }
+
+  function uppdatera() {
+    var station = aktivStation;
+
+    hamtaLive(station)
+      .then(function (farsk) {
+        // Hann någon byta hållplats medan anropet var ute, kasta svaret.
+        if (aktivStation !== station) return;
+
+        data = farsk;
+        rita();
+        sattStampel("Uppdaterad " + klockslag(data.uppdaterad));
+        doljNotis();
+      })
+      .catch(function (fel) {
+        if (aktivStation !== station) return;
+
+        if (data) {
+          sattStampel("Senast " + klockslag(data.uppdaterad), "fel");
+          visaNotis(
+            "Kunde inte nå SL: " + fel.message + ". Tiderna nedan är inte färska."
+          );
+        } else {
+          sattStampel("Kunde inte hämta data", "fel");
+          visaTomt(
+            "Varken SL eller den sparade filen svarade. Senaste felet: " + fel.message
+          );
+          ritaVerktyg();
+        }
+      });
+  }
+
+  /* Sparad fil, visas direkt och används som reserv */
+
+  function laddaReserv() {
+    return fetch(DATAKALLA, { cache: "no-store" })
       .then(function (svar) {
         if (!svar.ok) throw new Error("HTTP " + svar.status);
         return svar.json();
       })
       .then(function (laddad) {
+        reservdata = laddad;
+        aktivStation = { id: String(laddad.station_id), namn: laddad.station };
         data = laddad;
         rita();
-        var tid = klockslag(data.uppdaterad);
-        sattStampel(tid ? "Uppdaterad " + tid : "Uppdaterad", "gammal");
-        visaNotis(
-          "Sidan visar sparad exempeldata. Uppgift 13 gör att tiderna hämtas " +
-          "direkt från SL och räknas ner av sig själva."
-        );
+        sattStampel("Sparad data " + klockslag(data.uppdaterad), "gammal");
       })
-      .catch(function (fel) {
-        sattStampel("Kunde inte hämta data", "fel");
-        visaTomt("Filen <b>" + DATAKALLA + "</b> gick inte att läsa: " + fel.message);
-        ritaVerktyg();
+      .catch(function () {
+        // Filen saknas eller är trasig. Live anropet får klara sig utan reserv.
+        if (!aktivStation) aktivStation = STATIONER[1];
       });
   }
 
-  ritaVerktyg();
-  ladda();
+  function start() {
+    ritaVerktyg();
+
+    // Den sparade filen först, så att tavlan har något att visa direkt.
+    // Sedan SL, och därefter var trettionde sekund.
+    laddaReserv().then(function () {
+      uppdatera();
+      setInterval(uppdatera, UPPDATERINGSINTERVALL);
+    });
+  }
+
+  start();
 </script>
 
 </body>
