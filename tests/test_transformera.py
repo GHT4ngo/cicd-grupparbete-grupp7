@@ -31,3 +31,16 @@ def test_alla_atta_falt_finns():
         "avgar_klocka",
         "minuter",
     }
+
+
+def test_utplattade_varden():
+    poster = platta_ut_avgangar(SVAR)
+    post = poster[0]
+
+    assert post["linje"] == "14"
+    assert post["linjegrupp"] == "Tunnelbanans röda linje"
+    assert post["transportmedel"] == "METRO"
+    assert post["riktning_kod"] == 1
+    assert post["riktning"] == "Mot norr"
+    assert post["destination"] == "Mörby centrum"
+    assert post["avgar_klocka"] == "13:22"
