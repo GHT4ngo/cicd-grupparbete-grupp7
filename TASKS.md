@@ -5,14 +5,14 @@
 ### Grupp 7 &nbsp;&bull;&nbsp; DevOps &nbsp;&bull;&nbsp; DE25
 
 <p>
-<img alt="Kärnan" src="https://img.shields.io/badge/K%C3%A4rnan-16%20uppgifter-0e8a16?style=for-the-badge">
+<img alt="Kärnan" src="https://img.shields.io/badge/K%C3%A4rnan-17%20uppgifter-0e8a16?style=for-the-badge">
 <img alt="Tavla" src="https://img.shields.io/badge/Status%20finns%20i-GitHub%20Projects-8957e5?style=for-the-badge">
 <img alt="Bonus" src="https://img.shields.io/badge/Bonus-14%20frivilliga-c5def5?style=for-the-badge">
-<img alt="Hosting" src="https://img.shields.io/badge/Publiceras-Cloudflare%20Pages-F38020?style=for-the-badge">
+<img alt="Hosting" src="https://img.shields.io/badge/Publiceras-Cloudflare-F38020?style=for-the-badge">
 </p>
 
 <em>Ingen har en tilldelad roll. Här finns en kö av små uppgifter.<br>
-Sexton stycken är kärnan. Resten är bonus.</em>
+Sjutton stycken är kärnan. Resten är bonus.</em>
 
 </div>
 
@@ -57,13 +57,13 @@ När din pull request mergas stängs issuet automatiskt och kortet flyttar sig s
 Uppgifterna är delade i två högar. **Kärnan är projektet.** Bonus är sådant vi gör om vi hinner och har lust.
 
 > [!IMPORTANT]
-> Sexton kärnuppgifter fördelat på sex personer blir under tre var. Det räcker för att projektet ska vara klart och för att alla ska bli godkända. Ta inget ur bonushögen förrän kärnan är i hamn.
+> Sjutton kärnuppgifter fördelat på sex personer blir under tre var. Det räcker för att projektet ska vara klart och för att alla ska bli godkända. Ta inget ur bonushögen förrän kärnan är i hamn.
 
 ***
 
 ### Kärnan
 
-Sexton uppgifter. Det här, och inget mer, är vad som måste bli gjort.
+Sjutton uppgifter. Det här, och inget mer, är vad som måste bli gjort.
 
 **Grunden.** Allt annat väntar på de fyra. Christofer tar dem.
 
@@ -91,14 +91,15 @@ Sexton uppgifter. Det här, och inget mer, är vad som måste bli gjort.
 | Nr | Uppgift | Storlek | Väntar på |
 |---|---|---|---|
 | [12](../../issues/20) | Avgångstavlan i webbläsaren | html | 4 |
-| [29](../../issues/37) | Publicera på Cloudflare Pages | klickande | 12 |
+| [29](../../issues/37) | Publicera på Cloudflare | klickande | 12 |
 
 **Tester.**
 
 | Nr | Uppgift | Storlek | Väntar på |
 |---|---|---|---|
-| [22](../../issues/30) | Test för utplattningen | 2 test | 7 |
-| [23](../../issues/31) | Test för minuträkningen | 3 test | 18 |
+| [22](../../issues/30) | Test för utplattningen | 3 test | 7, 8 |
+| [23](../../issues/31) | Test för tidsformateringen | 3 test | 18 |
+| [31](../../issues/65) | Kontraktstest på JSON-filen | 12 rader | 13 |
 
 **Den här tar alla sex, var för sig.**
 
@@ -165,10 +166,6 @@ Kontraktet ovan gäller **en avgång**. Posterna ligger i sin tur inuti ett obje
   "station": "Slussen",
   "station_id": "9192",
   "uppdaterad": "2026-08-25T13:22:03",
-  "riktningar": {
-    "1": "Mot norr",
-    "2": "Mot söder"
-  },
   "avgangar": [
     { "linje": "14", "linjegrupp": "Tunnelbanans röda linje", "transportmedel": "METRO", "riktning_kod": 1, "riktning": "Mörby centrum", "destination": "Mörby centrum", "avgar_klocka": "13:22", "minuter": 0 }
   ]
@@ -180,13 +177,12 @@ Kontraktet ovan gäller **en avgång**. Posterna ligger i sin tur inuti ett obje
 | `station` | Hållplatsens namn, används som rubrik på sidan | `SITE_NAME` ur konfigurationen |
 | `station_id` | Samma id som hämtningen använde | `SITE_ID` ur konfigurationen |
 | `uppdaterad` | När filen skrevs, lokal tid utan tidszon | `datetime.now().isoformat(timespec="seconds")` |
-| `riktningar` | Kopplar riktningskoden till en rubrik | Skrivs för hand, `1` och `2` är de två hållen |
 | `avgangar` | Listan med poster enligt kontraktet ovan | Uppgift 7 till 10 |
 
 > [!WARNING]
-> `skriv_resultat` från uppgift 11 skriver rakt av vad den får. Skickar uppgift 14 in bara listan blir filen en lista, och då hittar sidan varken `station` eller `riktningar` och renderar tomt. **Bygg hela objektet i `src/main.py` innan du skickar det vidare.**
+> `skriv_resultat` från uppgift 11 skriver rakt av vad den får. Skickar uppgift 14 in bara listan blir filen en lista, och då hittar sidan inte `station` och renderar tomt. **Bygg hela objektet i `src/main.py` innan du skickar det vidare.**
 
-Nycklarna i `riktningar` är strängar, inte tal, eftersom JSON bara tillåter strängar som nycklar. Posternas `riktning_kod` är däremot ett tal. Sidan gör om koden till sträng när den slår upp rubriken, så det är inget att bry sig om, men det förklarar varför de ser olika ut.
+Det finns med flit inget fält för riktningsrubriker. SL har inget riktningsnamn per hållplats, `riktning_kod` betyder något bara inom en linje. På Slussen ligger tjugosju olika `riktning` under kod 1. Sidan bygger därför rubriken själv av de avgångar som visas, och faller tillbaka på "Riktning 1" när målen är fler än två.
 
 ***
 
@@ -309,7 +305,7 @@ Filen ska **committas**. Den är det sidan visar direkt vid laddning, innan den 
 
 Anropa hämta, transformera, validera och resultat i den ordningen. Skriv ut hur många avgångar som skrevs.
 
-**Bygg hela objektet innan du skickar det till `skriv_resultat`.** Listan med poster är bara fältet `avgangar`. Runt den ska `station`, `station_id`, `uppdaterad` och `riktningar` med, se [datakontraktet](#datakontraktet). Skickar du in bara listan renderar sidan tomt.
+**Bygg hela objektet innan du skickar det till `skriv_resultat`.** Listan med poster är bara fältet `avgangar`. Runt den ska `station`, `station_id` och `uppdaterad` med, se [datakontraktet](#datakontraktet). Skickar du in bara listan renderar sidan tomt.
 
 *Klar när:* `python -m src.main` skapar JSON filen och avgångstavlan visar den.
 
@@ -321,7 +317,7 @@ Anropa hämta, transformera, validera och resultat i den ordningen. Skriv ut hur
 <br>
 
 > [!IMPORTANT]
-> Sidan ligger på Cloudflare Pages, som är en **statisk** webbserver. Det körs ingen Python där. Allt sidan behöver måste alltså antingen ligga committat i `docs/`, eller hämtas av webbläsaren själv.
+> Sidan ligger på Cloudflare, som serverar den som en **statisk** webbserver. Det körs ingen Python där. Allt sidan behöver måste alltså antingen ligga committat i `docs/`, eller hämtas av webbläsaren själv.
 
 <br>
 
@@ -436,7 +432,7 @@ Behåll bara poster där `state` inte är `CANCELLED` och `minuter` inte är neg
 </details>
 
 <details>
-<summary><b>Tester, uppgift 22 till 27 och 30</b> &nbsp;&bull;&nbsp; <i>22 och 23 är kärna, resten bonus</i></summary>
+<summary><b>Tester, uppgift 22 till 27, 30 och 31</b> &nbsp;&bull;&nbsp; <i>22, 23 och 31 är kärna, resten bonus</i></summary>
 
 <br>
 
@@ -447,15 +443,51 @@ Samma mönster i allihop: skriv en liten handskriven dictionary överst i testfi
 
 | Nr | Fil | Ska täcka |
 |---|---|---|
-| [22](../../issues/30) | `tests/test_transformera.py` | att alla åtta fält kommer med |
-| [23](../../issues/31) | `tests/test_tid.py` | noll, positivt, och att negativt klampas till noll |
+| [22](../../issues/30) | `tests/test_transformera.py` | att alla åtta fält kommer med, och att negativa minuter klampas till noll |
+| [23](../../issues/31) | `tests/test_tid.py` | att noll ger `"Nu"`, att positivt ger `"3 min"`, och att klockslaget plockas rätt ur `expected` |
 | [24](../../issues/32) | `tests/test_linjer.py` | känd linjegrupp, och buss där fältet saknas |
 | [25](../../issues/33) | `tests/test_avvikelser.py` | både tomt och ifyllt svar |
 | [26](../../issues/34) | `tests/test_stationer.py` | skiftlägesokänslig, hittar delsträngar |
 | [27](../../issues/35) | `tests/test_filter.py` | inställd tur, och tur som redan gått |
 | [30](../../issues/48) | `tests/test_validera.py` | saknat fält, fel riktningskod, negativa minuter |
 
-**En fälla i uppgift 23.** Tidsstämplarna från SL saknar tidszon och är svensk lokaltid, medan CI kör i UTC. Ett test som räknar mot `datetime.now()` går igenom på din dator och fallerar i CI. Lås en fast tidpunkt i testet i stället.
+Uppgift 31 följer inte samma mönster som de andra, så den har ett eget kort.
+
+<br>
+
+**Task #31 · Kontraktstest på JSON-filen** &nbsp;&bull;&nbsp; `tests/test_kontrakt.py`
+
+De andra testerna kontrollerar en funktion. Det här kontrollerar den färdiga filen `docs/data/avgangar.json`, alltså att den följer [datakontraktet](#datakontraktet). Objektet runt listan ska ha rätt fyra nycklar, och varje avgång exakt de åtta fälten. Varken fler eller färre.
+
+Uppgiften finns av en konkret anledning. I uppgift 14 skrevs ett extra fält `riktningar` till filen, i fel form. Sidan slutade visa riktningsrubriker och ingen märkte det förrän någon öppnade sidan för hand.
+
+```python
+import json
+
+FALT = {"linje", "linjegrupp", "transportmedel", "riktning_kod",
+        "riktning", "destination", "avgar_klocka", "minuter"}
+
+
+def test_filen_foljer_kontraktet():
+    with open("docs/data/avgangar.json", encoding="utf-8") as fil:
+        data = json.load(fil)
+
+    assert set(data) == {"station", "station_id", "uppdaterad", "avgangar"}
+
+    for avgang in data["avgangar"]:
+        assert set(avgang) == FALT
+```
+
+`set()` på en dictionary ger dess nycklar. Jämförelsen fångar därför både ett fält som saknas och ett fält för mycket, vilket ett vanligt `in` inte gör. Inget nytt beroende behövs, `json` ligger i standardbiblioteket, och testet går inte mot nätverket.
+
+Sökvägen är relativ, så testet måste köras från repotroten. Det gör både `pytest -v` och CI, men kör du `pytest` inifrån `tests/` får du `FileNotFoundError`.
+
+> [!WARNING]
+> **Testet är rött på `main` i skrivande stund.** Filen där innehåller fortfarande fältet `riktningar`, som togs bort ur kontraktet i PR #63 men ligger kvar i datafilen tills uppgift 13 mergas. Vänta in den, annars ser det ut som att ditt test är trasigt. Det gör precis vad det ska.
+
+*Klar när:* `pytest -v` är grön, och testet blir rött om du tillfälligt lägger till ett extra fält i filen. Prova det, annars vet du inte att testet fungerar.
+
+**En fälla i uppgift 22.** Tidsstämplarna från SL saknar tidszon och är svensk lokaltid, medan CI kör i UTC. Ett test som räknar mot `datetime.now()` går igenom på din dator och fallerar i CI. Lås en fast tidpunkt i testet i stället.
 
 </details>
 

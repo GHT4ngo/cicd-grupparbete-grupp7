@@ -9,29 +9,17 @@ from src.validera import validera_post
 
 def main():
     config = las_config()
-    
-    svar = hamta_avgangar() 
+
+    svar = hamta_avgangar()
     avgangar = platta_ut_avgangar(svar)
-    
+
     for avgang in avgangar:
         validera_post(avgang)
-        
-    riktningar = []
-    sedda = set()
-    for avgang in avgangar:
-        nyckel = (avgang["riktning_kod"], avgang["riktning"])
-        if nyckel not in sedda:
-            sedda.add(nyckel)
-            riktningar.append({
-                "riktning_kod": avgang["riktning_kod"],
-                "riktning": avgang["riktning"],
-            })
 
     resultat = {
         "station": config.site_name,
         "station_id": config.site_id,
         "uppdaterad": datetime.now().isoformat(),  # noqa: DTZ005
-        "riktningar": riktningar,
         "avgangar": avgangar,
     }
 
