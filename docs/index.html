@@ -500,14 +500,10 @@
       lista.textContent = "";
       if (!q) return stang();
 
-      // Listan har 6511 poster, så vi slutar leta när skärmen ändå är full.
-      var traffar = [];
-      for (var i = 0; i < hallplatser.length; i++) {
-        if (hallplatser[i].namn.toLowerCase().indexOf(q) !== -1) {
-          traffar.push(hallplatser[i]);
-          if (traffar.length === MAX_TRAFFAR) break;
-        }
-      }
+      // Listan har 6512 poster, så vi klipper av när skärmen ändå är full.
+      var traffar = hallplatser.filter(function (s) {
+        return s.namn.toLowerCase().indexOf(q) !== -1;
+      }).slice(0, MAX_TRAFFAR);
 
       if (traffar.length === 0) {
         var tom = element("li");
