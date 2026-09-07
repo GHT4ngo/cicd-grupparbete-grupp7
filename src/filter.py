@@ -1,7 +1,8 @@
-def rensa_bort_skräp(avgångar):
-    return [
-        avgång
-        for avgång in avgångar
-        if avgång.get("state") != "CANCELLED"
-        and avgång.get("minuter", 0) >= 0
-    ]
+def rensa_bort_skrap(avgangar):
+    filtrerade = []
+
+    for avgang in avgangar:
+        if avgang.get("state") != "CANCELLED":
+            filtrerade.append(avgang)
+
+    return filtrerade
