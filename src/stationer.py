@@ -1,4 +1,9 @@
+import json
+from pathlib import Path
+
 import requests
+
+from src.config import las_config
 
 
 def hamta_hallplatser():
@@ -18,9 +23,25 @@ def sok_hallplats(namn, hallplatser=None):
     return traffar
 
 
-#test
+def spara_hallplatser(hallplatser=None):
+    """Skriver alla hållplatser till en fil som sökrutan på sidan läser."""
+    if hallplatser is None:
+        hallplatser = hamta_hallplatser()
+
+    trimmade = []
+    for site in hallplatser:
+        trimmade.append({"id": site["id"], "namn": site["name"]})
+
+    sokvag = Path(las_config().stationer_path)
+    sokvag.parent.mkdir(parents=True, exist_ok=True)
+
+    # Utan indent, eftersom filen har 6511 poster och laddas av webbläsaren.
+    with sokvag.open("w", encoding="utf-8") as fil:
+        json.dump(trimmade, fil, ensure_ascii=False)
+
+    return trimmade
+
+
 if __name__ == "__main__":
-    results = sok_hallplats("slussen")
-    print(f"{len(results)} result has found")
-    for result in results:
-        print(result)
+    sparade = spara_hallplatser()
+    print(f"Skrev {len(sparade)} hållplatser till {las_config().stationer_path}")

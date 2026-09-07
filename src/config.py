@@ -17,6 +17,7 @@ class Config:
     transport_mode: str
     forecast_minutes: int
     output_path: str
+    stationer_path: str
 
 
 def las_config() -> Config:
@@ -28,4 +29,5 @@ def las_config() -> Config:
         transport_mode=os.getenv("TRANSPORT_MODE", "METRO"),
         forecast_minutes=int(os.getenv("FORECAST_MINUTES", "60")),
         output_path=os.getenv("OUTPUT_PATH", "docs/data/avgangar.json"),
+        stationer_path=os.getenv("STATIONER_PATH", "docs/data/hallplatser.json"),
     )

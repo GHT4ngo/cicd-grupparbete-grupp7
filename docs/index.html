@@ -375,8 +375,12 @@
   var PROGNOS_MINUTER = 60;
   var UPPDATERINGSINTERVALL = 30000;
 
-  // Ett urval hållplatser. Uppgift 15 hämtar hela listan från
-  // /v1/sites, som innehåller 6511 stycken och väger 1,35 MB.
+  // Alla hållplatser, skrivna av src/stationer.py i uppgift 32.
+  var HALLPLATSKALLA = "data/hallplatser.json";
+  var MAX_TRAFFAR = 20;
+
+  // Reserv om filen ovan saknas eller är trasig. Sökrutan använder den listan
+  // tills den riktiga har laddats.
   var STATIONER = [
     { id: "9001", namn: "T-Centralen" },
     { id: "9192", namn: "Slussen" },
@@ -386,6 +390,9 @@
     { id: "9191", namn: "Medborgarplatsen" },
     { id: "1002", namn: "Stockholm Centralen" }
   ];
+
+  // Byts ut mot hela listan när hallplatser.json har laddats.
+  var hallplatser = STATIONER;
 
   var FARGER = {
     "Tunnelbanans gröna linje": "gron",
@@ -493,9 +500,14 @@
       lista.textContent = "";
       if (!q) return stang();
 
-      var traffar = STATIONER.filter(function (s) {
-        return s.namn.toLowerCase().indexOf(q) !== -1;
-      });
+      // Listan har 6511 poster, så vi slutar leta när skärmen ändå är full.
+      var traffar = [];
+      for (var i = 0; i < hallplatser.length; i++) {
+        if (hallplatser[i].namn.toLowerCase().indexOf(q) !== -1) {
+          traffar.push(hallplatser[i]);
+          if (traffar.length === MAX_TRAFFAR) break;
+        }
+      }
 
       if (traffar.length === 0) {
         var tom = element("li");
@@ -859,8 +871,26 @@
       });
   }
 
+  function laddaHallplatser() {
+    return fetch(HALLPLATSKALLA)
+      .then(function (svar) {
+        if (!svar.ok) throw new Error("HTTP " + svar.status);
+        return svar.json();
+      })
+      .then(function (laddade) {
+        // id skrivs som tal i filen, men jämförs som text i valjStation.
+        hallplatser = laddade.map(function (s) {
+          return { id: String(s.id), namn: s.namn };
+        });
+      })
+      .catch(function () {
+        // Filen saknas. Sökrutan får klara sig med de sju i STATIONER.
+      });
+  }
+
   function start() {
     ritaVerktyg();
+    laddaHallplatser();
 
     // Den sparade filen först, så att tavlan har något att visa direkt.
     // Sedan SL, och därefter var trettionde sekund.
