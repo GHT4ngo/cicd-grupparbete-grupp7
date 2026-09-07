@@ -7,7 +7,7 @@
 <p>
 <img alt="Kärnan" src="https://img.shields.io/badge/K%C3%A4rnan-17%20uppgifter-0e8a16?style=for-the-badge">
 <img alt="Tavla" src="https://img.shields.io/badge/Status%20finns%20i-GitHub%20Projects-8957e5?style=for-the-badge">
-<img alt="Bonus" src="https://img.shields.io/badge/Bonus-14%20frivilliga-c5def5?style=for-the-badge">
+<img alt="Bonus" src="https://img.shields.io/badge/Bonus-15%20frivilliga-c5def5?style=for-the-badge">
 <img alt="Hosting" src="https://img.shields.io/badge/Publiceras-Cloudflare-F38020?style=for-the-badge">
 </p>
 
@@ -111,7 +111,7 @@ Sjutton uppgifter. Det här, och inget mer, är vad som måste bli gjort.
 
 ### Bonus
 
-Fjorton uppgifter som är helt frivilliga. Inget här behövs för att bli godkänd, och inget här behövs för att projektet ska fungera.
+Femton uppgifter som är helt frivilliga. Inget här behövs för att bli godkänd, och inget här behövs för att projektet ska fungera.
 
 De ligger kvar som issues med etiketten `bonus`, så det finns alltid något att ta för den som vill göra mer.
 
@@ -131,6 +131,7 @@ De ligger kvar som issues med etiketten `bonus`, så det finns alltid något att
 | [26](../../issues/34) | Test för stationssökningen | 2 test | 15 |
 | [27](../../issues/35) | Test för filtreringen | 2 test | 20 |
 | [30](../../issues/48) | Test för valideringen | 3 test | 10 |
+| [32](../../issues/69) | Alla hållplatser i sökrutan | 20 rader | 15 |
 
 > [!NOTE]
 > Uppgift 13 är den enda i bonushögen som märks utifrån. Utan den visar sidan de tider som låg i JSON filen när den senast committades. Med den blir tavlan levande. Bra att ta om någon vill göra något som syns.
@@ -359,7 +360,7 @@ Varje push till `main` publicerar om sidan automatiskt. Inget behöver köras p�
 </details>
 
 <details>
-<summary><b>Bonus: fristående, uppgift 15 till 21</b></summary>
+<summary><b>Bonus: fristående, uppgift 15 till 21 och 32</b></summary>
 
 <br>
 
@@ -378,6 +379,29 @@ Nyttan är konkret: svaret innehåller **6511 hållplatser och väger 1,35 MB**,
 Dela funktionen i två, en som hämtar listan och en som filtrerar den. Då kan uppgift 26 testa sökningen mot en handskriven lista i stället för att gå ut på nätet.
 
 *Klar när:* `"slussen"` ger fyra träffar, alltså båda Slussen plus Stadsgården och Södermalmstorg.
+
+<br>
+
+**Task #32 · Alla hållplatser i sökrutan** &nbsp;&bull;&nbsp; `src/stationer.py`, `src/config.py`, `docs/index.html`
+
+Sökrutan på tavlan söker bara i en handskriven lista på sju hållplatser, `docs/index.html:380`. Skriver man något annat får man "Ingen träff". Uppgift 15 hämtar redan alla 6511, men **sparar dem aldrig och ingen anropar den**. Den här uppgiften kopplar ihop de två.
+
+Tre små ändringar. `src/config.py` får fältet `stationer_path` med standardvärdet `docs/data/hallplatser.json`, och raden läggs även i `.env.example`. `src/stationer.py` får en funktion som skriver filen, med bara `id` och `namn`, efter samma mönster som `skriv_resultat` i uppgift 11. `docs/index.html` läser filen i stället för `STATIONER`.
+
+Hämta filen **första gången någon skriver i sökrutan**, inte vid sidladdning, och spara den i en variabel så att det bara sker en gång. Låt de sju ligga kvar som startförslag tills den kommit.
+
+Spara bara de två fälten, inte hela SL-svaret. Skillnaden är mätt:
+
+| | Storlek | Över nätet |
+|---|---|---|
+| Hela svaret från SL | 1035 KB | 328 KB |
+| Bara id och namn | 239 KB | 51 KB |
+
+`gid`, `lat`, `lon`, `note` och `valid` används inte av sidan. Filen ligger dessutom på vår egen domän, så Cloudflare cachar den.
+
+Nackdelen ska stå som en kommentar i koden: filen blir en ögonblicksbild och en ny hållplats hos SL syns inte förrän någon kör pipelinen igen.
+
+*Klar när:* `slussen` i sökrutan ger fyra träffar, `9192`, `9194`, `9195` och `9208`, alla går att välja och tavlan visar avgångar för den valda.
 
 <br>
 
@@ -482,8 +506,8 @@ def test_filen_foljer_kontraktet():
 
 Sökvägen är relativ, så testet måste köras från repotroten. Det gör både `pytest -v` och CI, men kör du `pytest` inifrån `tests/` får du `FileNotFoundError`.
 
-> [!WARNING]
-> **Testet är rött på `main` i skrivande stund.** Filen där innehåller fortfarande fältet `riktningar`, som togs bort ur kontraktet i PR #63 men ligger kvar i datafilen tills uppgift 13 mergas. Vänta in den, annars ser det ut som att ditt test är trasigt. Det gör precis vad det ska.
+> [!NOTE]
+> Testet var rött på `main` fram till den 1 september. Datafilen innehöll då fortfarande fältet `riktningar`, som togs bort ur kontraktet i PR #63 men låg kvar i filen tills uppgift 13 mergades i PR #56. Nu stämmer filen mot kontraktet och testet blir grönt direkt.
 
 *Klar när:* `pytest -v` är grön, och testet blir rött om du tillfälligt lägger till ett extra fält i filen. Prova det, annars vet du inte att testet fungerar.
 
