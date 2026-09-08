@@ -258,11 +258,11 @@ Den här lilla uppgiften låser upp tre andra. Uppgift 7, 22 och 27 behöver se 
 
 **Task #7 · Platta ut en avgång** &nbsp;&bull;&nbsp; `src/transformera.py`
 
-Loopa över `svar["departures"]` och plocka de åtta fälten ur kontraktet. Linjenumret sitter i `x["line"]["designation"]`, färggruppen i `x["line"]["group_of_lines"]`, färdmedlet i `x["line"]["transport_mode"]`. Riktning och destination ligger direkt på `x`.
+Loopa över `svar["departures"]` och plocka de tio fälten ur kontraktet. Linjenumret sitter i `x["line"]["designation"]`, färggruppen i `x["line"]["group_of_lines"]`, färdmedlet i `x["line"]["transport_mode"]`. Riktning och destination ligger direkt på `x`.
 
 **Använd `.get("group_of_lines")`, inte hakparenteser.** Nyckeln saknas helt för ungefär hälften av bussarna, verifierat mot ett live svar där 57 av 113 avgångar var utan den. Exempelfilen från uppgift 6 är bara tunnelbana, så alla poster där har fältet och felet syns inte förrän pipelinen körs på riktigt.
 
-*Klar när:* en post ur exempelfilen ger tillbaka de åtta fälten och inget mer.
+*Klar när:* en post ur exempelfilen ger tillbaka de tio fälten och inget mer.
 
 <br>
 
@@ -286,7 +286,7 @@ Bygg `{linjegrupp: {riktning_kod: [poster]}}`. `collections.defaultdict` gör de
 
 **Task #10 · Validera posterna** &nbsp;&bull;&nbsp; `src/validera.py`
 
-Kontrollera att alla åtta nycklar finns, att `riktning_kod` är `1` eller `2` och att `minuter` inte är negativt. Kasta `ValueError` med ett tydligt meddelande vid fel.
+Kontrollera att alla tio nycklar finns, att `riktning_kod` är `1` eller `2` och att `minuter` inte är negativt. Kasta `ValueError` med ett tydligt meddelande vid fel.
 
 *Klar när:* en trasig post ger fel och en hel post går igenom tyst.
 
@@ -467,7 +467,7 @@ Samma mönster i allihop: skriv en liten handskriven dictionary överst i testfi
 
 | Nr | Fil | Ska täcka |
 |---|---|---|
-| [22](../../issues/30) | `tests/test_transformera.py` | att alla åtta fält kommer med, och att negativa minuter klampas till noll |
+| [22](../../issues/30) | `tests/test_transformera.py` | att alla tio fält kommer med, och att negativa minuter klampas till noll |
 | [23](../../issues/31) | `tests/test_tid.py` | att noll ger `"Nu"`, att positivt ger `"3 min"`, och att klockslaget plockas rätt ur `expected` |
 | [24](../../issues/32) | `tests/test_linjer.py` | känd linjegrupp, och buss där fältet saknas |
 | [25](../../issues/33) | `tests/test_avvikelser.py` | både tomt och ifyllt svar |
@@ -481,7 +481,7 @@ Uppgift 31 följer inte samma mönster som de andra, så den har ett eget kort.
 
 **Task #31 · Kontraktstest på JSON-filen** &nbsp;&bull;&nbsp; `tests/test_kontrakt.py`
 
-De andra testerna kontrollerar en funktion. Det här kontrollerar den färdiga filen `docs/data/avgangar.json`, alltså att den följer [datakontraktet](#datakontraktet). Objektet runt listan ska ha rätt fyra nycklar, och varje avgång exakt de åtta fälten. Varken fler eller färre.
+De andra testerna kontrollerar en funktion. Det här kontrollerar den färdiga filen `docs/data/avgangar.json`, alltså att den följer [datakontraktet](#datakontraktet). Objektet runt listan ska ha rätt fem nycklar, och varje avgång exakt de tio fälten. Varken fler eller färre.
 
 Uppgiften finns av en konkret anledning. I uppgift 14 skrevs ett extra fält `riktningar` till filen, i fel form. Sidan slutade visa riktningsrubriker och ingen märkte det förrän någon öppnade sidan för hand.
 

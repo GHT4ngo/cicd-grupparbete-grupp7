@@ -11,6 +11,8 @@ GILTIG_POST = {
     "destination": "Liljeholmen",
     "avgar_klocka": "13:22",
     "minuter": 3,
+    "farg": "#5a6472",
+    "visning": "3 min",
 }
 
 

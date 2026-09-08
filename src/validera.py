@@ -7,6 +7,8 @@ OBLIGATORISKA_FALT = {
     "destination",
     "avgar_klocka",
     "minuter",
+    "farg",
+    "visning",
 }
 
 

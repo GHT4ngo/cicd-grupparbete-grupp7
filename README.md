@@ -195,6 +195,13 @@ ruff check .
 pytest
 ```
 
+Två kommandon till, som inte behöver köras varje gång:
+
+```bash
+python -m src.stationer          # skriver om hela hållplatslistan, 6512 poster
+python -m src.stationer slussen  # söker i stället, för att hitta ett SITE_ID
+```
+
 Nya beroenden läggs till i `requirements.txt` och committas, så att alla i gruppen och CI kör samma paket.
 
 ***
@@ -248,7 +255,7 @@ cicd-grupparbete-grupp7/
 ```
 
 > [!NOTE]
-> Mergat till `main` just nu: uppgift 1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 18, 19, 29 och 30. Uppgift 14 ligger i en öppen pull request. Kvar att skapa är `src/main.py`, `src/linjer.py`, `src/avvikelser.py`, `src/filter.py`, `docs/data/hallplatser.json` och testerna 22 till 27 samt 31. Filerna skapas av den som tar respektive uppgift, i sin egen branch.
+> Alla uppgifter utom 21 är mergade till `main`. Hela kedjan körs av `python -m src.main`, som hämtar från SL, rensar, plattar ut, validerar, skriver `docs/data/avgangar.json` och avslutar med statistiken. Hållplatslistan hämtas separat med `python -m src.stationer`, eftersom den är 6512 poster och inte behöver skrivas om varje gång.
 
 Filnamn i `src/` skrivs utan å, ä och ö, eftersom modulnamn importeras i kod. Därför `hamta.py` och inte `hämta.py`.
 
@@ -256,7 +263,7 @@ Filnamn i `src/` skrivs utan å, ä och ö, eftersom modulnamn importeras i kod.
 
 ## Datakontraktet
 
-Så här ser en avgång ut när den kommit igenom pipelinen. Nio fält, alla platta, inga nästlade objekt.
+Så här ser en avgång ut när den kommit igenom pipelinen. Tio fält, alla platta, inga nästlade objekt.
 
 ```json
 {
@@ -268,7 +275,8 @@ Så här ser en avgång ut när den kommit igenom pipelinen. Nio fält, alla pla
   "destination": "Liljeholmen",
   "avgar_klocka": "13:22",
   "minuter": 3,
-  "farg": "#d71d24"
+  "farg": "#d71d24",
+  "visning": "3 min"
 }
 ```
 
@@ -289,8 +297,11 @@ Så här ser en avgång ut när den kommit igenom pipelinen. Nio fält, alla pla
 <tr><td><code>avgar_klocka</code></td><td><code>expected</code>, klockslaget</td><td>13:22</td></tr>
 <tr><td><code>minuter</code></td><td>uträknat från <code>expected</code></td><td>3</td></tr>
 <tr><td><code>farg</code></td><td>slås upp från <code>linjegrupp</code> i <code>src/linjer.py</code></td><td>#d71d24</td></tr>
+<tr><td><code>visning</code></td><td><code>minuter</code> som text, från <code>src/tid.py</code></td><td>Nu eller 3 min</td></tr>
 </tbody>
 </table>
+
+Objektet runt listan har fem nycklar: `station`, `station_id`, `uppdaterad`, `avgangar` och `avvikelser`. Den sista är en lista med störningsmeddelanden, både sådana som gäller hela hållplatsen och sådana som hör till en enskild avgång. Finns inga störningar är den tom.
 
 > [!WARNING]
 > Räkna alltid ut `minuter` själv från `expected`. Fältet `display` som API:et skickar blandar `"Nu"`, `"3 min"` och `"13:25"` i samma svar, eftersom det växlar till klockslag efter ungefär tio minuter.
