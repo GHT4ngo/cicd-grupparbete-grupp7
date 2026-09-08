@@ -154,6 +154,31 @@
 
   .traffar .id { color: var(--text-svag); font-size: 0.85rem; }
 
+  /* Färdmedelsmärken i sökträffarna, samma färger som linjerna på tavlan. */
+  .traffar .hoger { display: flex; align-items: center; gap: 0.4rem; }
+
+  .marke {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.15rem;
+    height: 1.15rem;
+    border-radius: 50%;
+    background: var(--standard);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .marke[data-farg="gron"] { background: var(--gron); }
+  .marke[data-farg="rod"] { background: var(--rod); }
+  .marke[data-farg="bla"] { background: var(--bla); }
+  .marke[data-farg="blabuss"] { background: var(--blabuss); }
+  .marke[data-farg="pendeltag"] { background: var(--pendeltag); color: #3a1420; }
+  .marke[data-farg="sparvag"] { background: var(--sparvag); }
+  .marke[data-farg="bat"] { background: var(--bat); color: #04262a; }
+
   .chippar { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; }
 
   .avdelare {
@@ -379,6 +404,9 @@
   var HALLPLATSKALLA = "data/hallplatser.json";
   var MAX_TRAFFAR = 20;
 
+  // Bokstäverna SL använder på sina egna skyltar.
+  var MARKE = { METRO: "T", TRAIN: "J", TRAM: "L", BUS: "B", SHIP: "F" };
+
   // Reserv om filen ovan saknas eller är trasig. Sökrutan använder den listan
   // tills den riktiga har laddats.
   var STATIONER = [
@@ -423,6 +451,13 @@
   // och eftersom filtren krymper urvalet ser man längre fram i tiden med dem på.
   var TAK_BADA = 6;
   var TAK_SOLO = 14;
+
+  function normalisera(text) {
+    // SL är inte konsekvent, i samma fil står både S:t Eriksgatan och
+    // Sankt Eriksplan. Båda sidor skrivs om, så sökningen fungerar oavsett
+    // hur den som söker skriver.
+    return text.toLowerCase().split("s:t").join("sankt");
+  }
 
   function farg(a) {
     // group_of_lines saknas för de flesta bussar, därför reservfärgen.
@@ -496,19 +531,19 @@
     function stang() { lista.hidden = true; }
 
     function sok() {
-      var q = input.value.trim().toLowerCase();
+      var q = normalisera(input.value.trim());
       lista.textContent = "";
       if (!q) return stang();
 
       var traffar = hallplatser.filter(function (s) {
-        return s.namn.toLowerCase().indexOf(q) !== -1;
+        return normalisera(s.namn).indexOf(q) !== -1;
       });
 
       // Tre hållplatser heter Västertorp. Exakt namn först, sedan störst,
       // så att tunnelbanan hamnar över busshållplatsen med samma namn.
       traffar.sort(function (a, b) {
-        var aExakt = a.namn.toLowerCase() === q;
-        var bExakt = b.namn.toLowerCase() === q;
+        var aExakt = normalisera(a.namn) === q;
+        var bExakt = normalisera(b.namn) === q;
         if (aExakt !== bExakt) return aExakt ? -1 : 1;
         return (b.storlek || 0) - (a.storlek || 0);
       });
@@ -528,7 +563,16 @@
         var b = document.createElement("button");
         b.type = "button";
         b.appendChild(element("span", null, s.namn));
-        b.appendChild(element("span", "id", s.id));
+
+        var hoger = element("span", "hoger");
+        (s.fardmedel || []).forEach(function (f) {
+          var marke = element("span", "marke", MARKE[f] || "?");
+          marke.dataset.farg = RESERVFARG[f] || "standard";
+          marke.title = FARDMEDEL[f] || f;
+          hoger.appendChild(marke);
+        });
+        hoger.appendChild(element("span", "id", s.id));
+        b.appendChild(hoger);
         b.addEventListener("click", function () {
           input.value = s.namn;
           stang();
@@ -772,6 +816,13 @@
 
     aktivStation = { id: s.id, namn: s.namn };
     data = null;
+
+    // Nollställ filtren. Ett färdmedel eller en linje från förra
+    // hållplatsen finns sällan på den nya, och då hade tavlan sett tom ut.
+    valtFardmedel = null;
+    valdLinjegrupp = null;
+    soloRiktning = null;
+
     document.getElementById("station").textContent = s.namn;
     document.getElementById("riktningar").textContent = "";
     sattStampel("Hämtar " + s.namn);
@@ -887,7 +938,12 @@
       .then(function (laddade) {
         // id skrivs som tal i filen, men jämförs som text i valjStation.
         hallplatser = laddade.map(function (s) {
-          return { id: String(s.id), namn: s.namn, storlek: s.storlek };
+          return {
+            id: String(s.id),
+            namn: s.namn,
+            storlek: s.storlek,
+            fardmedel: s.fardmedel || [],
+          };
         });
       })
       .catch(function () {
