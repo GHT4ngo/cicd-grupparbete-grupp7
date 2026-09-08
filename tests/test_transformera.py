@@ -17,7 +17,7 @@ SVAR = {
 }
 
 
-def test_alla_atta_falt_finns():
+def test_alla_nio_falt_finns():
     poster = platta_ut_avgangar(SVAR)
     post = poster[0]
 
@@ -30,6 +30,7 @@ def test_alla_atta_falt_finns():
         "destination",
         "avgar_klocka",
         "minuter",
+        "farg",
     }
 
 

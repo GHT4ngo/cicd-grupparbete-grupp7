@@ -213,7 +213,11 @@ cicd-grupparbete-grupp7/
 ├── docs/                     # 29, publiceras av Cloudflare
 │   ├── index.html            # 12 och 13, avgångstavlan i webbläsaren
 │   └── data/
-│       └── avgangar.json     # 11, sökväg från OUTPUT_PATH
+│       ├── avgangar.json     # 11, sökväg från OUTPUT_PATH
+│       └── hallplatser.json  # 32, sökväg från STATIONER_PATH
+├── presentation/             # redovisningen, lektion 8
+│   ├── index.html            # bildspelet, öppnas direkt i webbläsaren
+│   └── manus.md              # vem säger vad, tider och live-demona
 ├── src/
 │   ├── __init__.py           # 1
 │   ├── main.py               # 14 och 21, kör hela kedjan
@@ -222,7 +226,7 @@ cicd-grupparbete-grupp7/
 │   ├── transformera.py       # 7, 8 och 9
 │   ├── validera.py           # 10
 │   ├── resultat.py           # 11
-│   ├── stationer.py          # 15
+│   ├── stationer.py          # 15 och 32
 │   ├── linjer.py             # 16
 │   ├── avvikelser.py         # 17
 │   ├── tid.py                # 18
@@ -244,7 +248,7 @@ cicd-grupparbete-grupp7/
 ```
 
 > [!NOTE]
-> Mergat till `main` just nu: uppgift 1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 15, 18, 19 och 29. Kvar att skapa är `src/main.py`, `src/linjer.py`, `src/avvikelser.py`, `src/filter.py` och testerna 22 till 27. Filerna skapas av den som tar respektive uppgift, i sin egen branch.
+> Mergat till `main` just nu: uppgift 1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 18, 19, 29 och 30. Uppgift 14 ligger i en öppen pull request. Kvar att skapa är `src/main.py`, `src/linjer.py`, `src/avvikelser.py`, `src/filter.py`, `docs/data/hallplatser.json` och testerna 22 till 27 samt 31. Filerna skapas av den som tar respektive uppgift, i sin egen branch.
 
 Filnamn i `src/` skrivs utan å, ä och ö, eftersom modulnamn importeras i kod. Därför `hamta.py` och inte `hämta.py`.
 
@@ -252,7 +256,7 @@ Filnamn i `src/` skrivs utan å, ä och ö, eftersom modulnamn importeras i kod.
 
 ## Datakontraktet
 
-Så här ser en avgång ut när den kommit igenom pipelinen. Åtta fält, alla platta, inga nästlade objekt.
+Så här ser en avgång ut när den kommit igenom pipelinen. Nio fält, alla platta, inga nästlade objekt.
 
 ```json
 {
@@ -263,7 +267,8 @@ Så här ser en avgång ut när den kommit igenom pipelinen. Åtta fält, alla p
   "riktning": "Fruängen",
   "destination": "Liljeholmen",
   "avgar_klocka": "13:22",
-  "minuter": 3
+  "minuter": 3,
+  "farg": "#d71d24"
 }
 ```
 
@@ -283,6 +288,7 @@ Så här ser en avgång ut när den kommit igenom pipelinen. Åtta fält, alla p
 <tr><td><code>destination</code></td><td><code>destination</code></td><td>Liljeholmen</td></tr>
 <tr><td><code>avgar_klocka</code></td><td><code>expected</code>, klockslaget</td><td>13:22</td></tr>
 <tr><td><code>minuter</code></td><td>uträknat från <code>expected</code></td><td>3</td></tr>
+<tr><td><code>farg</code></td><td>slås upp från <code>linjegrupp</code> i <code>src/linjer.py</code></td><td>#d71d24</td></tr>
 </tbody>
 </table>
 
@@ -461,7 +467,7 @@ Avsluta med en kort reflektion: vilka moment inom DevOps användes, och vilka ut
 <tr><th align="left">Namn</th><th align="left">GitHub</th><th align="left">Uppgifter</th></tr>
 </thead>
 <tbody>
-<tr><td>Christofer</td><td><code>GHT4ngo</code></td><td>1, 2, 3</td></tr>
+<tr><td>Christofer</td><td><code>GHT4ngo</code></td><td>1, 2, 3, 4</td></tr>
 <tr><td></td><td><code>somrar99</code></td><td>5</td></tr>
 <tr><td>Ashraful Islam</td><td><code>nibir03</code></td><td></td></tr>
 <tr><td></td><td><code>Yearofthedragon24</code></td><td></td></tr>
