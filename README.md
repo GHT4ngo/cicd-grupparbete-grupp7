@@ -256,7 +256,7 @@ Filnamn i `src/` skrivs utan å, ä och ö, eftersom modulnamn importeras i kod.
 
 ## Datakontraktet
 
-Så här ser en avgång ut när den kommit igenom pipelinen. Åtta fält, alla platta, inga nästlade objekt.
+Så här ser en avgång ut när den kommit igenom pipelinen. Nio fält, alla platta, inga nästlade objekt.
 
 ```json
 {
@@ -267,7 +267,8 @@ Så här ser en avgång ut när den kommit igenom pipelinen. Åtta fält, alla p
   "riktning": "Fruängen",
   "destination": "Liljeholmen",
   "avgar_klocka": "13:22",
-  "minuter": 3
+  "minuter": 3,
+  "farg": "#d71d24"
 }
 ```
 
@@ -287,6 +288,7 @@ Så här ser en avgång ut när den kommit igenom pipelinen. Åtta fält, alla p
 <tr><td><code>destination</code></td><td><code>destination</code></td><td>Liljeholmen</td></tr>
 <tr><td><code>avgar_klocka</code></td><td><code>expected</code>, klockslaget</td><td>13:22</td></tr>
 <tr><td><code>minuter</code></td><td>uträknat från <code>expected</code></td><td>3</td></tr>
+<tr><td><code>farg</code></td><td>slås upp från <code>linjegrupp</code> i <code>src/linjer.py</code></td><td>#d71d24</td></tr>
 </tbody>
 </table>
 

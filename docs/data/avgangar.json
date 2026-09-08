@@ -1,307 +1,337 @@
 {
   "station": "Slussen",
   "station_id": "9192",
-  "uppdaterad": "2026-09-06T13:47:37.235808",
+  "uppdaterad": "2026-09-08T09:13:50.622598",
   "avgangar": [
+    {
+      "riktning_kod": 2,
+      "riktning": "Fruängen",
+      "destination": "Telefonplan",
+      "avgar_klocka": "09:11",
+      "linje": "14",
+      "transportmedel": "METRO",
+      "linjegrupp": "Tunnelbanans röda linje",
+      "farg": "#d71d24",
+      "minuter": 0
+    },
     {
       "riktning_kod": 1,
       "riktning": "Hässelby strand",
       "destination": "Alvik",
-      "avgar_klocka": "13:47",
-      "linje": "18",
-      "transportmedel": "METRO",
-      "linjegrupp": "Tunnelbanans gröna linje",
-      "minuter": 0
-    },
-    {
-      "riktning_kod": 2,
-      "riktning": "Hagsätra",
-      "destination": "Hagsätra",
-      "avgar_klocka": "13:47",
-      "linje": "19",
-      "transportmedel": "METRO",
-      "linjegrupp": "Tunnelbanans gröna linje",
-      "minuter": 0
-    },
-    {
-      "riktning_kod": 2,
-      "riktning": "Norsborg",
-      "destination": "Norsborg",
-      "avgar_klocka": "13:47",
-      "linje": "13",
-      "transportmedel": "METRO",
-      "linjegrupp": "Tunnelbanans röda linje",
-      "minuter": 0
-    },
-    {
-      "riktning_kod": 1,
-      "riktning": "Mörby centrum",
-      "destination": "Mörby centrum",
-      "avgar_klocka": "13:49",
-      "linje": "14",
-      "transportmedel": "METRO",
-      "linjegrupp": "Tunnelbanans röda linje",
-      "minuter": 2
-    },
-    {
-      "riktning_kod": 1,
-      "riktning": "Hässelby strand",
-      "destination": "Åkeshov",
-      "avgar_klocka": "13:49",
+      "avgar_klocka": "09:13",
       "linje": "17",
       "transportmedel": "METRO",
       "linjegrupp": "Tunnelbanans gröna linje",
-      "minuter": 2
-    },
-    {
-      "riktning_kod": 2,
-      "riktning": "Fruängen",
-      "destination": "Liljeholmen",
-      "avgar_klocka": "13:51",
-      "linje": "14",
-      "transportmedel": "METRO",
-      "linjegrupp": "Tunnelbanans röda linje",
-      "minuter": 4
+      "farg": "#148541",
+      "minuter": 0
     },
     {
       "riktning_kod": 2,
       "riktning": "Farsta strand",
       "destination": "Farsta strand",
-      "avgar_klocka": "13:51",
+      "avgar_klocka": "09:14",
       "linje": "18",
       "transportmedel": "METRO",
       "linjegrupp": "Tunnelbanans gröna linje",
-      "minuter": 4
+      "farg": "#148541",
+      "minuter": 1
     },
     {
       "riktning_kod": 1,
       "riktning": "Mörby centrum",
       "destination": "Mörby centrum",
-      "avgar_klocka": "13:53",
+      "avgar_klocka": "09:15",
       "linje": "14",
       "transportmedel": "METRO",
       "linjegrupp": "Tunnelbanans röda linje",
-      "minuter": 5
+      "farg": "#d71d24",
+      "minuter": 1
     },
     {
       "riktning_kod": 1,
       "riktning": "Hässelby strand",
-      "destination": "Hässelby strand",
-      "avgar_klocka": "13:53",
-      "linje": "19",
+      "destination": "Vällingby",
+      "avgar_klocka": "09:15",
+      "linje": "18",
       "transportmedel": "METRO",
       "linjegrupp": "Tunnelbanans gröna linje",
-      "minuter": 6
-    },
-    {
-      "riktning_kod": 2,
-      "riktning": "Skarpnäck",
-      "destination": "Skarpnäck",
-      "avgar_klocka": "13:54",
-      "linje": "17",
-      "transportmedel": "METRO",
-      "linjegrupp": "Tunnelbanans gröna linje",
-      "minuter": 7
+      "farg": "#148541",
+      "minuter": 2
     },
     {
       "riktning_kod": 2,
       "riktning": "Fruängen",
       "destination": "Fruängen",
-      "avgar_klocka": "13:54",
+      "avgar_klocka": "09:15",
       "linje": "14",
       "transportmedel": "METRO",
       "linjegrupp": "Tunnelbanans röda linje",
+      "farg": "#d71d24",
+      "minuter": 2
+    },
+    {
+      "riktning_kod": 1,
+      "riktning": "Ropsten",
+      "destination": "Ropsten",
+      "avgar_klocka": "09:17",
+      "linje": "13",
+      "transportmedel": "METRO",
+      "linjegrupp": "Tunnelbanans röda linje",
+      "farg": "#d71d24",
+      "minuter": 3
+    },
+    {
+      "riktning_kod": 2,
+      "riktning": "Skarpnäck",
+      "destination": "Skarpnäck",
+      "avgar_klocka": "09:17",
+      "linje": "17",
+      "transportmedel": "METRO",
+      "linjegrupp": "Tunnelbanans gröna linje",
+      "farg": "#148541",
+      "minuter": 4
+    },
+    {
+      "riktning_kod": 1,
+      "riktning": "Hässelby strand",
+      "destination": "Hässelby strand",
+      "avgar_klocka": "09:17",
+      "linje": "17",
+      "transportmedel": "METRO",
+      "linjegrupp": "Tunnelbanans gröna linje",
+      "farg": "#148541",
+      "minuter": 4
+    },
+    {
+      "riktning_kod": 2,
+      "riktning": "Norsborg",
+      "destination": "Norsborg",
+      "avgar_klocka": "09:18",
+      "linje": "13",
+      "transportmedel": "METRO",
+      "linjegrupp": "Tunnelbanans röda linje",
+      "farg": "#d71d24",
+      "minuter": 5
+    },
+    {
+      "riktning_kod": 1,
+      "riktning": "Mörby centrum",
+      "destination": "Mörby centrum",
+      "avgar_klocka": "09:19",
+      "linje": "14",
+      "transportmedel": "METRO",
+      "linjegrupp": "Tunnelbanans röda linje",
+      "farg": "#d71d24",
+      "minuter": 5
+    },
+    {
+      "riktning_kod": 2,
+      "riktning": "Hagsätra",
+      "destination": "Hagsätra",
+      "avgar_klocka": "09:19",
+      "linje": "19",
+      "transportmedel": "METRO",
+      "linjegrupp": "Tunnelbanans gröna linje",
+      "farg": "#148541",
+      "minuter": 6
+    },
+    {
+      "riktning_kod": 1,
+      "riktning": "Hässelby strand",
+      "destination": "Åkeshov",
+      "avgar_klocka": "09:19",
+      "linje": "18",
+      "transportmedel": "METRO",
+      "linjegrupp": "Tunnelbanans gröna linje",
+      "farg": "#148541",
+      "minuter": 6
+    },
+    {
+      "riktning_kod": 2,
+      "riktning": "Fruängen",
+      "destination": "Telefonplan",
+      "avgar_klocka": "09:20",
+      "linje": "14",
+      "transportmedel": "METRO",
+      "linjegrupp": "Tunnelbanans röda linje",
+      "farg": "#d71d24",
+      "minuter": 7
+    },
+    {
+      "riktning_kod": 2,
+      "riktning": "Skarpnäck",
+      "destination": "Skarpnäck",
+      "avgar_klocka": "09:21",
+      "linje": "17",
+      "transportmedel": "METRO",
+      "linjegrupp": "Tunnelbanans gröna linje",
+      "farg": "#148541",
+      "minuter": 7
+    },
+    {
+      "riktning_kod": 1,
+      "riktning": "Hässelby strand",
+      "destination": "Vällingby",
+      "avgar_klocka": "09:21",
+      "linje": "19",
+      "transportmedel": "METRO",
+      "linjegrupp": "Tunnelbanans gröna linje",
+      "farg": "#148541",
       "minuter": 7
     },
     {
       "riktning_kod": 1,
       "riktning": "Ropsten",
       "destination": "Ropsten",
-      "avgar_klocka": "13:55",
+      "avgar_klocka": "09:21",
       "linje": "13",
       "transportmedel": "METRO",
       "linjegrupp": "Tunnelbanans röda linje",
+      "farg": "#d71d24",
       "minuter": 8
     },
     {
       "riktning_kod": 1,
       "riktning": "Hässelby strand",
       "destination": "Alvik",
-      "avgar_klocka": "13:57",
-      "linje": "18",
+      "avgar_klocka": "09:23",
+      "linje": "17",
       "transportmedel": "METRO",
       "linjegrupp": "Tunnelbanans gröna linje",
-      "minuter": 10
-    },
-    {
-      "riktning_kod": 2,
-      "riktning": "Hagsätra",
-      "destination": "Hagsätra",
-      "avgar_klocka": "13:57",
-      "linje": "19",
-      "transportmedel": "METRO",
-      "linjegrupp": "Tunnelbanans gröna linje",
-      "minuter": 10
+      "farg": "#148541",
+      "minuter": 9
     },
     {
       "riktning_kod": 2,
       "riktning": "Norsborg",
-      "destination": "Norsborg",
-      "avgar_klocka": "13:57",
+      "destination": "Axelsberg",
+      "avgar_klocka": "09:23",
       "linje": "13",
       "transportmedel": "METRO",
       "linjegrupp": "Tunnelbanans röda linje",
+      "farg": "#d71d24",
+      "minuter": 10
+    },
+    {
+      "riktning_kod": 2,
+      "riktning": "Farsta strand",
+      "destination": "Farsta strand",
+      "avgar_klocka": "09:23",
+      "linje": "18",
+      "transportmedel": "METRO",
+      "linjegrupp": "Tunnelbanans gröna linje",
+      "farg": "#148541",
       "minuter": 10
     },
     {
       "riktning_kod": 1,
       "riktning": "Mörby centrum",
       "destination": "Mörby centrum",
-      "avgar_klocka": "13:59",
+      "avgar_klocka": "09:24",
       "linje": "14",
       "transportmedel": "METRO",
       "linjegrupp": "Tunnelbanans röda linje",
-      "minuter": 12
-    },
-    {
-      "riktning_kod": 1,
-      "riktning": "Hässelby strand",
-      "destination": "Åkeshov",
-      "avgar_klocka": "13:59",
-      "linje": "17",
-      "transportmedel": "METRO",
-      "linjegrupp": "Tunnelbanans gröna linje",
-      "minuter": 12
-    },
-    {
-      "riktning_kod": 2,
-      "riktning": "Farsta strand",
-      "destination": "Farsta strand",
-      "avgar_klocka": "14:01",
-      "linje": "18",
-      "transportmedel": "METRO",
-      "linjegrupp": "Tunnelbanans gröna linje",
-      "minuter": 13
-    },
-    {
-      "riktning_kod": 2,
-      "riktning": "Fruängen",
-      "destination": "Liljeholmen",
-      "avgar_klocka": "14:01",
-      "linje": "14",
-      "transportmedel": "METRO",
-      "linjegrupp": "Tunnelbanans röda linje",
-      "minuter": 14
-    },
-    {
-      "riktning_kod": 1,
-      "riktning": "Hässelby strand",
-      "destination": "Hässelby strand",
-      "avgar_klocka": "14:03",
-      "linje": "19",
-      "transportmedel": "METRO",
-      "linjegrupp": "Tunnelbanans gröna linje",
-      "minuter": 16
-    },
-    {
-      "riktning_kod": 2,
-      "riktning": "Skarpnäck",
-      "destination": "Skarpnäck",
-      "avgar_klocka": "14:04",
-      "linje": "17",
-      "transportmedel": "METRO",
-      "linjegrupp": "Tunnelbanans gröna linje",
-      "minuter": 17
-    },
-    {
-      "riktning_kod": 1,
-      "riktning": "Ropsten",
-      "destination": "Ropsten",
-      "avgar_klocka": "14:05",
-      "linje": "13",
-      "transportmedel": "METRO",
-      "linjegrupp": "Tunnelbanans röda linje",
-      "minuter": 18
-    },
-    {
-      "riktning_kod": 1,
-      "riktning": "Hässelby strand",
-      "destination": "Alvik",
-      "avgar_klocka": "14:07",
-      "linje": "18",
-      "transportmedel": "METRO",
-      "linjegrupp": "Tunnelbanans gröna linje",
-      "minuter": 20
+      "farg": "#d71d24",
+      "minuter": 10
     },
     {
       "riktning_kod": 2,
       "riktning": "Hagsätra",
       "destination": "Hagsätra",
-      "avgar_klocka": "14:07",
+      "avgar_klocka": "09:25",
       "linje": "19",
       "transportmedel": "METRO",
       "linjegrupp": "Tunnelbanans gröna linje",
-      "minuter": 20
-    },
-    {
-      "riktning_kod": 2,
-      "riktning": "Norsborg",
-      "destination": "Norsborg",
-      "avgar_klocka": "14:07",
-      "linje": "13",
-      "transportmedel": "METRO",
-      "linjegrupp": "Tunnelbanans röda linje",
-      "minuter": 20
-    },
-    {
-      "riktning_kod": 1,
-      "riktning": "Hässelby strand",
-      "destination": "Åkeshov",
-      "avgar_klocka": "14:09",
-      "linje": "17",
-      "transportmedel": "METRO",
-      "linjegrupp": "Tunnelbanans gröna linje",
-      "minuter": 22
+      "farg": "#148541",
+      "minuter": 12
     },
     {
       "riktning_kod": 2,
       "riktning": "Farsta strand",
       "destination": "Farsta strand",
-      "avgar_klocka": "14:11",
+      "avgar_klocka": "09:25",
       "linje": "18",
       "transportmedel": "METRO",
       "linjegrupp": "Tunnelbanans gröna linje",
-      "minuter": 23
+      "farg": "#148541",
+      "minuter": 12
     },
     {
       "riktning_kod": 1,
       "riktning": "Hässelby strand",
       "destination": "Hässelby strand",
-      "avgar_klocka": "14:13",
-      "linje": "19",
+      "avgar_klocka": "09:26",
+      "linje": "18",
       "transportmedel": "METRO",
       "linjegrupp": "Tunnelbanans gröna linje",
-      "minuter": 26
+      "farg": "#148541",
+      "minuter": 12
     },
     {
       "riktning_kod": 2,
       "riktning": "Skarpnäck",
       "destination": "Skarpnäck",
-      "avgar_klocka": "14:14",
+      "avgar_klocka": "09:27",
       "linje": "17",
       "transportmedel": "METRO",
       "linjegrupp": "Tunnelbanans gröna linje",
-      "minuter": 27
+      "farg": "#148541",
+      "minuter": 13
     },
     {
       "riktning_kod": 1,
       "riktning": "Ropsten",
       "destination": "Ropsten",
-      "avgar_klocka": "14:15",
+      "avgar_klocka": "09:27",
       "linje": "13",
       "transportmedel": "METRO",
       "linjegrupp": "Tunnelbanans röda linje",
-      "minuter": 28
+      "farg": "#d71d24",
+      "minuter": 13
+    },
+    {
+      "riktning_kod": 2,
+      "riktning": "Norsborg",
+      "destination": "Norsborg",
+      "avgar_klocka": "09:28",
+      "linje": "13",
+      "transportmedel": "METRO",
+      "linjegrupp": "Tunnelbanans röda linje",
+      "farg": "#d71d24",
+      "minuter": 15
+    },
+    {
+      "riktning_kod": 1,
+      "riktning": "Hässelby strand",
+      "destination": "Alvik",
+      "avgar_klocka": "09:30",
+      "linje": "19",
+      "transportmedel": "METRO",
+      "linjegrupp": "Tunnelbanans gröna linje",
+      "farg": "#148541",
+      "minuter": 17
+    },
+    {
+      "riktning_kod": 2,
+      "riktning": "Hagsätra",
+      "destination": "Hagsätra",
+      "avgar_klocka": "09:34",
+      "linje": "19",
+      "transportmedel": "METRO",
+      "linjegrupp": "Tunnelbanans gröna linje",
+      "farg": "#148541",
+      "minuter": 21
+    },
+    {
+      "riktning_kod": 1,
+      "riktning": "Hässelby strand",
+      "destination": "Hässelby strand",
+      "avgar_klocka": "09:40",
+      "linje": "19",
+      "transportmedel": "METRO",
+      "linjegrupp": "Tunnelbanans gröna linje",
+      "farg": "#148541",
+      "minuter": 27
     }
   ]
 }

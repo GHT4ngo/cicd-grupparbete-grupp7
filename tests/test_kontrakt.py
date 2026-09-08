@@ -1,6 +1,6 @@
 import json
 
-FALT = {"linje", "linjegrupp", "transportmedel", "riktning_kod", "riktning", "destination", "avgar_klocka", "minuter"}
+FALT = {"linje", "linjegrupp", "transportmedel", "riktning_kod", "riktning", "destination", "avgar_klocka", "minuter", "farg"}
 
 def test_filen_foljer_kontraktet():
     with open("docs/data/avgangar.json", encoding="utf-8") as fil:
