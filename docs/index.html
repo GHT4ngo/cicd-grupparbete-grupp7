@@ -121,6 +121,9 @@
     top: calc(100% + 4px);
     left: 0;
     right: 0;
+    /* Rullgardinen får vara bredare än sökrutan. Utan golvet kan
+       hållplatsnamnet krympa till noll när märkena tar plats. */
+    min-width: 18rem;
     margin: 0;
     padding: 0.25rem;
     list-style: none;
@@ -167,6 +170,7 @@
   }
 
   .traffar button > span:first-child {
+    flex: 1 1 auto;
     min-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
