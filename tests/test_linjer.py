@@ -16,12 +16,27 @@ def test_rod_linje():
 
     assert linjer.hamta_farg(linjegrupp) == "#d71d24"
 
+def test_Blabuss():
+    linjegrupp = "Blåbuss"
+
+    assert linjer.hamta_farg(linjegrupp) == "#005aa3"
+
+def test_Pendeltag():
+    linjegrupp = "Pendeltåg"
+
+    assert linjer.hamta_farg(linjegrupp) == "#f0677f"
+
+def test_Pendelbåt():
+    linjegrupp = "Pendelbåt"
+
+    assert linjer.hamta_farg(linjegrupp) == "#00a5b5"
+
 def test_annan_linje():
     linjegrupp = "Annan linje"
 
-    assert linjer.hamta_farg(linjegrupp) == "#9aa4b2"
+    assert linjer.hamta_farg(linjegrupp) == "#5a6472"
 
 def test_ingen_linje():
     linjegrupp = None
 
-    assert linjer.hamta_farg(linjegrupp) == "#9aa4b2"
+    assert linjer.hamta_farg(linjegrupp) == "#5a6472"
