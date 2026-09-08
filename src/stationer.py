@@ -7,7 +7,9 @@ from src.config import las_config
 
 
 def hamta_hallplatser():
-    url = "https://transport.integration.sl.se/v1/sites"
+    # expand=true behövs för fältet stop_areas, som spara_hallplatser
+    # använder för att skilja hållplatser med samma namn åt.
+    url = "https://transport.integration.sl.se/v1/sites?expand=true"
     response = requests.get(url, timeout=10)
     response.raise_for_status()
     return response.json()
@@ -28,14 +30,21 @@ def spara_hallplatser(hallplatser=None):
     if hallplatser is None:
         hallplatser = hamta_hallplatser()
 
+    # Flera hållplatser delar namn, till exempel tre stycken som heter
+    # Västertorp. stop_areas säger hur många lägen hållplatsen har, och den
+    # riktiga knutpunkten har alltid flest. Sökrutan sorterar på det.
     trimmade = []
     for site in hallplatser:
-        trimmade.append({"id": site["id"], "namn": site["name"]})
+        trimmade.append({
+            "id": site["id"],
+            "namn": site["name"],
+            "storlek": len(site.get("stop_areas", [])),
+        })
 
     sokvag = Path(las_config().stationer_path)
     sokvag.parent.mkdir(parents=True, exist_ok=True)
 
-    # Utan indent, eftersom filen har 6511 poster och laddas av webbläsaren.
+    # Utan indent, eftersom filen har 6512 poster och laddas av webbläsaren.
     with sokvag.open("w", encoding="utf-8") as fil:
         json.dump(trimmade, fil, ensure_ascii=False)
 
