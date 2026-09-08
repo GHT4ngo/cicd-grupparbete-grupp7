@@ -28,6 +28,10 @@ def sok_hallplats(namn, hallplatser=None):
 
 # SL:s egna namn på lägestyper, översatta till samma färdmedelsnamn som
 # resten av kedjan använder. Sidan färglägger och namnger dem sedan själv.
+# Ordningen sökrutan visar dem i. Spårbunden trafik först, eftersom den
+# skiljer hållplatser åt. Buss finns på nästan varenda en och säger minst.
+FARDMEDEL_ORDNING = ["METRO", "TRAIN", "TRAM", "SHIP", "BUS"]
+
 FARDMEDEL_PER_TYP = {
     "METROSTN": "METRO",
     "BUSTERM": "BUS",
@@ -90,18 +94,23 @@ def spara_hallplatser(hallplatser=None, lagestyper=None):
     for site in hallplatser:
         omraden = site.get("stop_areas", [])
 
-        # Samma hållplats kan ha både tunnelbana och buss. Sorterat, så att
-        # ordningen på sidan blir densamma varje gång filen skrivs om.
-        fardmedel = set()
+        # Samma hållplats kan ha både tunnelbana och buss. Fast ordning, så
+        # att listan ser likadan ut varje gång filen skrivs om.
+        hittade = set()
         for omrade in omraden:
             if omrade in lagestyper:
-                fardmedel.add(lagestyper[omrade])
+                hittade.add(lagestyper[omrade])
+
+        fardmedel = []
+        for namn in FARDMEDEL_ORDNING:
+            if namn in hittade:
+                fardmedel.append(namn)
 
         trimmade.append({
             "id": site["id"],
             "namn": site["name"],
             "storlek": len(omraden),
-            "fardmedel": sorted(fardmedel),
+            "fardmedel": fardmedel,
         })
 
     sokvag = Path(las_config().stationer_path)

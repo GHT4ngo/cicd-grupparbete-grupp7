@@ -154,30 +154,32 @@
 
   .traffar .id { color: var(--text-svag); font-size: 0.85rem; }
 
-  /* Färdmedelsmärken i sökträffarna, samma färger som linjerna på tavlan. */
-  .traffar .hoger { display: flex; align-items: center; gap: 0.4rem; }
-
-  .marke {
-    display: inline-flex;
+  /* Färdmedelsmärken i sökträffarna. Medvetet färglösa: tavlan använder
+     redan rött för tunnelbanans röda linje, och SL använder rött för buss.
+     Samma färg hade betytt två saker, så här står ordet i stället. */
+  .traffar .hoger {
+    display: flex;
+    flex: none;
     align-items: center;
-    justify-content: center;
-    width: 1.15rem;
-    height: 1.15rem;
-    border-radius: 50%;
-    background: var(--standard);
-    color: #fff;
-    font-size: 0.7rem;
-    font-weight: 700;
-    line-height: 1;
+    gap: 0.35rem;
   }
 
-  .marke[data-farg="gron"] { background: var(--gron); }
-  .marke[data-farg="rod"] { background: var(--rod); }
-  .marke[data-farg="bla"] { background: var(--bla); }
-  .marke[data-farg="blabuss"] { background: var(--blabuss); }
-  .marke[data-farg="pendeltag"] { background: var(--pendeltag); color: #3a1420; }
-  .marke[data-farg="sparvag"] { background: var(--sparvag); }
-  .marke[data-farg="bat"] { background: var(--bat); color: #04262a; }
+  .traffar button > span:first-child {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .fardmedelsmarke {
+    padding: 0.05rem 0.4rem;
+    border-radius: 999px;
+    background: var(--panel-kant);
+    color: var(--text-svag);
+    font-size: 0.68rem;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
 
   .chippar { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; }
 
@@ -404,9 +406,6 @@
   var HALLPLATSKALLA = "data/hallplatser.json";
   var MAX_TRAFFAR = 20;
 
-  // Bokstäverna SL använder på sina egna skyltar.
-  var MARKE = { METRO: "T", TRAIN: "J", TRAM: "L", BUS: "B", SHIP: "F" };
-
   // Reserv om filen ovan saknas eller är trasig. Sökrutan använder den listan
   // tills den riktiga har laddats.
   var STATIONER = [
@@ -566,10 +565,7 @@
 
         var hoger = element("span", "hoger");
         (s.fardmedel || []).forEach(function (f) {
-          var marke = element("span", "marke", MARKE[f] || "?");
-          marke.dataset.farg = RESERVFARG[f] || "standard";
-          marke.title = FARDMEDEL[f] || f;
-          hoger.appendChild(marke);
+          hoger.appendChild(element("span", "fardmedelsmarke", FARDMEDEL[f] || f));
         });
         hoger.appendChild(element("span", "id", s.id));
         b.appendChild(hoger);
