@@ -202,6 +202,13 @@ python -m src.stationer          # skriver om hela hållplatslistan, 6512 poster
 python -m src.stationer slussen  # söker i stället, för att hitta ett SITE_ID
 ```
 
+Flaggor till pipelinen, som skriver över `.env` för en enskild körning:
+
+```bash
+python -m src.main --station 9001              # T-Centralen i stället
+python -m src.main --station 9192 --transport BUS  # bussarna vid Slussen
+```
+
 Nya beroenden läggs till i `requirements.txt` och committas, så att alla i gruppen och CI kör samma paket.
 
 ***
@@ -255,7 +262,7 @@ cicd-grupparbete-grupp7/
 ```
 
 > [!NOTE]
-> Alla uppgifter utom 21 är mergade till `main`. Hela kedjan körs av `python -m src.main`, som hämtar från SL, rensar, plattar ut, validerar, skriver `docs/data/avgangar.json` och avslutar med statistiken. Hållplatslistan hämtas separat med `python -m src.stationer`, eftersom den är 6512 poster och inte behöver skrivas om varje gång.
+> Alla uppgifter är mergade till `main`. Hela kedjan körs av `python -m src.main`, som hämtar från SL, rensar, plattar ut, validerar, skriver `docs/data/avgangar.json` och avslutar med statistiken. Hållplatslistan hämtas separat med `python -m src.stationer`, eftersom den är 6512 poster och inte behöver skrivas om varje gång.
 
 Filnamn i `src/` skrivs utan å, ä och ö, eftersom modulnamn importeras i kod. Därför `hamta.py` och inte `hämta.py`.
 

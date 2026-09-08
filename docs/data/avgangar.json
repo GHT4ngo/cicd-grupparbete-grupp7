@@ -1,92 +1,8 @@
 {
   "station": "Slussen",
   "station_id": "9192",
-  "uppdaterad": "2026-09-08T13:32:57.030190",
+  "uppdaterad": "2026-09-08T13:38:30.146444",
   "avgangar": [
-    {
-      "riktning_kod": 1,
-      "riktning": "Hässelby strand",
-      "destination": "Hässelby strand",
-      "avgar_klocka": "13:33",
-      "linje": "19",
-      "transportmedel": "METRO",
-      "linjegrupp": "Tunnelbanans gröna linje",
-      "farg": "#148541",
-      "minuter": 1,
-      "visning": "1 min"
-    },
-    {
-      "riktning_kod": 1,
-      "riktning": "Mörby centrum",
-      "destination": "Mörby centrum",
-      "avgar_klocka": "13:34",
-      "linje": "14",
-      "transportmedel": "METRO",
-      "linjegrupp": "Tunnelbanans röda linje",
-      "farg": "#d71d24",
-      "minuter": 1,
-      "visning": "1 min"
-    },
-    {
-      "riktning_kod": 2,
-      "riktning": "Skarpnäck",
-      "destination": "Skarpnäck",
-      "avgar_klocka": "13:35",
-      "linje": "17",
-      "transportmedel": "METRO",
-      "linjegrupp": "Tunnelbanans gröna linje",
-      "farg": "#148541",
-      "minuter": 2,
-      "visning": "2 min"
-    },
-    {
-      "riktning_kod": 2,
-      "riktning": "Fruängen",
-      "destination": "Fruängen",
-      "avgar_klocka": "13:35",
-      "linje": "14",
-      "transportmedel": "METRO",
-      "linjegrupp": "Tunnelbanans röda linje",
-      "farg": "#d71d24",
-      "minuter": 2,
-      "visning": "2 min"
-    },
-    {
-      "riktning_kod": 1,
-      "riktning": "Ropsten",
-      "destination": "Ropsten",
-      "avgar_klocka": "13:36",
-      "linje": "13",
-      "transportmedel": "METRO",
-      "linjegrupp": "Tunnelbanans röda linje",
-      "farg": "#d71d24",
-      "minuter": 4,
-      "visning": "4 min"
-    },
-    {
-      "riktning_kod": 1,
-      "riktning": "Hässelby strand",
-      "destination": "Alvik",
-      "avgar_klocka": "13:37",
-      "linje": "18",
-      "transportmedel": "METRO",
-      "linjegrupp": "Tunnelbanans gröna linje",
-      "farg": "#148541",
-      "minuter": 4,
-      "visning": "4 min"
-    },
-    {
-      "riktning_kod": 2,
-      "riktning": "Norsborg",
-      "destination": "Norsborg",
-      "avgar_klocka": "13:38",
-      "linje": "13",
-      "transportmedel": "METRO",
-      "linjegrupp": "Tunnelbanans röda linje",
-      "farg": "#d71d24",
-      "minuter": 5,
-      "visning": "5 min"
-    },
     {
       "riktning_kod": 2,
       "riktning": "Hagsätra",
@@ -96,8 +12,8 @@
       "transportmedel": "METRO",
       "linjegrupp": "Tunnelbanans gröna linje",
       "farg": "#148541",
-      "minuter": 6,
-      "visning": "6 min"
+      "minuter": 0,
+      "visning": "Nu"
     },
     {
       "riktning_kod": 1,
@@ -108,8 +24,8 @@
       "transportmedel": "METRO",
       "linjegrupp": "Tunnelbanans gröna linje",
       "farg": "#148541",
-      "minuter": 6,
-      "visning": "6 min"
+      "minuter": 1,
+      "visning": "1 min"
     },
     {
       "riktning_kod": 1,
@@ -120,8 +36,8 @@
       "transportmedel": "METRO",
       "linjegrupp": "Tunnelbanans röda linje",
       "farg": "#d71d24",
-      "minuter": 7,
-      "visning": "7 min"
+      "minuter": 2,
+      "visning": "2 min"
     },
     {
       "riktning_kod": 2,
@@ -132,8 +48,8 @@
       "transportmedel": "METRO",
       "linjegrupp": "Tunnelbanans gröna linje",
       "farg": "#148541",
-      "minuter": 8,
-      "visning": "8 min"
+      "minuter": 3,
+      "visning": "3 min"
     },
     {
       "riktning_kod": 2,
@@ -144,8 +60,8 @@
       "transportmedel": "METRO",
       "linjegrupp": "Tunnelbanans röda linje",
       "farg": "#d71d24",
-      "minuter": 9,
-      "visning": "9 min"
+      "minuter": 3,
+      "visning": "3 min"
     },
     {
       "riktning_kod": 1,
@@ -156,8 +72,8 @@
       "transportmedel": "METRO",
       "linjegrupp": "Tunnelbanans gröna linje",
       "farg": "#148541",
-      "minuter": 10,
-      "visning": "10 min"
+      "minuter": 4,
+      "visning": "4 min"
     },
     {
       "riktning_kod": 1,
@@ -168,8 +84,8 @@
       "transportmedel": "METRO",
       "linjegrupp": "Tunnelbanans röda linje",
       "farg": "#d71d24",
-      "minuter": 11,
-      "visning": "11 min"
+      "minuter": 5,
+      "visning": "5 min"
     },
     {
       "riktning_kod": 2,
@@ -180,8 +96,8 @@
       "transportmedel": "METRO",
       "linjegrupp": "Tunnelbanans gröna linje",
       "farg": "#148541",
-      "minuter": 11,
-      "visning": "11 min"
+      "minuter": 6,
+      "visning": "6 min"
     },
     {
       "riktning_kod": 2,
@@ -192,8 +108,8 @@
       "transportmedel": "METRO",
       "linjegrupp": "Tunnelbanans röda linje",
       "farg": "#d71d24",
-      "minuter": 12,
-      "visning": "12 min"
+      "minuter": 7,
+      "visning": "7 min"
     },
     {
       "riktning_kod": 1,
@@ -204,8 +120,8 @@
       "transportmedel": "METRO",
       "linjegrupp": "Tunnelbanans röda linje",
       "farg": "#d71d24",
-      "minuter": 14,
-      "visning": "14 min"
+      "minuter": 8,
+      "visning": "8 min"
     },
     {
       "riktning_kod": 1,
@@ -216,8 +132,8 @@
       "transportmedel": "METRO",
       "linjegrupp": "Tunnelbanans gröna linje",
       "farg": "#148541",
-      "minuter": 14,
-      "visning": "14 min"
+      "minuter": 8,
+      "visning": "8 min"
     },
     {
       "riktning_kod": 2,
@@ -228,8 +144,8 @@
       "transportmedel": "METRO",
       "linjegrupp": "Tunnelbanans gröna linje",
       "farg": "#148541",
-      "minuter": 14,
-      "visning": "14 min"
+      "minuter": 9,
+      "visning": "9 min"
     },
     {
       "riktning_kod": 2,
@@ -240,8 +156,8 @@
       "transportmedel": "METRO",
       "linjegrupp": "Tunnelbanans röda linje",
       "farg": "#d71d24",
-      "minuter": 15,
-      "visning": "15 min"
+      "minuter": 10,
+      "visning": "10 min"
     },
     {
       "riktning_kod": 1,
@@ -252,8 +168,20 @@
       "transportmedel": "METRO",
       "linjegrupp": "Tunnelbanans gröna linje",
       "farg": "#148541",
-      "minuter": 16,
-      "visning": "16 min"
+      "minuter": 11,
+      "visning": "11 min"
+    },
+    {
+      "riktning_kod": 1,
+      "riktning": "Mörby centrum",
+      "destination": "Mörby centrum",
+      "avgar_klocka": "13:50",
+      "linje": "14",
+      "transportmedel": "METRO",
+      "linjegrupp": "Tunnelbanans röda linje",
+      "farg": "#d71d24",
+      "minuter": 12,
+      "visning": "12 min"
     },
     {
       "riktning_kod": 2,
@@ -264,8 +192,8 @@
       "transportmedel": "METRO",
       "linjegrupp": "Tunnelbanans gröna linje",
       "farg": "#148541",
-      "minuter": 18,
-      "visning": "18 min"
+      "minuter": 12,
+      "visning": "12 min"
     },
     {
       "riktning_kod": 1,
@@ -276,8 +204,8 @@
       "transportmedel": "METRO",
       "linjegrupp": "Tunnelbanans gröna linje",
       "farg": "#148541",
-      "minuter": 20,
-      "visning": "20 min"
+      "minuter": 14,
+      "visning": "14 min"
     },
     {
       "riktning_kod": 2,
@@ -288,20 +216,8 @@
       "transportmedel": "METRO",
       "linjegrupp": "Tunnelbanans gröna linje",
       "farg": "#148541",
-      "minuter": 21,
-      "visning": "21 min"
-    },
-    {
-      "riktning_kod": 1,
-      "riktning": "Ropsten",
-      "destination": "Ropsten",
-      "avgar_klocka": "13:56",
-      "linje": "13",
-      "transportmedel": "METRO",
-      "linjegrupp": "Tunnelbanans röda linje",
-      "farg": "#d71d24",
-      "minuter": 24,
-      "visning": "24 min"
+      "minuter": 16,
+      "visning": "16 min"
     },
     {
       "riktning_kod": 1,
@@ -312,8 +228,8 @@
       "transportmedel": "METRO",
       "linjegrupp": "Tunnelbanans gröna linje",
       "farg": "#148541",
-      "minuter": 24,
-      "visning": "24 min"
+      "minuter": 18,
+      "visning": "18 min"
     },
     {
       "riktning_kod": 2,
@@ -324,8 +240,20 @@
       "transportmedel": "METRO",
       "linjegrupp": "Tunnelbanans gröna linje",
       "farg": "#148541",
-      "minuter": 24,
-      "visning": "24 min"
+      "minuter": 19,
+      "visning": "19 min"
+    },
+    {
+      "riktning_kod": 1,
+      "riktning": "Ropsten",
+      "destination": "Ropsten",
+      "avgar_klocka": "13:57",
+      "linje": "13",
+      "transportmedel": "METRO",
+      "linjegrupp": "Tunnelbanans röda linje",
+      "farg": "#d71d24",
+      "minuter": 19,
+      "visning": "19 min"
     },
     {
       "riktning_kod": 2,
@@ -336,8 +264,8 @@
       "transportmedel": "METRO",
       "linjegrupp": "Tunnelbanans röda linje",
       "farg": "#d71d24",
-      "minuter": 25,
-      "visning": "25 min"
+      "minuter": 20,
+      "visning": "20 min"
     },
     {
       "riktning_kod": 1,
@@ -348,8 +276,8 @@
       "transportmedel": "METRO",
       "linjegrupp": "Tunnelbanans gröna linje",
       "farg": "#148541",
-      "minuter": 26,
-      "visning": "26 min"
+      "minuter": 21,
+      "visning": "21 min"
     },
     {
       "riktning_kod": 2,
@@ -360,8 +288,68 @@
       "transportmedel": "METRO",
       "linjegrupp": "Tunnelbanans gröna linje",
       "farg": "#148541",
+      "minuter": 22,
+      "visning": "22 min"
+    },
+    {
+      "riktning_kod": 1,
+      "riktning": "Hässelby strand",
+      "destination": "Hässelby strand",
+      "avgar_klocka": "14:02",
+      "linje": "19",
+      "transportmedel": "METRO",
+      "linjegrupp": "Tunnelbanans gröna linje",
+      "farg": "#148541",
+      "minuter": 24,
+      "visning": "24 min"
+    },
+    {
+      "riktning_kod": 2,
+      "riktning": "Skarpnäck",
+      "destination": "Skarpnäck",
+      "avgar_klocka": "14:04",
+      "linje": "17",
+      "transportmedel": "METRO",
+      "linjegrupp": "Tunnelbanans gröna linje",
+      "farg": "#148541",
+      "minuter": 26,
+      "visning": "26 min"
+    },
+    {
+      "riktning_kod": 1,
+      "riktning": "Hässelby strand",
+      "destination": "Alvik",
+      "avgar_klocka": "14:06",
+      "linje": "18",
+      "transportmedel": "METRO",
+      "linjegrupp": "Tunnelbanans gröna linje",
+      "farg": "#148541",
       "minuter": 28,
       "visning": "28 min"
+    },
+    {
+      "riktning_kod": 1,
+      "riktning": "Ropsten",
+      "destination": "Ropsten",
+      "avgar_klocka": "14:06",
+      "linje": "13",
+      "transportmedel": "METRO",
+      "linjegrupp": "Tunnelbanans röda linje",
+      "farg": "#d71d24",
+      "minuter": 28,
+      "visning": "28 min"
+    },
+    {
+      "riktning_kod": 2,
+      "riktning": "Norsborg",
+      "destination": "Norsborg",
+      "avgar_klocka": "14:08",
+      "linje": "13",
+      "transportmedel": "METRO",
+      "linjegrupp": "Tunnelbanans röda linje",
+      "farg": "#d71d24",
+      "minuter": 30,
+      "visning": "30 min"
     }
   ],
   "avvikelser": []
