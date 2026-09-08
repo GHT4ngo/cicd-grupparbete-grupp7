@@ -156,7 +156,9 @@
 
   /* Färdmedelsmärken i sökträffarna. Medvetet färglösa: tavlan använder
      redan rött för tunnelbanans röda linje, och SL använder rött för buss.
-     Samma färg hade betytt två saker, så här står ordet i stället. */
+     Samma färg hade betytt två saker. Hela ordet tog i sin tur så mycket
+     plats att hållplatsnamnet klipptes av, så det fick bli en bokstav.
+     Håll muspekaren över märket så står ordet i klartext. */
   .traffar .hoger {
     display: flex;
     flex: none;
@@ -172,13 +174,17 @@
   }
 
   .fardmedelsmarke {
-    padding: 0.05rem 0.4rem;
-    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.1rem;
+    height: 1.1rem;
+    border-radius: 50%;
     background: var(--panel-kant);
     color: var(--text-svag);
-    font-size: 0.68rem;
-    letter-spacing: 0.02em;
-    white-space: nowrap;
+    font-size: 0.7rem;
+    font-weight: 700;
+    line-height: 1;
   }
 
   .chippar { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; }
@@ -406,6 +412,11 @@
   var HALLPLATSKALLA = "data/hallplatser.json";
   var MAX_TRAFFAR = 20;
 
+  // Svenska initialer. F för färja, eftersom B redan är upptaget av buss.
+  var FARDMEDELSBOKSTAV = {
+    METRO: "T", TRAIN: "P", TRAM: "S", BUS: "B", SHIP: "F"
+  };
+
   // Reserv om filen ovan saknas eller är trasig. Sökrutan använder den listan
   // tills den riktiga har laddats.
   var STATIONER = [
@@ -565,7 +576,9 @@
 
         var hoger = element("span", "hoger");
         (s.fardmedel || []).forEach(function (f) {
-          hoger.appendChild(element("span", "fardmedelsmarke", FARDMEDEL[f] || f));
+          var marke = element("span", "fardmedelsmarke", FARDMEDELSBOKSTAV[f] || "?");
+          marke.title = FARDMEDEL[f] || f;
+          hoger.appendChild(marke);
         });
         hoger.appendChild(element("span", "id", s.id));
         b.appendChild(hoger);

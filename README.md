@@ -486,12 +486,12 @@ Avsluta med en kort reflektion: vilka moment inom DevOps användes, och vilka ut
 <tr><th align="left">Namn</th><th align="left">GitHub</th><th align="left">Uppgifter</th></tr>
 </thead>
 <tbody>
-<tr><td>Christofer</td><td><code>GHT4ngo</code></td><td>1, 2, 3, 4</td></tr>
-<tr><td>Kun</td><td><code>somrar99</code></td><td>5,6,15,19</td></tr>
-<tr><td>Ashraful</td><td><code>nibir03</code></td><td></td></tr>
-<tr><td>Wanessa </td><td><code>Yearofthedragon24</code></td><td>9, 10, 11, 30</td></tr>
-<tr><td>Mahtot</td><td></td><td></td></tr>
-<tr><td>Rufus</td><td></td><td></td></tr>
+<tr><td>Christofer</td><td><code>GHT4ngo</code></td><td>1, 2, 3, 4, 12, 13, 17, 21, 25, 27, 29, 32, 33</td></tr>
+<tr><td>Kun</td><td><code>somrar99</code></td><td>5, 6, 15, 19, 28</td></tr>
+<tr><td>Ash</td><td><code>nibir03</code></td><td>7, 8, 14, 28, 31</td></tr>
+<tr><td>Wanessa</td><td><code>Yearofthedragon24</code></td><td>9, 10, 11, 22, 23, 26, 28, 30</td></tr>
+<tr><td>Rufus</td><td><code>Haydslife</code></td><td>16, 24, 28</td></tr>
+<tr><td>Mahtot</td><td><code>mahtotbelai</code></td><td>18, 20</td></tr>
 </tbody>
 </table>
 
