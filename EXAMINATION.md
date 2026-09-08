@@ -175,56 +175,6 @@ gh pr checks 51
 **En granskningskommentar.** Hovra över kommentaren, klicka de tre prickarna
 uppe till höger och välj **Copy link**. Den länken går direkt till kommentaren.
 
-***
-
-## Var vi står, ögonblicksbild 2026-09-01
-
-Kolla din rad. Ja betyder att det redan finns spår i repot att länka till, nej
-betyder att du behöver göra något innan gruppen är klar.
-
-| GitHub | Commits på main | Egen PR | 2.3 granskat andra | 2.4 fått granskning |
-|---|---|---|---|---|
-| `GHT4ngo` | 39 | #39, #40, #41, #43, #49, #51, #53, #55, #56, #57, #63 | ja, #42, #44, #45, #46, #47, #58, #62 | tunt, se nedan |
-| `somrar99` | 18 | #42, #45, #47, #58 | ja, #44, #46 | ja, #42, #47, #58 |
-| `Yearofthedragon24` | 8 | #44, #46, #50, #61 | ja, #47, #60 | ja, #44, #46, #61 |
-| `nibir03` | 12 | #59, #60, #62 | ja, #61 | ja, #60, #62 |
-| `mahtotbelai` | 1 | #54 | nej | nej |
-| `Haydslife` | 0 | nej | nej | nej |
-
-Sedan förra ögonblicksbilden har mycket lossnat. Fyra av sex har nu allt de
-behöver för Del 2.
-
-**Yearofthedragon24**, anmärkningen om tunn granskning gäller inte längre. Dina
-Approve på #47 och #60 har båda riktig text som säger vad du kontrollerat mot
-uppgiftskortet. Det är precis vad 2.3 efterfrågar.
-
-**nibir03**, du har gått från noll till tolv commits och tre pull requests.
-Kommentaren du lämnade på #61 om merge konflikten i `transformera.py` duger som
-svar på 2.3. Kvar är att slutföra #62.
-
-**somrar99**, en varning som bara rör dig. Tio av dina arton commits är gjorda
-med e-postadressen `kun.song@student.forsbergsskola.se`, som inte är kopplad
-till ditt GitHub konto. De räknas därför inte i GitHubs statistik och visas utan
-din profilbild. De ligger kvar i historiken och går att länka till, så det
-duger för rapporten, men lägg gärna till adressen under Settings, Emails.
-
-**mahtotbelai**, du har uppgift 18 mergad i #54, vilket täcker 2.1 och 2.2. Men
-ingen granskade din PR och du har inte granskat någon annans. Både 2.3 och 2.4
-saknas alltså. Ta en av de öppna PR:erna och skriv en kommentar med innehåll, så
-löser det halva problemet direkt.
-
-**Haydslife**, du har uppgift 16 tilldelad och en branch `task/16-linjefarger`,
-men inga commits på den. Utan en egen branch med commits, en pull request och en
-grön CI-körning går varken grupparbetet eller rapporten att bli godkänd.
-
-**Fyra rader i `README.md` är fortfarande tomma.** Uppgift 28 innebär att var och
-en fyller i sin egen, i sin egen branch. Ingen har gjort det utom Christofer.
-
-**Christofer**, ditt eget 2.4 är svagt. Granskningarna du fått är "Tested
-locally, works as expected" på #41 och #51. Det går att länka till men det finns
-inget resonemang att skriva om. Be någon i gruppen granska #56 med en riktig
-kommentar.
-
 > Den sjunde medlemmen i repot, `LindaLiBogardi`, är läraren. Hon är redan
 > inbjuden och ser allt, så länkarna i din rapport fungerar för henne trots att
 > repot är privat.
