@@ -468,7 +468,7 @@ Avsluta med en kort reflektion: vilka moment inom DevOps användes, och vilka ut
 </thead>
 <tbody>
 <tr><td>Christofer</td><td><code>GHT4ngo</code></td><td>1, 2, 3, 4</td></tr>
-<tr><td></td><td><code>somrar99</code></td><td>5</td></tr>
+<tr><td>Kun</td><td><code>somrar99</code></td><td>5,6,15,19</td></tr>
 <tr><td></td><td><code>nibir03</code></td><td></td></tr>
 <tr><td>Wanessa</td><td><code>Yearofthedragon24</code></td><td>9, 10, 11, 30</td></tr>
 <tr><td></td><td></td><td></td></tr>
