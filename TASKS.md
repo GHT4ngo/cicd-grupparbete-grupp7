@@ -386,7 +386,7 @@ Dela funktionen i två, en som hämtar listan och en som filtrerar den. Då kan 
 
 Sökrutan på tavlan söker bara i en handskriven lista på sju hållplatser, `docs/index.html:380`. Skriver man något annat får man "Ingen träff". Uppgift 15 hämtar redan alla 6511, men **sparar dem aldrig och ingen anropar den**. Den här uppgiften kopplar ihop de två.
 
-Tre små ändringar. `src/config.py` får fältet `stationer_path` med standardvärdet `docs/data/hallplatser.json`, och raden läggs även i `.env.example`. `src/stationer.py` får en funktion som skriver filen, med bara `id` och `namn`, efter samma mönster som `skriv_resultat` i uppgift 11. `docs/index.html` läser filen i stället för `STATIONER`.
+Tre små ändringar. `src/config.py` får fältet `stationer_path` med standardvärdet `docs/data/hallplatser.json`, och raden läggs även i `.env.example`. `src/stationer.py` får en funktion som skriver filen, med `id`, `namn`, `storlek` och `fardmedel`, efter samma mönster som `skriv_resultat` i uppgift 11. `docs/index.html` läser filen i stället för `STATIONER`.
 
 Hämta filen **första gången någon skriver i sökrutan**, inte vid sidladdning, och spara den i en variabel så att det bara sker en gång. Låt de sju ligga kvar som startförslag tills den kommit.
 

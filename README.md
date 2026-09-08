@@ -308,6 +308,8 @@ Så här ser en avgång ut när den kommit igenom pipelinen. Tio fält, alla pla
 </tbody>
 </table>
 
+Hållplatslistan i `docs/data/hallplatser.json` är en egen fil med ett annat innehåll: `id`, `namn`, `storlek` som är antalet lägen, och `fardmedel` som är en lista med METRO, BUS, TRAIN, TRAM eller SHIP. De två sista finns för att flera hållplatser delar namn, till exempel tre stycken som heter Västertorp, och sökrutan behöver kunna skilja tunnelbanan från busshållplatsen på Värmdö.
+
 Objektet runt listan har fem nycklar: `station`, `station_id`, `uppdaterad`, `avgangar` och `avvikelser`. Den sista är en lista med störningsmeddelanden, både sådana som gäller hela hållplatsen och sådana som hör till en enskild avgång. Finns inga störningar är den tom.
 
 > [!WARNING]

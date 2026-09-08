@@ -26,6 +26,37 @@ def sok_hallplats(namn, hallplatser=None):
     return traffar
 
 
+# SL:s egna namn på lägestyper, översatta till samma färdmedelsnamn som
+# resten av kedjan använder. Sidan färglägger och namnger dem sedan själv.
+FARDMEDEL_PER_TYP = {
+    "METROSTN": "METRO",
+    "BUSTERM": "BUS",
+    "TRAMSTN": "TRAM",
+    "RAILWSTN": "TRAIN",
+    "SHIPBER": "SHIP",
+    "FERRYBER": "SHIP",
+}
+
+
+def hamta_lagestyper():
+    """Ger en uppslagning från lägets id till färdmedel.
+
+    Hållplatslistan säger bara vilka lägen en hållplats har, inte vad de är
+    för sorts lägen. Den uppgiften ligger i stop-points.
+    """
+    url = "https://transport.integration.sl.se/v1/stop-points"
+    response = requests.get(url, timeout=30)
+    response.raise_for_status()
+
+    typer = {}
+    for lage in response.json():
+        omrade = lage.get("stop_area", {})
+        fardmedel = FARDMEDEL_PER_TYP.get(omrade.get("type"))
+        if fardmedel:
+            typer[omrade["id"]] = fardmedel
+    return typer
+
+
 def namn_for_id(site_id):
     """Slår upp hållplatsens namn i den sparade listan.
 
@@ -44,20 +75,33 @@ def namn_for_id(site_id):
     return str(site_id)
 
 
-def spara_hallplatser(hallplatser=None):
+def spara_hallplatser(hallplatser=None, lagestyper=None):
     """Skriver alla hållplatser till en fil som sökrutan på sidan läser."""
     if hallplatser is None:
         hallplatser = hamta_hallplatser()
+
+    if lagestyper is None:
+        lagestyper = hamta_lagestyper()
 
     # Flera hållplatser delar namn, till exempel tre stycken som heter
     # Västertorp. stop_areas säger hur många lägen hållplatsen har, och den
     # riktiga knutpunkten har alltid flest. Sökrutan sorterar på det.
     trimmade = []
     for site in hallplatser:
+        omraden = site.get("stop_areas", [])
+
+        # Samma hållplats kan ha både tunnelbana och buss. Sorterat, så att
+        # ordningen på sidan blir densamma varje gång filen skrivs om.
+        fardmedel = set()
+        for omrade in omraden:
+            if omrade in lagestyper:
+                fardmedel.add(lagestyper[omrade])
+
         trimmade.append({
             "id": site["id"],
             "namn": site["name"],
-            "storlek": len(site.get("stop_areas", [])),
+            "storlek": len(omraden),
+            "fardmedel": sorted(fardmedel),
         })
 
     sokvag = Path(las_config().stationer_path)
