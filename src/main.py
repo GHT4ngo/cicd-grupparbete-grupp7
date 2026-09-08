@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from src.config import las_config
+from src.filter import rensa_bort_skrap
 from src.hamta import hamta_avgangar
 from src.resultat import skriv_resultat
 from src.transformera import platta_ut_avgangar
@@ -11,6 +12,11 @@ def main():
     config = las_config()
 
     svar = hamta_avgangar()
+
+    # Rensa inställda och redan avgångna turer medan state och expected
+    # fortfarande finns kvar i rådatan.
+    svar["departures"] = rensa_bort_skrap(svar["departures"])
+
     avgangar = platta_ut_avgangar(svar)
 
     for avgang in avgangar:
