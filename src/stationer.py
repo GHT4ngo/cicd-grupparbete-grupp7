@@ -1,4 +1,5 @@
 import json
+import sys
 from pathlib import Path
 
 import requests
@@ -52,5 +53,11 @@ def spara_hallplatser(hallplatser=None):
 
 
 if __name__ == "__main__":
-    sparade = spara_hallplatser()
-    print(f"Skrev {len(sparade)} hållplatser till {las_config().stationer_path}")
+    # Med ett sökord letar den upp hållplatsen, till exempel för att hitta
+    # ett SITE_ID att lägga i .env. Utan sökord skrivs hela listan till fil.
+    if len(sys.argv) > 1:
+        for traff in sok_hallplats(sys.argv[1]):
+            print(f"{traff['id']:>6}  {traff['name']}")
+    else:
+        sparade = spara_hallplatser()
+        print(f"Skrev {len(sparade)} hållplatser till {las_config().stationer_path}")

@@ -14,46 +14,38 @@ def rakna_linjer(avgangar):
 def rakna_riktningar(avgangar):
     return Counter(a["riktning"] for a in avgangar)
 
+def skriv_statistik(avgangar):
+    """Skriver ut statistiken i terminalen.
+
+    Låg tidigare direkt under if __name__ == "__main__". Då kunde pipelinen
+    inte anropa den, utan modulen gick bara att köra för hand.
+    """
+    antal = len(avgangar)
+    print(f"\nTotalt antal avgångar: {antal}")
+
+    print("\nLinjer")
+    print("-" * 30)
+
+    linjer = rakna_linjer(avgangar)
+    for linje, antal_linje in linjer.items():
+        print(f"Linje {linje:>3}: {antal_linje:>2} avgångar")
+
+    print(f"Summa: {sum(linjer.values()):>2}")
+    print("Kontroll OK" if sum(linjer.values()) == antal else "Kontroll misslyckades")
+
+    print("\nRiktningar")
+    print("-" * 30)
+
+    riktningar = rakna_riktningar(avgangar)
+    for riktning, antal_riktning in riktningar.items():
+        print(f"{riktning:<20} {antal_riktning:>2} avgångar")
+
+    print(f"Summa: {sum(riktningar.values()):>2}")
+    print("Kontroll OK" if sum(riktningar.values()) == antal else "Kontroll misslyckades")
+
+    if riktningar:
+        vanligaste, antal_vanligaste = riktningar.most_common(1)[0]
+        print(f"\nVanligaste riktning: {vanligaste} ({antal_vanligaste} avgångar)")
+
 if __name__ == "__main__":
-    #Read departure data from file
-    avgangar = las_avgangar()
-    avgangar_antal_json = len(avgangar)
-    print(f"\nTotalt antal avgångar i JSON: {avgangar_antal_json}")
-
-    #Count departures by line
-    print("\nLinjer statistik")
-    print("-" * 30)
-
-    linjer_statistik = rakna_linjer(avgangar)
-    for linje, antal in linjer_statistik.items():
-        print(f"Linje {linje:>3}: {antal:>2} avgångar")
-
-    avgangar_antal_linje = sum(linjer_statistik.values())
-    print(f"Totalt antal avgångar: {avgangar_antal_linje:>2} avgångar")
-    if avgangar_antal_json == avgangar_antal_linje:
-        print("Kontroll OK")
-    else:
-        print("Kontroll misslyckades")
-
-    #Count departures by direction
-    print("\n\nRiktningar statistik")
-    print("-" * 30)
-
-    riktningar_statistik = rakna_riktningar(avgangar)
-    for riktning, antal in riktningar_statistik.items():
-        print(f"{riktning:<20} {antal:>2} avgångar")
-
-    avgangar_antal_riktning = sum(riktningar_statistik.values())
-    print(f"Totalt antal avgångar: {avgangar_antal_riktning:>2} avgångar")
-    if avgangar_antal_json == avgangar_antal_riktning:
-        print("Kontroll OK")
-    else:
-        print("Kontroll misslyckades")
-
-    #Find the most common direction
-    vanligaste_riktning, antal = riktningar_statistik.most_common(1)[0]
-    print(
-        f"\nVanligaste riktning: {vanligaste_riktning} "
-        f"({antal} avgångar)"
-    )    
-    print()
+    skriv_statistik(las_avgangar())
