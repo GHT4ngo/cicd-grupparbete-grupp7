@@ -26,6 +26,24 @@ def sok_hallplats(namn, hallplatser=None):
     return traffar
 
 
+def namn_for_id(site_id):
+    """Slår upp hållplatsens namn i den sparade listan.
+
+    Används av flaggan --station, så att tavlan visar rätt namn och inte
+    det som råkar stå i .env. Saknas filen får id:t duga som namn.
+    """
+    sokvag = Path(las_config().stationer_path)
+    if not sokvag.exists():
+        return str(site_id)
+
+    with sokvag.open(encoding="utf-8") as fil:
+        for hallplats in json.load(fil):
+            if str(hallplats["id"]) == str(site_id):
+                return hallplats["namn"]
+
+    return str(site_id)
+
+
 def spara_hallplatser(hallplatser=None):
     """Skriver alla hållplatser till en fil som sökrutan på sidan läser."""
     if hallplatser is None:

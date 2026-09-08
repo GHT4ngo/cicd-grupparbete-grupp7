@@ -3,8 +3,11 @@ import requests
 from src.config import las_config
 
 
-def hamta_avgangar():
-    config = las_config()
+def hamta_avgangar(config=None):
+    # Flaggorna i main.py kan skicka in en egen config. Utan argument
+    # läses den ur .env som förut.
+    if config is None:
+        config = las_config()
 
     url = (
         f"https://transport.integration.sl.se/v1/sites/"
