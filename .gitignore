@@ -23,6 +23,11 @@ AGENTS.md
 # npx wrangler login sparar konto-id har, det hor inte hemma i repot
 .wrangler/
 
+# Eget material
+# Presentationer, utkast och egna anteckningar. Ligger utanfor repot sa att
+# ingen behover granska dem, och sa att var och en kan ha sina egna.
+lokalt/
+
 # Editor och OS
 .vscode/
 .idea/
