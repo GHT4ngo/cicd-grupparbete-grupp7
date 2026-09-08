@@ -16,17 +16,17 @@ def test_rod_linje():
 
     assert linjer.hamta_farg(linjegrupp) == "#d71d24"
 
-def test_Blabuss():
+def test_blabuss():
     linjegrupp = "Blåbuss"
 
     assert linjer.hamta_farg(linjegrupp) == "#005aa3"
 
-def test_Pendeltag():
+def test_pendeltag():
     linjegrupp = "Pendeltåg"
 
     assert linjer.hamta_farg(linjegrupp) == "#f0677f"
 
-def test_Pendelbåt():
+def test_pendelbat():
     linjegrupp = "Pendelbåt"
 
     assert linjer.hamta_farg(linjegrupp) == "#00a5b5"
