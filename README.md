@@ -229,9 +229,8 @@ cicd-grupparbete-grupp7/
 │   └── data/
 │       ├── avgangar.json     # 11, sökväg från OUTPUT_PATH
 │       └── hallplatser.json  # 32, sökväg från STATIONER_PATH
-├── presentation/             # redovisningen, lektion 8
-│   ├── index.html            # bildspelet, öppnas direkt i webbläsaren
-│   └── manus.md              # vem säger vad, tider och live-demona
+├── lokalt/                   # eget material, ligger i .gitignore
+│   └── presentation/         # bildspel, manus, egna anteckningar
 ├── src/
 │   ├── __init__.py           # 1
 │   ├── main.py               # 14 och 21, kör hela kedjan
