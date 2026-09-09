@@ -139,8 +139,9 @@
 
   .traffar button {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
-    gap: 1rem;
+    gap: 0.35rem 0.75rem;
     width: 100%;
     padding: 0.5rem 0.6rem;
     border: 0;
@@ -169,12 +170,12 @@
     gap: 0.35rem;
   }
 
+  /* Namnet klipps aldrig. Blir raden trång bryter den i stället, och
+     märkena hamnar på nästa rad. Ett namn som inte syns gör hela
+     sökrutan oanvändbar, en rad som blir två gör ingen skada. */
   .traffar button > span:first-child {
     flex: 1 1 auto;
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    overflow-wrap: anywhere;
   }
 
   .fardmedelsmarke {
