@@ -120,10 +120,10 @@
     z-index: 10;
     top: calc(100% + 4px);
     left: 0;
-    right: 0;
-    /* Rullgardinen får vara bredare än sökrutan. Utan golvet kan
-       hållplatsnamnet krympa till noll när märkena tar plats. */
-    min-width: 18rem;
+    /* Egen bredd, inte sökrutans. Blir verktygsraden trång krymper
+       sökrutan, och då hade namnet fått några få tecken att bre ut sig på. */
+    width: 23rem;
+    max-width: calc(100vw - 2rem);
     margin: 0;
     padding: 0.25rem;
     list-style: none;
@@ -139,11 +139,11 @@
 
   .traffar button {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 0.35rem 0.75rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2rem;
     width: 100%;
-    padding: 0.5rem 0.6rem;
+    padding: 0.45rem 0.6rem;
     border: 0;
     border-radius: 6px;
     background: none;
@@ -170,13 +170,11 @@
     gap: 0.35rem;
   }
 
-  /* Namnet klipps aldrig. Blir raden trång bryter den i stället, och
-     märkena hamnar på nästa rad. Ett namn som inte syns gör hela
-     sökrutan oanvändbar, en rad som blir två gör ingen skada. */
-  .traffar button > span:first-child {
-    flex: 1 1 auto;
-    overflow-wrap: anywhere;
-  }
+  /* Namnet får hela raden för sig själv och bryter bara vid riktigt
+     långa namn. Märken och id ligger under, i en egen rad. */
+  .traffar button > span:first-child { line-height: 1.3; }
+
+  .traffar li + li { border-top: 1px solid var(--panel-kant); }
 
   .fardmedelsmarke {
     display: inline-flex;
@@ -466,6 +464,32 @@
   // och eftersom filtren krymper urvalet ser man längre fram i tiden med dem på.
   var TAK_BADA = 6;
   var TAK_SOLO = 14;
+
+  /* Adressraden bär hållplats och filter, så att en omladdning landar
+     på samma tavla och ett bokmärke sparar hela vyn. */
+
+  function lasAdress() {
+    var p = new URLSearchParams(location.search);
+    return {
+      station: p.get("station"),
+      fardmedel: p.get("fardmedel"),
+      linje: p.get("linje"),
+      riktning: p.get("riktning")
+    };
+  }
+
+  function skrivAdress() {
+    var p = new URLSearchParams();
+    if (aktivStation) p.set("station", aktivStation.id);
+    if (valtFardmedel) p.set("fardmedel", valtFardmedel);
+    if (valdLinjegrupp) p.set("linje", valdLinjegrupp);
+    if (soloRiktning) p.set("riktning", soloRiktning);
+
+    // replaceState i stället för pushState, annars fylls bakåtknappen
+    // med ett steg per klick i filtren.
+    var fraga = p.toString();
+    history.replaceState(null, "", fraga ? "?" + fraga : location.pathname);
+  }
 
   function normalisera(text) {
     // SL är inte konsekvent, i samma fil står både S:t Eriksgatan och
@@ -790,6 +814,7 @@
       : null);
 
     ritaVerktyg();
+    skrivAdress();
   }
 
   /* Statusmeddelanden */
@@ -842,6 +867,7 @@
     sattStampel("Hämtar " + s.namn);
     visaTomt(null);
     ritaVerktyg();
+    skrivAdress();
     uppdatera();
   }
 
@@ -932,10 +958,18 @@
       })
       .then(function (laddad) {
         reservdata = laddad;
-        aktivStation = { id: String(laddad.station_id), namn: laddad.station };
-        data = laddad;
-        rita();
-        sattStampel("Sparad data " + klockslag(data.uppdaterad), "gammal");
+
+        if (!aktivStation) {
+          aktivStation = { id: String(laddad.station_id), namn: laddad.station };
+        }
+
+        // Bara om filen gäller den hållplats vi faktiskt visar. Kom en
+        // annan hållplats ur adressen får live anropet svara i stället.
+        if (aktivStation.id === String(laddad.station_id)) {
+          data = laddad;
+          rita();
+          sattStampel("Sparad data " + klockslag(data.uppdaterad), "gammal");
+        }
       })
       .catch(function () {
         // Filen saknas eller är trasig. Live anropet får klara sig utan reserv.
@@ -959,6 +993,16 @@
             fardmedel: s.fardmedel || [],
           };
         });
+
+        // Kom hållplatsen ur adressen har vi bara id:t. Nu finns namnet.
+        if (aktivStation && aktivStation.namn === aktivStation.id) {
+          hallplatser.forEach(function (s) {
+            if (s.id !== aktivStation.id) return;
+            aktivStation = { id: s.id, namn: s.namn };
+            document.getElementById("station").textContent = s.namn;
+            if (data) { data.station = s.namn; }
+          });
+        }
       })
       .catch(function () {
         // Filen saknas. Sökrutan får klara sig med de sju i STATIONER.
@@ -966,6 +1010,15 @@
   }
 
   function start() {
+    // Adressen först, så att reservfilen inte hinner sätta Slussen.
+    var adress = lasAdress();
+    if (adress.station) {
+      aktivStation = { id: adress.station, namn: adress.station };
+    }
+    valtFardmedel = adress.fardmedel;
+    valdLinjegrupp = adress.linje;
+    soloRiktning = adress.riktning;
+
     ritaVerktyg();
     laddaHallplatser();
 
